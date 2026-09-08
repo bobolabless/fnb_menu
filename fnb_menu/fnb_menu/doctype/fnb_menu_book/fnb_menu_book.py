@@ -1,2 +1,2 @@
 from frappe.model.document import Document
-class RhoHMSMenuBook(Document): pass
+class FNBMenuBook(Document): pass

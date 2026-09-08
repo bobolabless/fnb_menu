@@ -1,2 +1,2 @@
 from frappe.model.document import Document
-class RhoHMSMenuCategory(Document): pass
+class FNBMenuCategory(Document): pass

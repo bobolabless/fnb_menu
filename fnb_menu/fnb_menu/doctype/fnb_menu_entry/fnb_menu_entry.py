@@ -3,7 +3,7 @@ from frappe.model.document import Document
 from frappe.utils import flt
 
 
-class RhoHMSMenuEntry(Document):
+class FNBMenuEntry(Document):
     def validate(self):
         if self.category:
             category_book = frappe.db.get_value(

@@ -3,7 +3,7 @@ from frappe import _
 from frappe.model.document import Document
 
 
-class RhoHMSFNBSettings(Document):
+class FNBMenuSettings(Document):
     def validate(self):
         # Public self-orders must remain prepaid.
         self.require_payment = 1
