@@ -4,7 +4,7 @@
 
 ```bash
 cd ~/frappe-bench
-bench get-app --branch main https://github.com/<YOUR-GITHUB-ORG>/fnb_menu.git
+bench get-app --branch main https://github.com/bobolabless/fnb_menu.git
 bench --site <site> install-app fnb_menu
 bench --site <site> migrate
 bench build --app fnb_menu
