@@ -1,0 +1,109 @@
+{
+ "doctype": "DocType",
+ "name": "FNB Menu Book",
+ "module": "FNB Menu",
+ "engine": "InnoDB",
+ "autoname": "format:{company}-{menu_type}-{#####}",
+ "track_changes": 1,
+ "field_order": [
+  "title",
+  "company",
+  "menu_type",
+  "published",
+  "price_list",
+  "column_break_1",
+  "subtitle",
+  "sort_order",
+  "default_item_image",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "label": "Menu Title",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "company",
+   "label": "Company",
+   "fieldtype": "Link",
+   "options": "Company",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "menu_type",
+   "label": "Menu Type",
+   "fieldtype": "Select",
+   "options": "Food\nDrinks",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "published",
+   "label": "Published",
+   "fieldtype": "Check",
+   "default": "1",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "price_list",
+   "label": "Price List",
+   "fieldtype": "Link",
+   "options": "Price List",
+   "description": "Optional. Falls back to FNB Menu Settings."
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "subtitle",
+   "label": "Subtitle",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "sort_order",
+   "label": "Sort Order",
+   "fieldtype": "Int",
+   "default": "0"
+  },
+  {
+   "fieldname": "default_item_image",
+   "label": "Default Item Picture",
+   "fieldtype": "Attach Image"
+  },
+  {
+   "fieldname": "notes",
+   "label": "Internal Notes",
+   "fieldtype": "Small Text"
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1
+  },
+  {
+   "role": "Sales Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1
+  },
+  {
+   "role": "Sales User",
+   "read": 1,
+   "write": 1,
+   "create": 1
+  }
+ ],
+ "sort_field": "sort_order",
+ "sort_order": "ASC"
+}

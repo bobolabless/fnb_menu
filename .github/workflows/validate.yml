@@ -1,0 +1,34 @@
+name: Validate RhoHMS F&B Menu
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  static-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+      - name: Python syntax
+        run: python -m compileall -q fnb_menu
+      - name: JSON schemas
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          for path in pathlib.Path('fnb_menu').rglob('*.json'):
+              json.loads(path.read_text())
+              print('OK', path)
+          PY
+      - name: JavaScript syntax
+        run: |
+          find fnb_menu -name '*.js' -print0 | while IFS= read -r -d '' file; do node --check "$file"; done
+      - name: Repository cleanliness
+        run: |
+          ! find . -type d \( -name '__pycache__' -o -name 'node_modules' \) | grep .
+          ! find . -type f \( -name '*.pyc' -o -name '*.log' -o -name '*.bak' \) | grep .

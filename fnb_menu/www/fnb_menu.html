@@ -1,0 +1,549 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_content %}
+<div
+  id="rhohms-fnb-menu"
+  class="
+    lmv3-shell
+    theme-{{ theme_slug }}
+    layout-{{ layout_slug }}
+    nav-{{ (settings.category_navigation or 'Both')|lower|replace(' ', '-') }}
+    {% if settings.full_bleed_background %}lmv3-full-bleed{% endif %}
+  "
+  data-requested-menu="{{ requested_menu }}"
+  data-self-ordering="{{ 1 if self_ordering_enabled else 0 }}"
+>
+  <!-- =========================
+       MENU LANDING
+  ========================== -->
+  <section id="lmv3-landing" class="lmv3-landing">
+    <div class="lmv3-ornamental-frame">
+      <div class="lmv3-brand-block">
+        {% if settings.show_company_logo and brand.logo %}
+          <img
+            class="lmv3-logo"
+            src="{{ brand.logo }}"
+            alt="{{ brand.hotel_name }}"
+          >
+        {% endif %}
+
+        {% if settings.show_company_name %}
+          <h1>{{ brand.hotel_name }}</h1>
+        {% endif %}
+
+        {% if settings.brand_location_label %}
+          <p class="lmv3-location">{{ settings.brand_location_label }}</p>
+        {% endif %}
+
+        <div class="lmv3-stars">★★★★★</div>
+      </div>
+
+      <div class="lmv3-landing-divider">
+        <span>MENU</span>
+      </div>
+
+      <p class="lmv3-landing-copy">
+        Select a menu to continue
+      </p>
+
+      <div class="lmv3-menu-choice-grid">
+        {% if menus.food %}
+          <button
+            type="button"
+            class="lmv3-menu-choice"
+            data-open-menu="food"
+          >
+            <span>FOOD</span>
+            <small>{{ menus.food.title }}</small>
+          </button>
+        {% endif %}
+
+        {% if menus.drinks %}
+          <button
+            type="button"
+            class="lmv3-menu-choice"
+            data-open-menu="drinks"
+          >
+            <span>DRINKS</span>
+            <small>{{ menus.drinks.title }}</small>
+          </button>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================
+       MENU READER
+  ========================== -->
+  <section id="lmv3-reader" class="lmv3-reader" hidden>
+    <div class="lmv3-ornamental-frame">
+
+      <header class="lmv3-menu-header">
+        {% if settings.show_company_logo and brand.logo %}
+          <img
+            class="lmv3-logo lmv3-logo-small"
+            src="{{ brand.logo }}"
+            alt="{{ brand.hotel_name }}"
+          >
+        {% endif %}
+
+        {% if settings.show_company_name %}
+          <h1>{{ brand.hotel_name }}</h1>
+        {% endif %}
+
+        {% if settings.brand_location_label %}
+          <p class="lmv3-location">{{ settings.brand_location_label }}</p>
+        {% endif %}
+
+        <div class="lmv3-stars">★★★★★</div>
+
+        <div class="lmv3-switcher">
+          {% if menus.food %}
+            <button
+              type="button"
+              data-switch-menu="food"
+            >
+              Food Menu
+            </button>
+          {% endif %}
+
+          {% if menus.drinks %}
+            <button
+              type="button"
+              data-switch-menu="drinks"
+            >
+              Drinks Menu
+            </button>
+          {% endif %}
+
+          <button
+            type="button"
+            class="lmv3-back-choice"
+            data-back-to-choice
+          >
+            All Menus
+          </button>
+        </div>
+      </header>
+
+      {% if settings.show_search %}
+      <div class="lmv3-search-wrap">
+        <input
+          id="lmv3-search"
+          type="search"
+          placeholder="Search food or drinks..."
+          autocomplete="off"
+        >
+      </div>
+      {% endif %}
+
+      <!-- Sticky category navigation gets populated by JS -->
+      <nav
+        id="lmv32-category-dock"
+        class="lmv32-category-dock"
+        aria-label="Menu categories"
+        hidden
+      >
+        <button
+          type="button"
+          id="lmv32-category-open"
+          class="lmv32-category-open"
+        >
+          <span>Categories</span>
+          <b id="lmv32-current-category"></b>
+        </button>
+
+        <div
+          id="lmv32-category-pills"
+          class="lmv32-category-pills"
+        ></div>
+      </nav>
+
+      {% for key, menu in [("food", menus.food), ("drinks", menus.drinks)] %}
+        {% if menu %}
+        <main
+          class="lmv3-menu-panel"
+          data-menu-panel="{{ key }}"
+          hidden
+        >
+          <div class="lmv3-menu-heading">
+            <span></span>
+            <h2>{{ menu.title }}</h2>
+            <span></span>
+
+            {% if menu.subtitle %}
+              <p>{{ menu.subtitle }}</p>
+            {% endif %}
+          </div>
+
+          {% for category in menu.categories %}
+          <section
+            id="lmv32-{{ key }}-category-{{ loop.index }}"
+            class="lmv3-category"
+            data-search-category
+            data-category-label="{{ category.label }}"
+          >
+            <div class="lmv3-category-heading">
+              {{ category.label }}
+            </div>
+
+            {% if category.description %}
+              <p class="lmv3-category-description">
+                {{ category.description }}
+              </p>
+            {% endif %}
+
+            <div class="lmv3-items">
+              {% for item in category["items"] %}
+              <article
+                class="lmv3-item"
+                data-search="{{ (item.item_name ~ ' ' ~ item.description)|lower }}"
+              >
+                {% if settings.show_item_images and item.image %}
+                <div class="lmv3-item-image-wrap">
+                  <img
+                    src="{{ item.image }}"
+                    alt="{{ item.item_name }}"
+                    loading="lazy"
+                    decoding="async"
+                    onerror="this.closest('.lmv3-item-image-wrap').remove();"
+                  >
+                </div>
+                {% endif %}
+
+                <div class="lmv3-item-copy">
+                  <div class="lmv3-name-price-row">
+                    <h3>{{ item.item_name }}</h3>
+
+                    <span class="lmv3-dots"></span>
+
+                    {% if settings.show_prices %}
+                      <strong>
+                        {{ frappe.utils.fmt_money(item.price, currency=item.currency) }}
+                      </strong>
+                    {% endif %}
+                  </div>
+
+                  {% if settings.show_item_description and item.description %}
+                  <div class="lmv3-description">
+                    {{ item.description | safe }}
+                  </div>
+                  {% endif %}
+                </div>
+
+                {% if self_ordering_enabled %}
+                  {% if item.orderable %}
+                  <button
+                    type="button"
+                    class="lmv3-add"
+                    data-item-code="{{ item.item_code }}"
+                    data-item-name="{{ item.item_name }}"
+                    data-price="{{ item.price }}"
+                  >
+                    Add
+                  </button>
+                  {% else %}
+                  <span
+                    class="lmv32-staff-order"
+                    title="This menu line is not linked/enabled for ERPNext self ordering."
+                  >
+                    Staff order
+                  </span>
+                  {% endif %}
+                {% endif %}
+              </article>
+              {% endfor %}
+            </div>
+          </section>
+          {% endfor %}
+        </main>
+        {% endif %}
+      {% endfor %}
+
+      {% if self_ordering_enabled %}
+      <button
+        id="lmv3-cart-bar"
+        class="lmv3-cart-bar"
+        type="button"
+        hidden
+      >
+        <span>
+          <b id="lmv3-cart-count">0</b>
+          items ·
+          <b id="lmv3-cart-total">0</b>
+        </span>
+
+        <strong>View Cart →</strong>
+      </button>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Mobile floating category button -->
+  <button
+    id="lmv32-category-fab"
+    class="lmv32-category-fab"
+    type="button"
+    hidden
+    aria-label="Open categories"
+  >
+    <span>☰</span>
+    <b id="lmv32-fab-label">Categories</b>
+  </button>
+
+  <!-- Category bottom sheet -->
+  <div
+    id="lmv32-category-sheet"
+    class="lmv32-category-sheet"
+    hidden
+  >
+    <div
+      class="lmv3-backdrop"
+      data-close-categories
+    ></div>
+
+    <div class="lmv32-category-sheet-panel">
+      <div class="lmv32-sheet-head">
+        <div>
+          <small>JUMP TO</small>
+          <h2>Categories</h2>
+        </div>
+
+        <button
+          type="button"
+          class="lmv3-close"
+          data-close-categories
+        >
+          ×
+        </button>
+      </div>
+
+      <div
+        id="lmv32-category-sheet-list"
+        class="lmv32-category-sheet-list"
+      ></div>
+    </div>
+  </div>
+
+  {% if self_ordering_enabled %}
+  <!-- =========================
+       CART DRAWER
+  ========================== -->
+  <div
+    id="lmv3-cart-drawer"
+    class="lmv3-drawer"
+    hidden
+  >
+    <div
+      class="lmv3-backdrop"
+      data-close-cart
+    ></div>
+
+    <div class="lmv3-drawer-panel">
+      <div class="lmv32-cart-head">
+        <div>
+          <small>SELF ORDER</small>
+          <h2>Your Order</h2>
+        </div>
+
+        <div class="lmv32-cart-head-actions">
+          <button
+            type="button"
+            id="lmv32-clear-cart"
+            class="lmv32-clear-cart"
+          >
+            Clear Cart
+          </button>
+
+          <button
+            class="lmv3-close"
+            type="button"
+            data-close-cart
+          >
+            ×
+          </button>
+        </div>
+      </div>
+
+      <div id="lmv3-cart-lines"></div>
+
+      <div class="lmv3-cart-summary">
+        <span>Menu subtotal</span>
+        <strong id="lmv3-drawer-total"></strong>
+      </div>
+
+      <p class="lmv3-payment-note">
+        Final taxes are calculated by ERPNext at checkout.
+        Payment must be completed before the order is released
+        to the kitchen.
+      </p>
+
+      <button
+        type="button"
+        id="lmv3-checkout-btn"
+        class="lmv3-primary-btn"
+      >
+        Proceed to Checkout
+      </button>
+    </div>
+  </div>
+
+  <!-- =========================
+       CHECKOUT
+  ========================== -->
+  <div
+    id="lmv3-checkout-modal"
+    class="lmv3-modal"
+    hidden
+  >
+    <div
+      class="lmv3-backdrop"
+      data-close-checkout
+    ></div>
+
+    <div class="lmv3-modal-card">
+      <button
+        class="lmv3-close"
+        type="button"
+        data-close-checkout
+      >
+        ×
+      </button>
+
+      <span class="lmv3-modal-eyebrow">
+        SECURE SELF ORDER
+      </span>
+
+      <h2>Guest Details</h2>
+
+      <form id="lmv3-checkout-form">
+        <label>
+          Guest Name
+          <input
+            id="lmv3-guest-name"
+            required
+            maxlength="140"
+            autocomplete="name"
+          >
+        </label>
+
+        <label>
+          Email for payment
+          <input
+            id="lmv3-email"
+            type="email"
+            required
+            maxlength="140"
+            autocomplete="email"
+          >
+        </label>
+
+        <label>
+          Phone
+          <input
+            id="lmv3-phone"
+            type="tel"
+            maxlength="40"
+            autocomplete="tel"
+          >
+        </label>
+
+        <label>
+          Service
+          <select
+            id="lmv3-service-type"
+            required
+          >
+            <option value="">
+              Select service
+            </option>
+
+            {% if settings.allow_room_service %}
+              <option>Room Service</option>
+            {% endif %}
+
+            {% if settings.allow_dine_in %}
+              <option>Dine In</option>
+            {% endif %}
+
+            {% if settings.allow_takeaway %}
+              <option>Takeaway</option>
+            {% endif %}
+          </select>
+        </label>
+
+        <label
+          id="lmv3-room-wrap"
+          hidden
+        >
+          Room Number
+          <input
+            id="lmv3-room-number"
+            maxlength="30"
+          >
+        </label>
+
+        <label
+          id="lmv3-table-wrap"
+          hidden
+        >
+          Table Number
+          <input
+            id="lmv3-table-number"
+            maxlength="30"
+          >
+        </label>
+
+        <div class="lmv3-payment-lock">
+          Payment is required before this order is released
+          to the kitchen.
+        </div>
+
+        <button
+          id="lmv3-pay-btn"
+          class="lmv3-primary-btn"
+          type="submit"
+        >
+          Continue to Payment
+        </button>
+
+        <div
+          id="lmv3-checkout-message"
+          aria-live="polite"
+        ></div>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+
+  <div
+    id="lmv32-toast"
+    class="lmv32-toast"
+    hidden
+    aria-live="polite"
+  ></div>
+</div>
+{% endblock %}
+
+{% block style %}
+<link
+  rel="stylesheet"
+  href="/assets/fnb_menu/css/fnb_menu.css"
+>
+{% endblock %}
+
+{% block script %}
+<script>
+window.RHOFNB_MENU_CONFIG = {
+  selfOrdering: {{ 1 if self_ordering_enabled else 0 }},
+  currency: "{{ brand.currency or 'NGN' }}",
+  checkoutUrl: "/api/method/fnb_menu.api.checkout.create_checkout",
+  categoryNavigation: "{{ settings.category_navigation or 'Both' }}",
+  csrfToken: "{{ csrf_token }}"
+};
+</script>
+
+<script src="/assets/fnb_menu/js/fnb_menu.js"></script>
+{% endblock %}

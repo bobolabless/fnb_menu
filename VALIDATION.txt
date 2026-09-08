@@ -1,0 +1,34 @@
+FNB Menu v0.1.0 Repository Validation
+=====================================
+
+Status: PASS (static repository validation)
+
+Identity
+--------
+Frappe app: fnb_menu
+App title: RhoHMS F&B Menu
+Module: FNB Menu
+Public menu route: /fnb-menu
+Kitchen route: /fnb-kitchen
+Publisher: Rhocom Technology Limited
+Target: Frappe / ERPNext v15.x
+
+Checks
+------
+PASS - Python source compilation
+PASS - pyproject.toml parse and app slug
+PASS - all DocType JSON parses
+PASS - DocTypes use module FNB Menu
+PASS - route rules use /fnb-menu and /fnb-kitchen
+PASS - public website files standardized to fnb_menu / fnb_kitchen
+PASS - JS syntax validation with Node
+PASS - CSRF token generated server-side and sent with public checkout POST
+PASS - no rhohms_fnb interim package/route references remain
+PASS - no __pycache__, .pyc, logs or temporary backup directories in package
+PASS - migration utility from restaurant_luxury retained intentionally
+
+Production note
+---------------
+Static checks do not replace an end-to-end Frappe/ERPNext Bench test. Before a
+production tag, install on the target v15 bench and validate migration, menu,
+cart, Payment Request/payment gateway, payment verification and kitchen release.

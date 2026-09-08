@@ -1,0 +1,250 @@
+{
+ "doctype": "DocType",
+ "name": "FNB Menu Settings",
+ "module": "FNB Menu",
+ "issingle": 1,
+ "engine": "InnoDB",
+ "track_changes": 1,
+ "field_order": [
+  "identity_section",
+  "company",
+  "brand_location_label",
+  "show_company_logo",
+  "show_company_name",
+  "presentation_section",
+  "menu_theme",
+  "menu_layout",
+  "category_navigation",
+  "show_search",
+  "show_item_images",
+  "show_item_description",
+  "show_prices",
+  "full_bleed_background",
+  "catalog_section",
+  "default_selling_price_list",
+  "default_food_menu",
+  "default_drinks_menu",
+  "hide_unavailable_items",
+  "ordering_section",
+  "self_ordering_enabled",
+  "require_payment",
+  "default_customer",
+  "payment_gateway_account",
+  "minimum_order_amount",
+  "service_section",
+  "allow_room_service",
+  "allow_dine_in",
+  "allow_takeaway",
+  "accounting_section",
+  "warehouse",
+  "sales_taxes_and_charges_template"
+ ],
+ "fields": [
+  {
+   "fieldname": "identity_section",
+   "label": "FNB Menu Hotel Identity",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "company",
+   "label": "Hotel Company",
+   "fieldtype": "Link",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "brand_location_label",
+   "label": "Location / Brand Subline",
+   "fieldtype": "Data",
+   "description": "Optional, e.g. ENUGU"
+  },
+  {
+   "fieldname": "show_company_logo",
+   "label": "Show Company Logo",
+   "fieldtype": "Check",
+   "default": "1"
+  },
+  {
+   "fieldname": "show_company_name",
+   "label": "Show Company Name",
+   "fieldtype": "Check",
+   "default": "1"
+  },
+  {
+   "fieldname": "presentation_section",
+   "label": "Menu Theme & Layout",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "menu_theme",
+   "label": "Theme",
+   "fieldtype": "Select",
+   "options": "Classic Gold\nChampagne Noir\nIvory Prestige\nEmerald Grand\nBurgundy Royale\nMidnight Sapphire\nRoyal Amethyst\nTerracotta Luxe\nCoastal Pearl\nModern Slate",
+   "default": "Classic Gold"
+  },
+  {
+   "fieldname": "menu_layout",
+   "label": "Layout",
+   "fieldtype": "Select",
+   "options": "Classic Ledger\nElegant Cards\nCompact List\nEditorial Columns\nModern Tiles\nMinimal Lines",
+   "default": "Classic Ledger"
+  },
+  {
+   "fieldname": "category_navigation",
+   "label": "Category Navigation",
+   "fieldtype": "Select",
+   "options": "Sticky Pills\nFloating Categories\nBoth",
+   "default": "Both"
+  },
+  {
+   "fieldname": "show_search",
+   "label": "Show Search",
+   "fieldtype": "Check",
+   "default": "1"
+  },
+  {
+   "fieldname": "show_item_images",
+   "label": "Show Item Pictures",
+   "fieldtype": "Check",
+   "default": "0"
+  },
+  {
+   "fieldname": "show_item_description",
+   "label": "Show Descriptions",
+   "fieldtype": "Check",
+   "default": "1"
+  },
+  {
+   "fieldname": "show_prices",
+   "label": "Show Prices",
+   "fieldtype": "Check",
+   "default": "1"
+  },
+  {
+   "fieldname": "full_bleed_background",
+   "label": "Full-Width Theme Background",
+   "fieldtype": "Check",
+   "default": "1",
+   "description": "Extends the selected theme colour across the full browser width instead of showing a boxed coloured panel."
+  },
+  {
+   "fieldname": "catalog_section",
+   "label": "Published Menus",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "default_selling_price_list",
+   "label": "Default Selling Price List",
+   "fieldtype": "Link",
+   "options": "Price List",
+   "reqd": 1
+  },
+  {
+   "fieldname": "default_food_menu",
+   "label": "Food Menu",
+   "fieldtype": "Link",
+   "options": "FNB Menu Book"
+  },
+  {
+   "fieldname": "default_drinks_menu",
+   "label": "Drinks Menu",
+   "fieldtype": "Link",
+   "options": "FNB Menu Book"
+  },
+  {
+   "fieldname": "hide_unavailable_items",
+   "label": "Hide Unavailable Lines",
+   "fieldtype": "Check",
+   "default": "1"
+  },
+  {
+   "fieldname": "ordering_section",
+   "label": "FNB Menu Self Ordering",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "self_ordering_enabled",
+   "label": "Enable Guest Self Ordering",
+   "fieldtype": "Check",
+   "default": "0"
+  },
+  {
+   "fieldname": "require_payment",
+   "label": "Payment Required Before Kitchen Release",
+   "fieldtype": "Check",
+   "default": "1",
+   "read_only": 1
+  },
+  {
+   "fieldname": "default_customer",
+   "label": "Default Guest Customer",
+   "fieldtype": "Link",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "payment_gateway_account",
+   "label": "Payment Gateway Account",
+   "fieldtype": "Link",
+   "options": "Payment Gateway Account"
+  },
+  {
+   "fieldname": "minimum_order_amount",
+   "label": "Minimum Order Amount",
+   "fieldtype": "Currency",
+   "default": "0"
+  },
+  {
+   "fieldname": "service_section",
+   "label": "Service Types",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "allow_room_service",
+   "label": "Room Service",
+   "fieldtype": "Check",
+   "default": "1"
+  },
+  {
+   "fieldname": "allow_dine_in",
+   "label": "Dine In",
+   "fieldtype": "Check",
+   "default": "1"
+  },
+  {
+   "fieldname": "allow_takeaway",
+   "label": "Takeaway",
+   "fieldtype": "Check",
+   "default": "1"
+  },
+  {
+   "fieldname": "accounting_section",
+   "label": "Accounting & Stock",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "warehouse",
+   "label": "Warehouse",
+   "fieldtype": "Link",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "sales_taxes_and_charges_template",
+   "label": "Sales Taxes and Charges Template",
+   "fieldtype": "Link",
+   "options": "Sales Taxes and Charges Template"
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1
+  },
+  {
+   "role": "Sales Manager",
+   "read": 1,
+   "write": 1
+  }
+ ]
+}

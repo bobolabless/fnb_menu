@@ -1,0 +1,3 @@
+category,item_name,description,erpnext_item,fallback_price,category_sort_order,sort_order,show_on_menu,is_available,allow_self_order,menu_image
+Main Course,Grilled Chicken,"Grilled chicken with seasonal vegetables",,15000,10,10,1,1,0,
+Beverages,Fresh Juice,"Fresh seasonal fruit juice",,5000,20,10,1,1,0,

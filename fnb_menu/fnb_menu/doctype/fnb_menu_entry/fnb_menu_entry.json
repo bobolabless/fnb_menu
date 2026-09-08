@@ -1,0 +1,161 @@
+{
+ "doctype": "DocType",
+ "name": "FNB Menu Entry",
+ "module": "FNB Menu",
+ "engine": "InnoDB",
+ "autoname": "format:{menu_book}-{#####}",
+ "track_changes": 1,
+ "field_order": [
+  "identity_section",
+  "menu_book",
+  "category",
+  "display_name",
+  "display_description",
+  "menu_image",
+  "mapping_section",
+  "erpnext_item",
+  "fallback_price",
+  "price_source",
+  "column_break_1",
+  "sort_order",
+  "show_on_menu",
+  "is_available",
+  "allow_self_order",
+  "link_status"
+ ],
+ "fields": [
+  {
+   "fieldname": "identity_section",
+   "label": "Hotel Menu Line",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "menu_book",
+   "label": "Menu Book",
+   "fieldtype": "Link",
+   "options": "FNB Menu Book",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "category",
+   "label": "Category",
+   "fieldtype": "Link",
+   "options": "FNB Menu Category",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "display_name",
+   "label": "Food / Drink Name",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "display_description",
+   "label": "Description",
+   "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "menu_image",
+   "label": "Menu Picture Override",
+   "fieldtype": "Attach Image"
+  },
+  {
+   "fieldname": "mapping_section",
+   "label": "ERPNext / Price Mapping",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "erpnext_item",
+   "label": "Linked ERPNext Item",
+   "fieldtype": "Link",
+   "options": "Item",
+   "in_list_view": 1,
+   "description": "Optional. If linked and an active Item Price exists, ERPNext price has priority."
+  },
+  {
+   "fieldname": "fallback_price",
+   "label": "Backend / Fallback Price",
+   "fieldtype": "Currency",
+   "default": "0",
+   "in_list_view": 1,
+   "description": "Used when no ERPNext Item is linked, or when the linked Item has no active Item Price in the selected menu Price List."
+  },
+  {
+   "fieldname": "price_source",
+   "label": "Resolved Price Source",
+   "fieldtype": "Select",
+   "options": "ERPNext Item Price\nMenu Fallback Price\nNo Price",
+   "read_only": 1,
+   "default": "No Price"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sort_order",
+   "label": "Sort Order",
+   "fieldtype": "Int",
+   "default": "0",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "show_on_menu",
+   "label": "Show on Menu",
+   "fieldtype": "Check",
+   "default": "1",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "is_available",
+   "label": "Available",
+   "fieldtype": "Check",
+   "default": "1",
+   "in_list_view": 1,
+   "description": "Turn off to remove the line from the guest menu when Hide Unavailable Lines is enabled."
+  },
+  {
+   "fieldname": "allow_self_order",
+   "label": "Allow Self Ordering",
+   "fieldtype": "Check",
+   "default": "1",
+   "description": "An unlinked line can be displayed using the fallback price, but cannot be self-ordered until an ERPNext Item is linked."
+  },
+  {
+   "fieldname": "link_status",
+   "label": "ERPNext Link Status",
+   "fieldtype": "Select",
+   "options": "Linked\nUnlinked\nNo Price",
+   "read_only": 1,
+   "default": "Unlinked"
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1
+  },
+  {
+   "role": "Sales Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1
+  },
+  {
+   "role": "Sales User",
+   "read": 1,
+   "write": 1,
+   "create": 1
+  }
+ ],
+ "sort_field": "sort_order",
+ "sort_order": "ASC"
+}

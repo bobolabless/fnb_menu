@@ -1,0 +1,211 @@
+{
+ "doctype": "DocType",
+ "name": "FNB Self Order",
+ "module": "FNB Menu",
+ "engine": "InnoDB",
+ "autoname": "format:FNB-{YYYY}-{#####}",
+ "track_changes": 1,
+ "field_order": [
+  "guest_name",
+  "email",
+  "phone",
+  "service_type",
+  "room_number",
+  "table_number",
+  "status",
+  "payment_status",
+  "public_token",
+  "company",
+  "customer",
+  "price_list",
+  "currency",
+  "items",
+  "subtotal",
+  "tax_amount",
+  "grand_total",
+  "sales_order",
+  "payment_request",
+  "payment_entry",
+  "sales_invoice",
+  "transaction_reference"
+ ],
+ "fields": [
+  {
+   "fieldname": "guest_name",
+   "label": "Guest Name",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "email",
+   "label": "Email",
+   "fieldtype": "Data",
+   "options": "Email",
+   "reqd": 1
+  },
+  {
+   "fieldname": "phone",
+   "label": "Phone",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "service_type",
+   "label": "Service Type",
+   "fieldtype": "Select",
+   "options": "Room Service\nDine In\nTakeaway",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "room_number",
+   "label": "Room Number",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "table_number",
+   "label": "Table Number",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "status",
+   "label": "Status",
+   "fieldtype": "Select",
+   "options": "Awaiting Payment\nPaid\nSent to Kitchen\nPreparing\nReady\nServed\nPayment Failed\nCancelled",
+   "default": "Awaiting Payment",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "payment_status",
+   "label": "Payment Status",
+   "fieldtype": "Select",
+   "options": "Pending\nPaid\nFailed\nCancelled",
+   "default": "Pending",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "public_token",
+   "label": "Public Token",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "company",
+   "label": "Company",
+   "fieldtype": "Link",
+   "options": "Company",
+   "read_only": 1
+  },
+  {
+   "fieldname": "customer",
+   "label": "Customer",
+   "fieldtype": "Link",
+   "options": "Customer",
+   "read_only": 1
+  },
+  {
+   "fieldname": "price_list",
+   "label": "Price List",
+   "fieldtype": "Link",
+   "options": "Price List",
+   "read_only": 1
+  },
+  {
+   "fieldname": "currency",
+   "label": "Currency",
+   "fieldtype": "Link",
+   "options": "Currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "items",
+   "label": "Items",
+   "fieldtype": "Table",
+   "options": "FNB Self Order Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "subtotal",
+   "label": "Subtotal",
+   "fieldtype": "Currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "tax_amount",
+   "label": "Tax Amount",
+   "fieldtype": "Currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "grand_total",
+   "label": "Grand Total",
+   "fieldtype": "Currency",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "sales_order",
+   "label": "Sales Order",
+   "fieldtype": "Link",
+   "options": "Sales Order",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payment_request",
+   "label": "Payment Request",
+   "fieldtype": "Link",
+   "options": "Payment Request",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payment_entry",
+   "label": "Payment Entry",
+   "fieldtype": "Link",
+   "options": "Payment Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sales_invoice",
+   "label": "Sales Invoice",
+   "fieldtype": "Link",
+   "options": "Sales Invoice",
+   "read_only": 1
+  },
+  {
+   "fieldname": "transaction_reference",
+   "label": "Transaction Reference",
+   "fieldtype": "Data",
+   "read_only": 1
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1
+  },
+  {
+   "role": "Sales Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1
+  },
+  {
+   "role": "Sales User",
+   "read": 1,
+   "write": 1,
+   "report": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC"
+}

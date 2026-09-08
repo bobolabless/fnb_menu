@@ -1,0 +1,68 @@
+{
+ "doctype": "DocType",
+ "name": "FNB Self Order Item",
+ "module": "FNB Menu",
+ "istable": 1,
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item_code",
+  "item_name",
+  "item_group",
+  "qty",
+  "rate",
+  "amount",
+  "special_instruction"
+ ],
+ "fields": [
+  {
+   "fieldname": "item_code",
+   "label": "Item",
+   "fieldtype": "Link",
+   "options": "Item",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "item_name",
+   "label": "Item Name",
+   "fieldtype": "Data",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "item_group",
+   "label": "Item Group",
+   "fieldtype": "Link",
+   "options": "Item Group",
+   "read_only": 1
+  },
+  {
+   "fieldname": "qty",
+   "label": "Qty",
+   "fieldtype": "Float",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "rate",
+   "label": "Rate",
+   "fieldtype": "Currency",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "amount",
+   "label": "Amount",
+   "fieldtype": "Currency",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "special_instruction",
+   "label": "Special Instruction",
+   "fieldtype": "Small Text"
+  }
+ ],
+ "permissions": []
+}

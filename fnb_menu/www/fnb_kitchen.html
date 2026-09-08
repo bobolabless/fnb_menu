@@ -1,0 +1,34 @@
+{% extends "templates/web.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block page_content %}
+<div class="rho-kitchen">
+  <header class="rho-kitchen-head">
+    <div><small>RhoHMS F&B Menu</small><h1>Kitchen Orders</h1></div>
+    <p>Only server-verified paid self-orders appear here.</p>
+  </header>
+  <div class="rho-kitchen-grid">
+    {% for o in orders %}
+    <article class="rho-kot">
+      <div class="rho-kot-head"><strong>{{ o.name }}</strong><span>{{ o.status }}</span></div>
+      <h3>{{ o.service_type }}{% if o.room_number %} · Room {{ o.room_number }}{% endif %}{% if o.table_number %} · Table {{ o.table_number }}{% endif %}</h3>
+      <p>{{ o.guest_name }}</p>
+      <ul>
+        {% for r in o.order_items %}
+        <li><b>{{ r.qty }} × {{ r.item_name }}</b>{% if r.special_instruction %}<small>{{ r.special_instruction }}</small>{% endif %}</li>
+        {% endfor %}
+      </ul>
+      {% if o.status == "Sent to Kitchen" %}<button class="kitchen-action" data-order="{{ o.name }}" data-status="Preparing">Start Preparing</button>
+      {% elif o.status == "Preparing" %}<button class="kitchen-action" data-order="{{ o.name }}" data-status="Ready">Mark Ready</button>
+      {% elif o.status == "Ready" %}<button class="kitchen-action" data-order="{{ o.name }}" data-status="Served">Mark Served</button>{% endif %}
+    </article>
+    {% else %}
+    <div class="rho-kitchen-empty"><h2>No paid active orders</h2><p>The board refreshes automatically.</p></div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+{% block style %}<link rel="stylesheet" href="/assets/fnb_menu/css/fnb_kitchen.css">{% endblock %}
+{% block script %}
+<script>window.FNB_KITCHEN_CONFIG={csrfToken:"{{ csrf_token }}",updateUrl:"/api/method/fnb_menu.api.kitchen.update_status"};</script>
+<script src="/assets/fnb_menu/js/fnb_kitchen.js"></script>
+{% endblock %}
