@@ -98,6 +98,51 @@ def validate_public_source_route(route: str) -> None:
         )
 
 
+
+def validate_route_change_authority(settings) -> None:
+    """Require System Manager authority for any public-routing configuration change."""
+
+    old_doc = settings.get_doc_before_save()
+    if _routing_signature(settings) == _routing_signature(old_doc):
+        return
+
+    user = frappe.session.user
+    if user == "Administrator" or "System Manager" in frappe.get_roles(user):
+        return
+
+    frappe.throw(
+        _(
+            "Only Administrator or a System Manager can change RhoGuest public "
+            "routes, redirect behaviour or legacy QR aliases."
+        ),
+        frappe.PermissionError,
+    )
+
+
+def _routing_signature(doc) -> tuple:
+    """Return a stable comparison signature for routing-sensitive settings."""
+
+    if not doc:
+        return (INTERNAL_MENU_ROUTE, "302", 1, ())
+
+    route = normalize_route(doc.get("public_menu_route")) or INTERNAL_MENU_ROUTE
+    status = str(doc.get("route_redirect_http_status") or "302")
+    keep_previous = 1 if doc.get("keep_previous_routes") is None else int(
+        bool(doc.get("keep_previous_routes"))
+    )
+
+    aliases = []
+    for row in doc.get("legacy_qr_routes") or []:
+        aliases.append(
+            (
+                normalize_route(row.get("route")) if row.get("route") else "",
+                int(bool(row.get("enabled"))),
+                (row.get("note") or "").strip(),
+            )
+        )
+
+    return (route.lower(), status, keep_previous, tuple(aliases))
+
 def preserve_previous_public_route(settings) -> None:
     """Retain the former primary route as an enabled legacy QR alias."""
 
@@ -139,7 +184,7 @@ def validate_rhoguest_settings(settings) -> None:
     """Normalize, deduplicate and validate route fields."""
 
     public_route = normalize_route(
-        settings.public_menu_route or DEFAULT_PUBLIC_MENU_ROUTE
+        settings.public_menu_route or INTERNAL_MENU_ROUTE
     )
     validate_public_source_route(public_route)
     settings.public_menu_route = public_route
