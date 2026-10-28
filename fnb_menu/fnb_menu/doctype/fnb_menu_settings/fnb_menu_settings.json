@@ -137,7 +137,8 @@
    "fieldname": "routing_section",
    "label": "RhoGuest Public Menu & Legacy QR Routing",
    "fieldtype": "Section Break",
-   "description": "Change the hotel-facing menu URL without changing the stable internal /fnb-menu endpoint. Existing printed QR routes can be retained below."
+   "description": "Change the hotel-facing menu URL without changing the stable internal /fnb-menu endpoint. Existing printed QR routes can be retained below.",
+   "permlevel": 1
   },
   {
    "fieldname": "public_menu_route",
@@ -145,7 +146,8 @@
    "fieldtype": "Data",
    "default": "/menu",
    "reqd": 1,
-   "description": "Hotel-facing route used in new QR codes, e.g. /menu, /dine or /guest-menu. Saving Settings activates the redirect immediately."
+   "description": "Hotel-facing route used in new QR codes, e.g. /menu, /dine or /guest-menu. Saving Settings activates the redirect immediately.",
+   "permlevel": 1
   },
   {
    "fieldname": "route_redirect_http_status",
@@ -153,26 +155,30 @@
    "fieldtype": "Select",
    "options": "302\n307\n301\n308",
    "default": "302",
-   "description": "302 is recommended while routes may still change. Use 301/308 only when the public URL is intended to be permanent."
+   "description": "302 is recommended while routes may still change. Use 301/308 only when the public URL is intended to be permanent.",
+   "permlevel": 1
   },
   {
    "fieldname": "keep_previous_routes",
    "label": "Keep Previous Public Route as Alias",
    "fieldtype": "Check",
    "default": "1",
-   "description": "When the Public Menu Route changes, preserve the previous route so already-printed QR codes continue to work."
+   "description": "When the Public Menu Route changes, preserve the previous route so already-printed QR codes continue to work.",
+   "permlevel": 1
   },
   {
    "fieldname": "route_preview",
    "label": "Current Public URL",
-   "fieldtype": "HTML"
+   "fieldtype": "HTML",
+   "permlevel": 1
   },
   {
    "fieldname": "legacy_qr_routes",
    "label": "Legacy / Existing QR Routes",
    "fieldtype": "Table",
    "options": "RhoGuest Route Alias",
-   "description": "Add routes already printed on hotel QR materials. Enabled entries redirect to the current RhoGuest Food & Beverage menu."
+   "description": "Add routes already printed on hotel QR materials. Enabled entries redirect to the current RhoGuest Food & Beverage menu.",
+   "permlevel": 1
   },
   {
    "fieldname": "catalog_section",
@@ -290,6 +296,12 @@
   },
   {
    "role": "Sales Manager",
+   "read": 1,
+   "write": 1
+  },
+  {
+   "role": "System Manager",
+   "permlevel": 1,
    "read": 1,
    "write": 1
   }
