@@ -41,6 +41,17 @@ def main():
 
     assert fields["legacy_qr_routes"]["options"] == "RhoGuest Route Alias"
     assert fields["public_menu_route"]["default"] == "/menu"
+    for fieldname in required:
+        assert int(fields[fieldname].get("permlevel", 0)) == 1, (
+            f"{fieldname} must be restricted to routing administrators"
+        )
+    assert any(
+        row.get("role") == "System Manager"
+        and int(row.get("permlevel", 0)) == 1
+        and row.get("read")
+        and row.get("write")
+        for row in settings.get("permissions", [])
+    ), "System Manager must have permlevel 1 routing access"
     assert aliases["istable"] == 1
 
     alias_fields = field_map(aliases)
@@ -53,6 +64,8 @@ def main():
     assert 'INTERNAL_MENU_ROUTE = "/fnb-menu"' in routing
     assert "rhoguest_managed" in routing
     assert "Website Settings" in routing
+    assert "def validate_route_change_authority" in routing
+    assert "System Manager" in routing
     assert '__version__ = "0.2.0.dev0"' in version
 
     print("RhoGuest v0.2.0 routing foundation: PASS")
