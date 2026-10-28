@@ -1,0 +1,473 @@
+# RhoGuest — Setup Manual
+
+**Product:** RhoGuest — Digital Menu & Guest Services  
+**Technical Frappe App:** `fnb_menu`  
+**Publisher:** Rhocom Technology Limited  
+**Product Family:** RhoHMS — Rho Hospitality Management Suite  
+**Manual Version:** v0.2.0 Development Line  
+**Copyright:** © 2026 Rhocom Technology Limited. All rights reserved.
+
+---
+
+## 1. Purpose
+
+This manual explains how to install, upgrade, configure, validate and administer RhoGuest on Frappe/ERPNext v15.
+
+RhoGuest provides a guest-facing digital-services layer while preserving the technical package name `fnb_menu` for compatibility. The product currently includes:
+
+- Food & Beverage digital menus.
+- Prepaid F&B self ordering and kitchen release.
+- Configurable public menu routes and legacy QR aliases.
+- Generic guest-service categories and service items.
+- Public Guest Services Hub.
+- Laundry Request & Fulfilment.
+- RhoGuest Desk Workspace and operational Dashboard.
+- Foundations for future Pool, Gym, Spa, Transport, Housekeeping and other services.
+
+Do not rename the installed Frappe app from `fnb_menu`.
+
+---
+
+## 2. Prerequisites
+
+Before installation, confirm:
+
+- Frappe v15 and ERPNext v15 are operational.
+- The target site has a valid Company.
+- A Selling Price List exists.
+- A system administrator can run Bench commands.
+- HTTPS is used on production guest-facing deployments.
+- Backups are available before upgrading an existing installation.
+
+For F&B self ordering, also prepare:
+
+- Default guest Customer.
+- Payment Gateway Account.
+- ERPNext Items and Item Prices.
+- Warehouse where required.
+- Sales Taxes and Charges Template where required.
+
+---
+
+## 3. Installation
+
+### 3.1 Fresh installation
+
+```bash
+cd ~/frappe-bench
+bench get-app --branch main https://github.com/bobolabless/fnb_menu.git
+bench --site <site> install-app fnb_menu
+bench --site <site> migrate
+bench build --app fnb_menu
+bench --site <site> clear-cache
+bench --site <site> clear-website-cache
+bench restart
+```
+
+### 3.2 Confirm installation
+
+```bash
+bench --site <site> list-apps
+```
+
+Confirm `fnb_menu` is listed.
+
+Then log into Frappe Desk. The left/home Workspace navigation should contain **RhoGuest** with a home icon.
+
+---
+
+## 4. Upgrade Procedure
+
+Always back up first:
+
+```bash
+cd ~/frappe-bench
+bench --site <site> backup --with-files
+```
+
+Update:
+
+```bash
+cd ~/frappe-bench/apps/fnb_menu
+git pull --ff-only origin main
+
+cd ~/frappe-bench
+bench --site <site> migrate
+bench build --app fnb_menu
+bench --site <site> clear-cache
+bench --site <site> clear-website-cache
+bench restart
+```
+
+After every upgrade, verify:
+
+1. RhoGuest Workspace is visible.
+2. `/app/rhoguest-dashboard` loads.
+3. `/rhoguest` loads.
+4. The configured public F&B menu route redirects correctly.
+5. `/fnb-menu` remains available.
+6. `/fnb-kitchen` remains available to authenticated staff.
+7. `/rhoguest-laundry` behaves according to Laundry publication state.
+
+---
+
+## 5. RhoGuest Workspace
+
+The standard Workspace is named **RhoGuest** and belongs to module **FNB Menu**.
+
+It is the principal staff navigation area and contains:
+
+- RhoGuest Dashboard.
+- Laundry Requests.
+- Service Categories.
+- Service Items.
+- F&B Self Orders.
+- F&B Menu Books.
+- FNB Menu Settings.
+- Guest Hub and public menu shortcuts.
+
+If the Workspace does not appear after migration:
+
+```bash
+bench --site <site> clear-cache
+bench --site <site> migrate
+bench restart
+```
+
+Then hard-refresh the browser.
+
+---
+
+## 6. RhoGuest Dashboard
+
+Open **RhoGuest → RhoGuest Dashboard** or browse to:
+
+`/app/rhoguest-dashboard`
+
+The Dashboard reads live data server-side and displays:
+
+- Published guest services.
+- Enabled/guest-available Service Items.
+- Active F&B orders.
+- F&B orders awaiting payment.
+- Open Laundry Requests.
+- Laundry Requests awaiting pickup.
+- Laundry Requests in processing.
+- Laundry Requests ready/out for delivery.
+- Laundry Requests delivered today.
+- Charge-to-Room requests awaiting folio posting.
+- Recent Laundry Requests.
+
+The Dashboard is an operational view only. It does not bypass DocType permissions.
+
+---
+
+## 7. FNB Menu Settings
+
+Open **RhoGuest → FNB Menu Settings**.
+
+### 7.1 Hotel identity
+
+Configure:
+
+- Hotel Company.
+- Location/brand subline.
+- Company logo display.
+- Company name display.
+
+RhoGuest can use the Company RhoGuest logo override where available.
+
+### 7.2 Menu presentation
+
+Configure theme, layout, search, item images, descriptions, prices and category navigation.
+
+### 7.3 Public menu routing
+
+Set **Public Menu Route**, for example:
+
+- `/menu`
+- `/guest-menu`
+- `/dine`
+
+RhoGuest preserves `/fnb-menu` as the internal compatibility endpoint.
+
+Use **Legacy / Existing QR Routes** to keep already-printed QR codes functioning.
+
+Do not assign protected Frappe paths such as `/app`, `/api`, `/assets`, `/files`, `/private`, `/login` or `/desk`.
+
+### 7.4 Guest Services Hub
+
+Configure:
+
+- Enable Guest Services Hub.
+- Hub title.
+- Hub subtitle.
+- Whether Service Items are displayed.
+
+The Hub is available at `/rhoguest`.
+
+A service appears only when its Service Category has both:
+
+- **Enabled = checked**
+- **Show on Guest Portal = checked**
+
+---
+
+## 8. Service Catalog
+
+### 8.1 RhoGuest Service Category
+
+Default categories are created on installation/migration:
+
+1. Food & Beverage
+2. Laundry
+3. Swimming Pool
+4. Gym & Fitness
+5. Spa & Wellness
+6. Transport
+7. Housekeeping
+8. Recreation
+9. Guest Requests
+10. Hotel Information
+
+Defaults are created disabled and unpublished.
+
+Important fields include:
+
+- Category Name.
+- Service Key.
+- Service Type.
+- Workflow Type.
+- Description.
+- Display Order.
+- Enabled.
+- Show on Guest Portal.
+- Operating Hours.
+- Location.
+- Guest/room requirements.
+- Reservation/order/payment capabilities.
+- Charge-to-Room capability.
+
+The Service Key is immutable after creation.
+
+### 8.2 RhoGuest Service Item
+
+Use Service Items for guest-visible choices such as Laundry shirt washing, airport transfer, spa massage or pool day pass.
+
+Pricing modes:
+
+- Free.
+- Fixed Price.
+- ERPNext Item Price.
+- Informational / Quote.
+
+For a Fixed Price, configure Currency.
+
+For ERPNext Item Price, configure a linked ERPNext Item and ensure the current Selling Price List contains a valid selling Item Price.
+
+Do not publish Service Items until their category and operational workflow are ready.
+
+---
+
+## 9. Food & Beverage Setup
+
+### 9.1 Menu Books
+
+Create/publish **FNB Menu Book** records for Food and Drinks.
+
+Configure:
+
+- Company.
+- Menu Type.
+- Price List.
+- Categories.
+- Entries.
+- Availability.
+- Self-order permission.
+
+### 9.2 Self ordering
+
+Before enabling self ordering in FNB Menu Settings, configure:
+
+- Company.
+- Default Selling Price List.
+- Default Guest Customer.
+- Payment Gateway Account.
+
+RhoGuest always re-resolves order prices on the server.
+
+### 9.3 Kitchen
+
+Authenticated staff use:
+
+`/fnb-kitchen`
+
+Only verified paid self-orders are released to the kitchen board.
+
+---
+
+## 10. Laundry Setup
+
+### 10.1 Enable Laundry category
+
+Open **RhoGuest Service Category → Laundry**.
+
+Configure at minimum:
+
+- Enabled.
+- Show on Guest Portal.
+- Allows Ordering / Item Selection.
+- Allows Paid Services where applicable.
+- Allows Charge to Room if hotel policy permits.
+- Description.
+- Operating Hours.
+- Location.
+
+### 10.2 Create Laundry Service Items
+
+Create one Service Item per guest-selectable laundry service.
+
+Example:
+
+- Category: Laundry.
+- Service Name: Shirt — Wash & Iron.
+- Service Key: `shirt-wash-iron`.
+- Pricing Mode: Fixed Price.
+- Fixed Price: hotel-approved amount.
+- Currency: hotel currency.
+- Enabled: checked.
+- Available to Guests: checked.
+- Allow Charge to Room: according to policy.
+
+### 10.3 Public Laundry route
+
+The public page is:
+
+`/rhoguest-laundry`
+
+The Hub shows **Request Laundry Service** only when Laundry is enabled and published.
+
+### 10.4 Billing behavior
+
+**Pay at Hotel** creates an Unbilled request.
+
+**Charge to Room** creates **Pending Folio Posting**.
+
+RhoGuest v0.2.0 does not directly post to a RhoHMS guest folio. This is intentional to avoid unsafe or installation-specific accounting side effects.
+
+---
+
+## 11. Permissions
+
+Current standard Desk roles used by RhoGuest include:
+
+- System Manager.
+- Sales Manager.
+- Sales User.
+
+System Manager has full configuration access.
+
+Sales Manager can operate service masters and transactions according to DocType permissions.
+
+Sales User has operational/read access according to individual DocType definitions.
+
+Public website users do not receive Desk permissions.
+
+Staff-only APIs reject Guest sessions.
+
+---
+
+## 12. Security Model
+
+RhoGuest follows these rules:
+
+- Browser-supplied prices are not authoritative.
+- F&B order price/availability is re-resolved server-side.
+- Laundry request price/availability is re-resolved server-side.
+- Invalid/unpublished Laundry items are rejected.
+- Laundry public status lookup requires the request name plus its secret public token.
+- Staff fulfilment transitions are server-controlled.
+- Delivered/Cancelled Laundry states are terminal.
+- Charge-to-Room does not silently create a folio posting.
+- Unrelated Website Settings redirects are not modified by RhoGuest.
+
+---
+
+## 13. Validation Commands
+
+From the Bench directory:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_foundation.py
+PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_services_foundation.py
+PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_guest_hub.py
+PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_laundry.py
+PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_desk.py
+```
+
+All should report PASS.
+
+---
+
+## 14. Troubleshooting
+
+### Workspace not visible
+
+Run migrate, clear cache and restart. Confirm the user's role is included in the Workspace/Page roles.
+
+### Dashboard loads but contains no data
+
+Confirm the user can read the underlying DocTypes and that operational records exist.
+
+### Public Hub shows no services
+
+Check:
+
+- Guest Hub enabled.
+- Category Enabled.
+- Category Show on Guest Portal.
+
+### Laundry page says unavailable
+
+Check:
+
+- Guest Hub enabled.
+- Laundry category enabled/published.
+- Laundry category Allows Ordering.
+- At least one Laundry Service Item enabled and available.
+
+### Laundry item does not display
+
+Check pricing configuration. ERPNext Item Price items require a valid active selling price.
+
+### F&B menu route not working
+
+Check FNB Menu Settings routing section, then clear website cache.
+
+### QR alias conflict
+
+RhoGuest refuses protected/conflicting routes. Choose another route instead of overriding Frappe endpoints.
+
+---
+
+## 15. Backup and Recovery
+
+Before upgrades or major configuration changes:
+
+```bash
+bench --site <site> backup --with-files
+```
+
+Keep both database and public/private file backups.
+
+Restore procedures should follow the normal Frappe Bench recovery process for the site's deployment environment.
+
+---
+
+## 16. Support and Ownership
+
+RhoGuest is developed and maintained by **Rhocom Technology Limited** as a RhoHMS add-on application.
+
+Technical package: `fnb_menu`.
+
+This manual should be updated together with every functional RhoGuest release.

@@ -25,6 +25,14 @@
 - Added server-authoritative public Service Item price resolution, including current ERPNext Item Price checks.
 - Added a v0.2.0 Guest Services Hub static contract validator.
 
+- Added **Laundry Request & Fulfilment** with server-authoritative pricing, public status tokens and controlled fulfilment transitions.
+- Added stable public Laundry route `/rhoguest-laundry`.
+- Added **RhoGuest Workspace** with a `home` icon for Frappe Desk sidebar/home navigation.
+- Added **RhoGuest Dashboard** Desk page with service, F&B, Laundry and pending-folio operational KPIs.
+- Added recent Laundry activity and quick navigation from the Dashboard.
+- Added updated **RhoGuest Setup Manual** and **RhoGuest User Manual** under `docs/`.
+- Added a v0.2.0 Desk/Workspace/manual static contract validator.
+
 ## 0.1.0
 
 - Standardized the RhoHMS Food & Beverage add-on as **FNB Menu**.

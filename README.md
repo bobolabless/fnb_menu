@@ -64,6 +64,34 @@ Phase 2B is intentionally read-only:
 
 This separates public presentation from operational fulfilment and prevents the guest UI from creating unsupported transactions.
 
+## v0.2.0 Laundry Request & Fulfilment
+
+Laundry is the first transactional ancillary-service workflow built on the generic service catalog. When the Laundry category is enabled and published, the Guest Services Hub links to `/rhoguest-laundry`.
+
+Guest-submitted prices are never trusted. The browser sends only service-item identifiers, quantities and instructions; RhoGuest resolves current availability and prices again on the server before creating **RhoGuest Laundry Request**.
+
+Charge-to-Room is recorded as **Pending Folio Posting** only. RhoGuest does not silently post to a RhoHMS folio until a dedicated integration is implemented.
+
+## RhoGuest Desk Workspace & Dashboard
+
+RhoGuest includes a standard Frappe **Workspace** named **RhoGuest**. It is public to permitted Desk users and uses the `home` Workspace icon so RhoGuest appears as its own entry in the Frappe Desk sidebar/home navigation.
+
+The Workspace provides direct access to:
+
+- **RhoGuest Dashboard** — operational KPIs and recent Laundry activity.
+- **RhoGuest Laundry Request** — operational Laundry queue.
+- **RhoGuest Service Category** and **RhoGuest Service Item** — guest-service catalog configuration.
+- **FNB Self Order** and **FNB Menu Book** — Food & Beverage operations.
+- **FNB Menu Settings** — RhoGuest branding, routing, hub and F&B configuration.
+- **Guest Services Hub** and the configured public Food & Beverage menu.
+
+The Dashboard is available at Desk route `/app/rhoguest-dashboard`.
+
+## Manuals
+
+- [RhoGuest Setup Manual](docs/RHOGUEST_SETUP_MANUAL.md)
+- [RhoGuest User Manual](docs/RHOGUEST_USER_MANUAL.md)
+
 ## Install from GitHub
 
 ```bash
