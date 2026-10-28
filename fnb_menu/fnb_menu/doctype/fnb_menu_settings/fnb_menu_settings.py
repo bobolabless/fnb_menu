@@ -6,6 +6,7 @@ from fnb_menu.routing import (
     preserve_previous_public_route,
     sync_rhoguest_routes,
     validate_rhoguest_settings,
+    validate_route_change_authority,
 )
 
 
@@ -13,6 +14,10 @@ class FNBMenuSettings(Document):
     def validate(self):
         # Public self-orders must remain prepaid.
         self.require_payment = 1
+
+        # Public QR routing is security-sensitive. Enforce the role server-side
+        # before any compatibility alias is added or any redirect is synchronized.
+        validate_route_change_authority(self)
 
         # Validate public QR routes independently of F&B/payment configuration.
         preserve_previous_public_route(self)
