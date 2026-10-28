@@ -74,6 +74,7 @@ def main():
     page = (ROOT / "fnb_menu/www/rhoguest_laundry.html").read_text()
     js = (ROOT / "fnb_menu/public/js/rhoguest_laundry.js").read_text()
     hub = (ROOT / "fnb_menu/guest_service.py").read_text()
+    hooks = (ROOT / "fnb_menu/hooks.py").read_text()
 
     assert 'LAUNDRY_CATEGORY_KEY = "laundry"' in service
     assert "resolve_laundry_request_lines" in service
@@ -103,6 +104,7 @@ def main():
 
     assert 'category.service_key == "laundry"' in hub
     assert 'action_url = "/rhoguest-laundry"' in hub
+    assert '{"from_route": "/rhoguest-laundry", "to_route": "rhoguest_laundry"}' in hooks
     assert "def resolve_public_service_item" in hub
 
     print("RhoGuest v0.2.0 laundry workflow: PASS")
