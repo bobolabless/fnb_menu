@@ -20,6 +20,11 @@
   "show_item_description",
   "show_prices",
   "full_bleed_background",
+  "guest_hub_section",
+  "guest_hub_enabled",
+  "guest_hub_title",
+  "guest_hub_subtitle",
+  "show_service_items_on_hub",
   "routing_section",
   "public_menu_route",
   "route_redirect_http_status",
@@ -132,6 +137,38 @@
    "fieldtype": "Check",
    "default": "1",
    "description": "Extends the selected theme colour across the full browser width instead of showing a boxed coloured panel."
+  },
+  {
+   "fieldname": "guest_hub_section",
+   "label": "RhoGuest Guest Services Hub",
+   "fieldtype": "Section Break",
+   "description": "Controls the read-only public guest-services landing page at /rhoguest. Publishing individual service categories is managed in RhoGuest Service Category."
+  },
+  {
+   "fieldname": "guest_hub_enabled",
+   "label": "Enable Guest Services Hub",
+   "fieldtype": "Check",
+   "default": "0",
+   "description": "When disabled, /rhoguest shows no hotel services. Enable only after the published service catalog has been reviewed."
+  },
+  {
+   "fieldname": "guest_hub_title",
+   "label": "Guest Hub Title",
+   "fieldtype": "Data",
+   "default": "Guest Services"
+  },
+  {
+   "fieldname": "guest_hub_subtitle",
+   "label": "Guest Hub Subtitle",
+   "fieldtype": "Data",
+   "default": "Everything you need during your stay"
+  },
+  {
+   "fieldname": "show_service_items_on_hub",
+   "label": "Show Service Items on Hub",
+   "fieldtype": "Check",
+   "default": "1",
+   "description": "Show enabled guest-available RhoGuest Service Items beneath each published service category. This remains display-only until a workflow is implemented."
   },
   {
    "fieldname": "routing_section",

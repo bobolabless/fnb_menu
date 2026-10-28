@@ -36,3 +36,5 @@ jobs:
         run: python scripts/validate_v020_foundation.py
       - name: RhoGuest v0.2.0 services foundation contract
         run: python scripts/validate_v020_services_foundation.py
+      - name: RhoGuest v0.2.0 guest hub contract
+        run: python scripts/validate_v020_guest_hub.py

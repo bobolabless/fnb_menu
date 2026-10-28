@@ -44,6 +44,7 @@ frappe.ui.form.on("FNB Menu Settings", {
 
     const publicRoute = normalize_route_for_preview(frm.doc.public_menu_route);
     frm.add_custom_button(__("Preview Public Menu"), () => window.open(publicRoute, "_blank"));
+    frm.add_custom_button(__("Preview Guest Services Hub"), () => window.open("/rhoguest", "_blank"));
     frm.add_custom_button(__("Open Kitchen Board"), () => window.open("/fnb-kitchen", "_blank"));
 
     frm.dashboard.set_headline(

@@ -49,6 +49,21 @@ Seeded categories are **disabled and unpublished**. Migration therefore does not
 
 The generic masters are presentation/configuration records, not transaction documents. Existing F&B ordering and kitchen/KOT behavior remains unchanged. Laundry jobs, transport bookings, spa reservations and other specialized operational workflows will be added as separate transaction models that reference these masters.
 
+## v0.2.0 Guest Services Hub
+
+The stable internal guest-services landing page is `/rhoguest`.
+
+The hub is **disabled by default**. When enabled in **FNB Menu Settings → RhoGuest Guest Services Hub**, it renders only service categories where both **Enabled** and **Show on Guest Portal** are checked.
+
+Phase 2B is intentionally read-only:
+
+- Food & Beverage links to the existing configured public menu route.
+- Other published categories can show their approved RhoGuest Service Items, operating hours, location, availability and safe server-resolved pricing.
+- Laundry requests, Spa bookings, Pool/Gym admission, Transport jobs and other transactional actions are not exposed until their dedicated server workflows are implemented.
+- ERPNext Item Price service items are displayed only when a current valid selling price can be resolved from the configured Selling Price List.
+
+This separates public presentation from operational fulfilment and prevents the guest UI from creating unsupported transactions.
+
 ## Install from GitHub
 
 ```bash

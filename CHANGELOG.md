@@ -18,6 +18,12 @@
 - Default service categories are created disabled and unpublished so migration never exposes ancillary services automatically.
 - Added server-side validation for immutable category keys, publication state, information-only workflows, pricing modes, reservation capability, Charge to Room capability and duplicate service-item keys.
 - Added a v0.2.0 generic-services static contract validator.
+- Added a read-only **Guest Services Hub** at `/rhoguest`, disabled by default.
+- Added Guest Hub settings for title, subtitle and service-item visibility.
+- Guest Hub publication requires both category **Enabled** and **Show on Guest Portal** flags.
+- Food & Beverage routes from the hub to the existing tested public menu route; unsupported service transactions remain unavailable.
+- Added server-authoritative public Service Item price resolution, including current ERPNext Item Price checks.
+- Added a v0.2.0 Guest Services Hub static contract validator.
 
 ## 0.1.0
 
