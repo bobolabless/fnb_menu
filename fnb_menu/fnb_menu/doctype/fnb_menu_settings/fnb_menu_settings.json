@@ -20,6 +20,12 @@
   "show_item_description",
   "show_prices",
   "full_bleed_background",
+  "routing_section",
+  "public_menu_route",
+  "route_redirect_http_status",
+  "keep_previous_routes",
+  "route_preview",
+  "legacy_qr_routes",
   "catalog_section",
   "default_selling_price_list",
   "default_food_menu",
@@ -42,7 +48,7 @@
  "fields": [
   {
    "fieldname": "identity_section",
-   "label": "FNB Menu Hotel Identity",
+   "label": "RhoGuest Hotel Identity",
    "fieldtype": "Section Break"
   },
   {
@@ -128,6 +134,47 @@
    "description": "Extends the selected theme colour across the full browser width instead of showing a boxed coloured panel."
   },
   {
+   "fieldname": "routing_section",
+   "label": "RhoGuest Public Menu & Legacy QR Routing",
+   "fieldtype": "Section Break",
+   "description": "Change the hotel-facing menu URL without changing the stable internal /fnb-menu endpoint. Existing printed QR routes can be retained below."
+  },
+  {
+   "fieldname": "public_menu_route",
+   "label": "Public Menu Route",
+   "fieldtype": "Data",
+   "default": "/menu",
+   "reqd": 1,
+   "description": "Hotel-facing route used in new QR codes, e.g. /menu, /dine or /guest-menu. Saving Settings activates the redirect immediately."
+  },
+  {
+   "fieldname": "route_redirect_http_status",
+   "label": "QR Redirect Type",
+   "fieldtype": "Select",
+   "options": "302\n307\n301\n308",
+   "default": "302",
+   "description": "302 is recommended while routes may still change. Use 301/308 only when the public URL is intended to be permanent."
+  },
+  {
+   "fieldname": "keep_previous_routes",
+   "label": "Keep Previous Public Route as Alias",
+   "fieldtype": "Check",
+   "default": "1",
+   "description": "When the Public Menu Route changes, preserve the previous route so already-printed QR codes continue to work."
+  },
+  {
+   "fieldname": "route_preview",
+   "label": "Current Public URL",
+   "fieldtype": "HTML"
+  },
+  {
+   "fieldname": "legacy_qr_routes",
+   "label": "Legacy / Existing QR Routes",
+   "fieldtype": "Table",
+   "options": "RhoGuest Route Alias",
+   "description": "Add routes already printed on hotel QR materials. Enabled entries redirect to the current RhoGuest Food & Beverage menu."
+  },
+  {
    "fieldname": "catalog_section",
    "label": "Published Menus",
    "fieldtype": "Section Break"
@@ -159,7 +206,7 @@
   },
   {
    "fieldname": "ordering_section",
-   "label": "FNB Menu Self Ordering",
+   "label": "RhoGuest F&B Self Ordering",
    "fieldtype": "Section Break"
   },
   {
@@ -195,7 +242,7 @@
   },
   {
    "fieldname": "service_section",
-   "label": "Service Types",
+   "label": "F&B Service Types",
    "fieldtype": "Section Break"
   },
   {
