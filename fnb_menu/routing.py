@@ -14,6 +14,7 @@ from frappe import _
 
 INTERNAL_MENU_ROUTE = "/fnb-menu"
 INTERNAL_KITCHEN_ROUTE = "/fnb-kitchen"
+DEFAULT_PUBLIC_MENU_ROUTE = "/menu"
 
 MANAGED_FIELD = "rhoguest_managed"
 ROUTE_KEY_FIELD = "rhoguest_route_key"
@@ -78,11 +79,21 @@ def validate_public_source_route(route: str) -> None:
                 ).format(frappe.bold(route))
             )
 
-    if lower_route == INTERNAL_KITCHEN_ROUTE:
+    if lower_route == INTERNAL_KITCHEN_ROUTE or lower_route.startswith(
+        f"{INTERNAL_KITCHEN_ROUTE}/"
+    ):
         frappe.throw(
             _(
-                "{0} is the protected kitchen-board route and cannot be "
-                "used as a public alias."
+                "{0} is reserved for the kitchen board and cannot be "
+                "used as a public QR route."
+            ).format(frappe.bold(route))
+        )
+
+    if lower_route.startswith(f"{INTERNAL_MENU_ROUTE}/"):
+        frappe.throw(
+            _(
+                "{0} is below the stable internal menu route and cannot be "
+                "used as a public QR route."
             ).format(frappe.bold(route))
         )
 
@@ -127,7 +138,9 @@ def preserve_previous_public_route(settings) -> None:
 def validate_rhoguest_settings(settings) -> None:
     """Normalize, deduplicate and validate route fields."""
 
-    public_route = normalize_route(settings.public_menu_route or INTERNAL_MENU_ROUTE)
+    public_route = normalize_route(
+        settings.public_menu_route or DEFAULT_PUBLIC_MENU_ROUTE
+    )
     validate_public_source_route(public_route)
     settings.public_menu_route = public_route
 
@@ -150,6 +163,7 @@ def validate_rhoguest_settings(settings) -> None:
         seen.add(key)
 
     _validate_against_external_redirects(seen)
+    _validate_against_existing_routes(seen)
 
 
 def sync_rhoguest_routes(settings=None) -> dict[str, str]:
@@ -159,66 +173,55 @@ def sync_rhoguest_routes(settings=None) -> dict[str, str]:
     validate_rhoguest_settings(settings)
 
     desired = _desired_redirects(settings)
+    desired_keys = {source.lower() for source in desired}
+
     website_settings = frappe.get_single("Website Settings")
     route_rows = website_settings.get("route_redirects") or []
 
-    managed_by_source = {}
-    unmanaged_sources = set()
-
+    managed_by_key = {}
     for row in route_rows:
-        source = normalize_route(row.source) if row.source else ""
-        if not source:
+        if not row.get(MANAGED_FIELD):
             continue
 
-        if row.get(MANAGED_FIELD):
-            managed_by_source[source.lower()] = row
-        else:
-            unmanaged_sources.add(source.lower())
+        key = (row.get(ROUTE_KEY_FIELD) or "").strip().lower()
+        if key:
+            managed_by_key[key] = row
 
-    conflicts = sorted(
-        source for source in desired if source.lower() in unmanaged_sources
-    )
-    if conflicts:
-        frappe.throw(
-            _(
-                "RhoGuest cannot activate these routes because Website Settings "
-                "already contains unmanaged redirects for them: {0}"
-            ).format(", ".join(conflicts))
-        )
-
+    # Remove only redirects previously created by RhoGuest that are no longer
+    # configured. Hotel-owned redirects and regex rules remain untouched.
     for row in list(route_rows):
         if not row.get(MANAGED_FIELD):
             continue
 
-        source = normalize_route(row.source) if row.source else ""
-        if not source or source not in desired:
+        key = (row.get(ROUTE_KEY_FIELD) or "").strip().lower()
+        if not key or key not in desired_keys:
             website_settings.remove(row)
 
     status = str(settings.route_redirect_http_status or "302")
 
     for source, target in desired.items():
-        row = managed_by_source.get(source.lower())
+        key = source.lower()
+        row = managed_by_key.get(key)
         current_rows = website_settings.get("route_redirects") or []
 
+        values = {
+            "source": _redirect_source_for_route(source),
+            "target": target,
+            "redirect_http_status": status,
+            MANAGED_FIELD: 1,
+            ROUTE_KEY_FIELD: key,
+        }
+
         if row and row in current_rows:
-            row.target = target
-            row.redirect_http_status = status
-            row.set(MANAGED_FIELD, 1)
-            row.set(ROUTE_KEY_FIELD, source.lower())
+            for fieldname, value in values.items():
+                row.set(fieldname, value)
         else:
-            website_settings.append(
-                "route_redirects",
-                {
-                    "source": source,
-                    "target": target,
-                    "redirect_http_status": status,
-                    MANAGED_FIELD: 1,
-                    ROUTE_KEY_FIELD: source.lower(),
-                },
-            )
+            website_settings.append("route_redirects", values)
 
     website_settings.save(ignore_permissions=True)
 
+    # Route redirects are cached by Frappe. Clear only after Website Settings
+    # saves successfully so the new QR route becomes active immediately.
     from frappe.website.utils import clear_cache
 
     clear_cache()
@@ -250,8 +253,35 @@ def _desired_redirects(settings) -> dict[str, str]:
     return desired
 
 
+def _redirect_source_for_route(route: str) -> str:
+    """Return a regex-safe Website Route Redirect source for one exact route."""
+
+    path = route.strip("/")
+
+    # Frappe treats Website Route Redirect source values as regular
+    # expressions. Escape regex metacharacters so an old route such as
+    # /menu.html matches only that literal URL and cannot shadow another page.
+    escaped = re.escape(path)
+    escaped = escaped.replace(r"\-", "-")
+    return f"/{escaped}"
+
+
+def _redirect_matches_route(source_pattern: str, route: str) -> bool:
+    """Mirror Frappe v15 redirect matching without mutating external rules."""
+
+    pattern = (source_pattern or "").strip("/ ") + "$"
+    path_to_match = route.strip("/")
+
+    try:
+        return re.match(pattern, path_to_match) is not None
+    except re.error:
+        # Frappe itself logs malformed redirect regexes. RhoGuest must not make
+        # an unrelated broken rule prevent the hotel from saving its settings.
+        return False
+
+
 def _validate_against_external_redirects(candidate_sources: set[str]) -> None:
-    """Fail if a candidate source is owned by a non-RhoGuest redirect."""
+    """Reject any candidate route already matched by a hotel-owned redirect."""
 
     if not frappe.db.exists("DocType", "Website Settings"):
         return
@@ -262,11 +292,59 @@ def _validate_against_external_redirects(candidate_sources: set[str]) -> None:
         if row.get(MANAGED_FIELD) or not row.source:
             continue
 
-        source = normalize_route(row.source)
-        if source.lower() in candidate_sources:
+        for candidate in candidate_sources:
+            if _redirect_matches_route(row.source, candidate):
+                frappe.throw(
+                    _(
+                        "Route {0} is already matched by an existing Website "
+                        "Settings redirect. Choose another route or remove that "
+                        "redirect first."
+                    ).format(frappe.bold(candidate))
+                )
+
+
+def _validate_against_existing_routes(candidate_sources: set[str]) -> None:
+    """Reject routes already served by Frappe pages, Web Pages or Web Forms."""
+
+    from frappe.website.path_resolver import resolve_from_map
+    from frappe.website.router import get_pages
+
+    static_pages = {
+        f"/{route.strip('/')}".lower()
+        for route in get_pages()
+        if route and route.strip("/")
+    }
+
+    for candidate in candidate_sources:
+        if candidate.lower() == INTERNAL_MENU_ROUTE:
+            continue
+
+        path = candidate.strip("/")
+
+        if candidate.lower() in static_pages:
+            frappe.throw(
+                _("Route {0} is already used by an installed website page.").format(
+                    frappe.bold(candidate)
+                )
+            )
+
+        resolved = resolve_from_map(path)
+        if resolved != path:
             frappe.throw(
                 _(
-                    "Route {0} is already used by an existing Website Settings "
-                    "redirect. Choose another route or remove that redirect first."
-                ).format(frappe.bold(source))
+                    "Route {0} is already claimed by an installed website route rule."
+                ).format(frappe.bold(candidate))
             )
+
+        for doctype in ("Web Page", "Web Form"):
+            if not frappe.db.exists("DocType", doctype):
+                continue
+
+            if frappe.db.exists(doctype, {"route": path}) or frappe.db.exists(
+                doctype, {"route": candidate}
+            ):
+                frappe.throw(
+                    _("Route {0} is already used by an existing {1}.").format(
+                        frappe.bold(candidate), doctype
+                    )
+                )
