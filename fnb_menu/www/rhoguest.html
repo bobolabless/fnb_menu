@@ -78,9 +78,9 @@
                 </dl>
               {% endif %}
 
-              {% if service.items %}
+              {% if service["items"] %}
                 <div class="rhoguest-items">
-                  {% for item in service.items %}
+                  {% for item in service["items"] %}
                     <div class="rhoguest-item">
                       {% if item.image %}
                         <img
