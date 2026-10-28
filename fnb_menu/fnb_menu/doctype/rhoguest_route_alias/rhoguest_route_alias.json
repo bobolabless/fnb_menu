@@ -1,0 +1,36 @@
+{
+ "doctype": "DocType",
+ "name": "RhoGuest Route Alias",
+ "module": "FNB Menu",
+ "istable": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "route",
+  "enabled",
+  "note"
+ ],
+ "fields": [
+  {
+   "fieldname": "route",
+   "label": "Legacy / Existing QR Route",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "Example: /restaurant-menu or /digitalmenu"
+  },
+  {
+   "fieldname": "enabled",
+   "label": "Enabled",
+   "fieldtype": "Check",
+   "default": "1",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "note",
+   "label": "Note",
+   "fieldtype": "Data",
+   "in_list_view": 1
+  }
+ ],
+ "permissions": []
+}

@@ -1,19 +1,40 @@
-# RhoHMS F&B Menu
+# RhoGuest — Digital Menu & Guest Services
 
-**FNB Menu** (`fnb_menu`) is the Food & Beverage digital-menu and self-ordering add-on for **RhoHMS — Rho Hospitality Management Suite**, developed by Rhocom Technology Limited.
+**RhoGuest** is the guest-facing digital menu and services add-on for **RhoHMS — Rho Hospitality Management Suite**, developed by Rhocom Technology Limited.
 
-It provides hotel Food and Drinks menu books, themed responsive public menus, category navigation, ERPNext item/price integration, guest carts, prepaid self-ordering, Payment Request integration and a kitchen workflow.
+The technical Frappe app and repository remain **`fnb_menu`** for upgrade and import compatibility. RhoGuest is the product identity from v0.2.0 onward.
 
-## Standard identity
+The current F&B capability provides Food and Drinks menu books, themed responsive public menus, category navigation, ERPNext item/price integration, guest carts, prepaid self-ordering, Payment Request integration and a kitchen workflow. The v0.2.0 line expands the product toward additional hotel guest services such as Laundry, Swimming Pool and Gym.
+
+## Stable technical identity
 
 - Frappe app / GitHub repository: `fnb_menu`
-- App title: `RhoHMS F&B Menu`
+- Product title: `RhoGuest`
 - Frappe module: `FNB Menu`
-- Settings DocType: `FNB Menu Settings`
-- Public menu: `/fnb-menu`
+- Existing Settings DocType: `FNB Menu Settings`
+- Stable internal menu endpoint: `/fnb-menu`
 - Kitchen board: `/fnb-kitchen`
 - Publisher: Rhocom Technology Limited
 - ERPNext/Frappe: v15.x
+
+Existing Python imports, DocType names and `/fnb-menu` are intentionally retained. Do not rename the technical app to `rhoguest` on an installed site.
+
+## v0.2.0 routing foundation
+
+RhoGuest allows each hotel to choose a hotel-facing menu URL without editing `hooks.py`.
+
+Open **FNB Menu Settings → RhoGuest Public Menu & Legacy QR Routing** and configure:
+
+- **Public Menu Route** — for example `/menu`, `/dine` or `/guest-menu`.
+- **Keep Previous Public Route as Alias** — preserves an old public route automatically when the primary route changes.
+- **Legacy / Existing QR Routes** — add URLs already printed on QR cards, tent cards, room folders or signage.
+- **QR Redirect Type** — defaults to HTTP 302 so the destination can safely change later.
+
+The internal `/fnb-menu` route always remains available. RhoGuest-managed aliases are synchronized to Frappe **Website Settings → Route Redirects** and are marked internally so unrelated hotel redirects are never replaced or deleted.
+
+Protected Frappe paths such as `/app`, `/api`, `/assets`, `/files`, `/private`, `/login` and `/desk` cannot be claimed as RhoGuest QR routes.
+
+Route changes take effect after saving FNB Menu Settings and the website routing cache is cleared automatically; a Bench restart is not required merely to change a QR alias.
 
 ## Install from GitHub
 
@@ -28,13 +49,12 @@ bench --site <your-site> clear-website-cache
 bench restart
 ```
 
-Open **FNB Menu Settings**, select the hotel Company, Selling Price List, default Guest Customer and Payment Gateway Account, configure Food/Drinks menu books, and publish `/fnb-menu`.
-
 ## Update a live installation
 
 ```bash
 cd ~/frappe-bench/apps/fnb_menu
 git pull --ff-only origin main
+
 cd ~/frappe-bench
 bench --site <your-site> migrate
 bench build --app fnb_menu
@@ -43,15 +63,15 @@ bench --site <your-site> clear-website-cache
 bench restart
 ```
 
-## Migration from the existing Restaurant Luxury app
+## Migration from Restaurant Luxury
 
-The current `restaurant_luxury` installation can remain installed while FNB Menu is tested. After installing this app, run:
+The existing `restaurant_luxury` installation can remain installed while RhoGuest is tested. After installing this app, run:
 
 ```bash
 bench --site <your-site> execute fnb_menu.migration.migrate_from_restaurant_luxury
 ```
 
-The migration copies legacy menu configuration and records without deleting the old data. Test `/fnb-menu`, `/fnb-kitchen`, ordering, payment and kitchen release before retiring the legacy app.
+The migration copies legacy menu configuration and records without deleting the old data. Test the public menu, `/fnb-kitchen`, ordering, payment and kitchen release before retiring the legacy app.
 
 ## Security / ordering rule
 
