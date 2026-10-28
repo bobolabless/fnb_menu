@@ -56,6 +56,8 @@ def main():
     assert "theme_slug" in page_py
     assert "Guest services are not published yet" in page_html
     assert "Please contact the hotel team for this service." in page_html
+    assert 'service["items"]' in page_html
+    assert "service.items" not in page_html
     assert "/assets/fnb_menu/css/rhoguest.css" in page_html
     assert ".rhoguest-shell" in css
     assert "Preview Guest Services Hub" in settings_js
