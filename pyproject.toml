@@ -3,7 +3,7 @@ name = "fnb_menu"
 authors = [
   { name = "Rhocom Technology Limited", email = "info@rhocom.com" }
 ]
-description = "RhoHMS Food & Beverage menu add-on for digital menus, prepaid guest self-ordering and kitchen operations."
+description = "RhoGuest digital menu and guest-services add-on for RhoHMS, retaining the fnb_menu technical package for compatibility."
 requires-python = ">=3.10,<3.15"
 readme = "README.md"
 dynamic = ["version"]
