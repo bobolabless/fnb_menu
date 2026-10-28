@@ -15,6 +15,7 @@ after_migrate = "fnb_menu.install.after_migrate"
 website_route_rules = [
     {"from_route": "/fnb-menu", "to_route": "fnb_menu"},
     {"from_route": "/fnb-kitchen", "to_route": "fnb_kitchen"},
+    {"from_route": "/rhoguest-laundry", "to_route": "rhoguest_laundry"},
 ]
 
 doc_events = {
