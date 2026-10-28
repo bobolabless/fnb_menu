@@ -11,7 +11,13 @@
 - Added route validation for protected Frappe paths and conflicting Website Settings redirects.
 - Added a route preview and dynamic Preview Public Menu button.
 - Added a v0.2.0 routing-foundation static contract validator.
-- Laundry, Swimming Pool, Gym and other ancillary-service workflows are intentionally deferred until the routing layer passes live-site acceptance.
+- Live-site routing acceptance passed for the configurable public route, legacy QR aliases and stable `/fnb-menu` compatibility endpoint.
+- Added **RhoGuest Service Category** as a generic guest-service family master with workflow, publication, operating-information and capability controls.
+- Added **RhoGuest Service Item** as a generic service-choice master with availability, pricing, reservation, capacity and ERPNext Item mapping.
+- Added non-destructive default category provisioning for Food & Beverage, Laundry, Swimming Pool, Gym & Fitness, Spa & Wellness, Transport, Housekeeping, Recreation, Guest Requests and Hotel Information.
+- Default service categories are created disabled and unpublished so migration never exposes ancillary services automatically.
+- Added server-side validation for immutable category keys, publication state, information-only workflows, pricing modes, reservation capability, Charge to Room capability and duplicate service-item keys.
+- Added a v0.2.0 generic-services static contract validator.
 
 ## 0.1.0
 

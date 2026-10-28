@@ -4,7 +4,7 @@
 
 The technical Frappe app and repository remain **`fnb_menu`** for upgrade and import compatibility. RhoGuest is the product identity from v0.2.0 onward.
 
-The current F&B capability provides Food and Drinks menu books, themed responsive public menus, category navigation, ERPNext item/price integration, guest carts, prepaid self-ordering, Payment Request integration and a kitchen workflow. The v0.2.0 line expands the product toward additional hotel guest services such as Laundry, Swimming Pool and Gym.
+The current F&B capability provides Food and Drinks menu books, themed responsive public menus, category navigation, ERPNext item/price integration, guest carts, prepaid self-ordering, Payment Request integration and a kitchen workflow. The v0.2.0 line expands the product toward additional hotel guest services such as Laundry, Swimming Pool, Gym, Spa, Transport, Housekeeping and Recreation.
 
 ## Stable technical identity
 
@@ -35,6 +35,19 @@ The internal `/fnb-menu` route always remains available. RhoGuest-managed aliase
 Protected Frappe paths such as `/app`, `/api`, `/assets`, `/files`, `/private`, `/login` and `/desk` cannot be claimed as RhoGuest QR routes.
 
 Route changes take effect after saving FNB Menu Settings and the website routing cache is cleared automatically; a Bench restart is not required merely to change a QR alias.
+
+## v0.2.0 generic guest-service foundation
+
+RhoGuest provides two generic configuration masters:
+
+- **RhoGuest Service Category** — describes a service family, its guest interaction model, operating information, publication state and supported capabilities.
+- **RhoGuest Service Item** — describes a guest-visible service choice, availability, price source, reservation requirements, capacity and optional ERPNext Item mapping.
+
+The application seeds ten standard hospitality categories: Food & Beverage, Laundry, Swimming Pool, Gym & Fitness, Spa & Wellness, Transport, Housekeeping, Recreation, Guest Requests and Hotel Information.
+
+Seeded categories are **disabled and unpublished**. Migration therefore does not expose new guest services automatically. A hotel enables only the services it actually provides.
+
+The generic masters are presentation/configuration records, not transaction documents. Existing F&B ordering and kitchen/KOT behavior remains unchanged. Laundry jobs, transport bookings, spa reservations and other specialized operational workflows will be added as separate transaction models that reference these masters.
 
 ## Install from GitHub
 

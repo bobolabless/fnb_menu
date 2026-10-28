@@ -1,0 +1,199 @@
+{
+ "doctype": "DocType",
+ "name": "RhoGuest Service Category",
+ "module": "FNB Menu",
+ "engine": "InnoDB",
+ "autoname": "field:service_key",
+ "title_field": "category_name",
+ "show_title_field_in_link": 1,
+ "search_fields": "category_name,service_key,service_type",
+ "track_changes": 1,
+ "field_order": [
+  "identity_section",
+  "category_name",
+  "service_key",
+  "service_type",
+  "workflow_type",
+  "presentation_section",
+  "icon",
+  "image",
+  "short_description",
+  "sort_order",
+  "enabled",
+  "show_on_portal",
+  "operations_section",
+  "operating_hours",
+  "location",
+  "guest_requirements_section",
+  "requires_guest_identification",
+  "requires_room_number",
+  "allows_reservation",
+  "allows_ordering",
+  "allows_payment",
+  "allows_charge_to_room"
+ ],
+ "fields": [
+  {
+   "fieldname": "identity_section",
+   "label": "Service Identity",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "category_name",
+   "label": "Category Name",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "service_key",
+   "label": "Service Key",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1,
+   "description": "Stable machine key used by RhoGuest integrations and future portal routing, e.g. laundry or food-beverage. It cannot be changed after first save."
+  },
+  {
+   "fieldname": "service_type",
+   "label": "Service Type",
+   "fieldtype": "Select",
+   "options": "Food & Beverage\nLaundry\nSwimming Pool\nGym & Fitness\nSpa & Wellness\nTransport\nHousekeeping\nRecreation\nGuest Requests\nHotel Information\nOther",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "workflow_type",
+   "label": "Workflow Type",
+   "fieldtype": "Select",
+   "options": "Information Only\nRequest\nReservation\nOrder\nOrder + Fulfilment\nRequest + Fulfilment\nAccess / Admission\nExternal Link\nCustom",
+   "reqd": 1,
+   "default": "Information Only",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "presentation_section",
+   "label": "Guest Portal Presentation",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "icon",
+   "label": "Icon",
+   "fieldtype": "Data",
+   "description": "Optional icon identifier for the future RhoGuest service hub."
+  },
+  {
+   "fieldname": "image",
+   "label": "Service Image",
+   "fieldtype": "Attach Image"
+  },
+  {
+   "fieldname": "short_description",
+   "label": "Short Description",
+   "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "sort_order",
+   "label": "Display Order",
+   "fieldtype": "Int",
+   "default": "0",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "enabled",
+   "label": "Enabled",
+   "fieldtype": "Check",
+   "default": "0",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "show_on_portal",
+   "label": "Show on Guest Portal",
+   "fieldtype": "Check",
+   "default": "0",
+   "in_list_view": 1,
+   "description": "Publishing is separate from enabling so services can be configured safely before guests can see them."
+  },
+  {
+   "fieldname": "operations_section",
+   "label": "Operations",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "operating_hours",
+   "label": "Operating Hours",
+   "fieldtype": "Small Text",
+   "description": "Human-readable operating hours, e.g. Daily 06:00–22:00. Structured schedules can be added later without changing this master."
+  },
+  {
+   "fieldname": "location",
+   "label": "Location",
+   "fieldtype": "Data",
+   "description": "Guest-facing location such as Rooftop Pool, Ground Floor or Spa Wing."
+  },
+  {
+   "fieldname": "guest_requirements_section",
+   "label": "Guest Requirements & Capabilities",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "requires_guest_identification",
+   "label": "Requires Guest Identification",
+   "fieldtype": "Check",
+   "default": "0"
+  },
+  {
+   "fieldname": "requires_room_number",
+   "label": "Requires Room Number",
+   "fieldtype": "Check",
+   "default": "0"
+  },
+  {
+   "fieldname": "allows_reservation",
+   "label": "Allows Reservation",
+   "fieldtype": "Check",
+   "default": "0"
+  },
+  {
+   "fieldname": "allows_ordering",
+   "label": "Allows Ordering / Item Selection",
+   "fieldtype": "Check",
+   "default": "0"
+  },
+  {
+   "fieldname": "allows_payment",
+   "label": "Allows Paid Services",
+   "fieldtype": "Check",
+   "default": "0"
+  },
+  {
+   "fieldname": "allows_charge_to_room",
+   "label": "Allows Charge to Room",
+   "fieldtype": "Check",
+   "default": "0"
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1
+  },
+  {
+   "role": "Sales Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1
+  },
+  {
+   "role": "Sales User",
+   "read": 1
+  }
+ ],
+ "sort_field": "sort_order",
+ "sort_order": "ASC"
+}

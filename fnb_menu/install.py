@@ -1,6 +1,8 @@
 import frappe
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 
+from fnb_menu.service_catalog import ensure_default_service_categories
+
 
 def ensure_company_fields():
     """Create non-destructive Company branding fields used by RhoGuest."""
@@ -82,8 +84,14 @@ def ensure_route_redirect_fields():
 def after_install():
     ensure_company_fields()
     ensure_route_redirect_fields()
+    # Default service categories are configuration scaffolding only: they are
+    # created disabled and unpublished so installation never exposes a service.
+    ensure_default_service_categories()
 
 
 def after_migrate():
     ensure_company_fields()
     ensure_route_redirect_fields()
+    # Non-destructive on upgrades: only missing default keys are created.
+    # Existing hotel-edited categories are never overwritten.
+    ensure_default_service_categories()

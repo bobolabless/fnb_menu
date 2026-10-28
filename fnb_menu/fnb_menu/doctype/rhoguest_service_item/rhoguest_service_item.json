@@ -1,0 +1,210 @@
+{
+ "doctype": "DocType",
+ "name": "RhoGuest Service Item",
+ "module": "FNB Menu",
+ "engine": "InnoDB",
+ "autoname": "RGS-.#####",
+ "title_field": "service_name",
+ "show_title_field_in_link": 1,
+ "search_fields": "service_name,service_key,service_category,erpnext_item",
+ "track_changes": 1,
+ "field_order": [
+  "identity_section",
+  "service_category",
+  "service_name",
+  "service_key",
+  "description",
+  "image",
+  "publication_section",
+  "sort_order",
+  "enabled",
+  "available_to_guests",
+  "availability_note",
+  "pricing_section",
+  "pricing_mode",
+  "fixed_price",
+  "currency",
+  "erpnext_item",
+  "allow_charge_to_room",
+  "fulfilment_section",
+  "requires_reservation",
+  "duration_minutes",
+  "fulfilment_time_minutes",
+  "capacity",
+  "location"
+ ],
+ "fields": [
+  {
+   "fieldname": "identity_section",
+   "label": "Service Item Identity",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "service_category",
+   "label": "Service Category",
+   "fieldtype": "Link",
+   "options": "RhoGuest Service Category",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "service_name",
+   "label": "Service Name",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "service_key",
+   "label": "Service Item Key",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "Machine key unique within the selected service category, e.g. shirt-wash-iron or airport-dropoff."
+  },
+  {
+   "fieldname": "description",
+   "label": "Description",
+   "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "image",
+   "label": "Image",
+   "fieldtype": "Attach Image"
+  },
+  {
+   "fieldname": "publication_section",
+   "label": "Availability & Publication",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "sort_order",
+   "label": "Display Order",
+   "fieldtype": "Int",
+   "default": "0",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "enabled",
+   "label": "Enabled",
+   "fieldtype": "Check",
+   "default": "1",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "available_to_guests",
+   "label": "Available to Guests",
+   "fieldtype": "Check",
+   "default": "1",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "availability_note",
+   "label": "Availability Note",
+   "fieldtype": "Small Text",
+   "description": "Optional guest-facing note such as Weekends only, Subject to weather or Advance booking required."
+  },
+  {
+   "fieldname": "pricing_section",
+   "label": "Pricing & ERPNext Mapping",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "pricing_mode",
+   "label": "Pricing Mode",
+   "fieldtype": "Select",
+   "options": "Free\nFixed Price\nERPNext Item Price\nInformational / Quote",
+   "default": "Free",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "fixed_price",
+   "label": "Fixed Price",
+   "fieldtype": "Currency",
+   "options": "currency",
+   "default": "0",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "currency",
+   "label": "Currency",
+   "fieldtype": "Link",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "erpnext_item",
+   "label": "Linked ERPNext Item",
+   "fieldtype": "Link",
+   "options": "Item",
+   "description": "Required when Pricing Mode is ERPNext Item Price. It may also be used later for accounting/stock integration of other service types."
+  },
+  {
+   "fieldname": "allow_charge_to_room",
+   "label": "Allow Charge to Room",
+   "fieldtype": "Check",
+   "default": "0"
+  },
+  {
+   "fieldname": "fulfilment_section",
+   "label": "Reservation & Fulfilment",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "requires_reservation",
+   "label": "Requires Reservation",
+   "fieldtype": "Check",
+   "default": "0"
+  },
+  {
+   "fieldname": "duration_minutes",
+   "label": "Duration (Minutes)",
+   "fieldtype": "Int",
+   "default": "0",
+   "description": "Useful for Spa, Gym sessions, pool cabanas, transport slots and similar services."
+  },
+  {
+   "fieldname": "fulfilment_time_minutes",
+   "label": "Preparation / Fulfilment Time (Minutes)",
+   "fieldtype": "Int",
+   "default": "0",
+   "description": "Estimated lead time for fulfilment, e.g. laundry turnaround preparation or transport dispatch."
+  },
+  {
+   "fieldname": "capacity",
+   "label": "Capacity",
+   "fieldtype": "Int",
+   "default": "0",
+   "description": "Optional capacity for reservable/admission services. Zero means not explicitly limited by this master."
+  },
+  {
+   "fieldname": "location",
+   "label": "Location Override",
+   "fieldtype": "Data",
+   "description": "Optional item-specific location. Leave blank to use the category location."
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1
+  },
+  {
+   "role": "Sales Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1
+  },
+  {
+   "role": "Sales User",
+   "read": 1
+  }
+ ],
+ "sort_field": "sort_order",
+ "sort_order": "ASC"
+}
