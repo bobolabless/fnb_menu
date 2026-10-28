@@ -53,7 +53,7 @@ def main():
     assert 'INTERNAL_MENU_ROUTE = "/fnb-menu"' in routing
     assert "rhoguest_managed" in routing
     assert "Website Settings" in routing
-    assert '__version__ = "0.2.0-dev"' in version
+    assert '__version__ = "0.2.0.dev0"' in version
 
     print("RhoGuest v0.2.0 routing foundation: PASS")
 
