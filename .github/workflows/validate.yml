@@ -15,6 +15,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "18"
+      - name: Repository cleanliness
+        run: |
+          ! find . -type d \( -name '__pycache__' -o -name 'node_modules' \) | grep .
+          ! find . -type f \( -name '*.pyc' -o -name '*.log' -o -name '*.bak' \) | grep .
       - name: Python syntax
         run: python -m compileall -q fnb_menu scripts
       - name: JSON schemas
@@ -30,7 +34,3 @@ jobs:
           find fnb_menu -name '*.js' -print0 | while IFS= read -r -d '' file; do node --check "$file"; done
       - name: RhoGuest v0.2.0 routing contract
         run: python scripts/validate_v020_foundation.py
-      - name: Repository cleanliness
-        run: |
-          ! find . -type d \( -name '__pycache__' -o -name 'node_modules' \) | grep .
-          ! find . -type f \( -name '*.pyc' -o -name '*.log' -o -name '*.bak' \) | grep .
