@@ -1,0 +1,21 @@
+{
+ "doctype": "DocType",
+ "name": "RhoGuest Laundry Request Item",
+ "module": "FNB Menu",
+ "istable": 1,
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": ["service_item","service_name","service_key","qty","pricing_mode","rate","currency","amount","special_instruction"],
+ "fields": [
+  {"fieldname":"service_item","label":"Laundry Service Item","fieldtype":"Link","options":"RhoGuest Service Item","reqd":1,"in_list_view":1},
+  {"fieldname":"service_name","label":"Service Name","fieldtype":"Data","read_only":1,"in_list_view":1},
+  {"fieldname":"service_key","label":"Service Key","fieldtype":"Data","read_only":1},
+  {"fieldname":"qty","label":"Qty","fieldtype":"Int","reqd":1,"in_list_view":1},
+  {"fieldname":"pricing_mode","label":"Pricing Mode","fieldtype":"Data","read_only":1},
+  {"fieldname":"rate","label":"Rate","fieldtype":"Currency","options":"currency","read_only":1,"in_list_view":1},
+  {"fieldname":"currency","label":"Currency","fieldtype":"Link","options":"Currency","read_only":1},
+  {"fieldname":"amount","label":"Amount","fieldtype":"Currency","options":"currency","read_only":1,"in_list_view":1},
+  {"fieldname":"special_instruction","label":"Item Instruction","fieldtype":"Small Text"}
+ ],
+ "permissions": []
+}

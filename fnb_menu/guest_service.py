@@ -128,7 +128,7 @@ def get_public_service_catalog(settings=None, brand=None):
         )
 
         for row in items:
-            public_item = _public_service_item(
+            public_item = resolve_public_service_item(
                 row,
                 settings=settings,
                 company_currency=brand.get("currency") or "NGN",
@@ -148,6 +148,11 @@ def get_public_service_catalog(settings=None, brand=None):
         if category.service_key == "food-beverage":
             action_url = menu_route
             action_label = "View Food & Drinks"
+        elif category.service_key == "laundry":
+            # Laundry has its own server-validated transaction workflow. The
+            # action remains publication-gated by the category above.
+            action_url = "/rhoguest-laundry"
+            action_label = "Request Laundry Service"
 
         output.append(
             frappe._dict(
@@ -163,7 +168,7 @@ def get_public_service_catalog(settings=None, brand=None):
     return output
 
 
-def _public_service_item(row, settings, company_currency):
+def resolve_public_service_item(row, settings, company_currency):
     """Resolve one service item into a public-safe, display-only payload."""
 
     mode = row.pricing_mode or "Free"
