@@ -6,11 +6,14 @@
  "autoname": "format:{menu_book}-{category_name}-{#####}",
  "track_changes": 1,
  "field_order": [
+  "category_section",
   "menu_book",
   "category_name",
+  "category_column_break",
   "display_title",
   "sort_order",
   "enabled",
+  "category_description_section",
   "description"
  ],
  "fields": [
@@ -52,6 +55,21 @@
    "fieldname": "description",
    "label": "Category Description",
    "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "category_section",
+   "label": "Menu Category",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "category_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "category_description_section",
+   "label": "Description",
+   "fieldtype": "Section Break"
   }
  ],
  "permissions": [

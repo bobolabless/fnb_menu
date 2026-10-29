@@ -27,6 +27,8 @@ Current operational areas are:
 
 ---
 
+RhoGuest Menu Settings is the central configuration record for guest-facing menus and services. Legacy FNB Desk naming is no longer used in normal hotel operations.
+
 ## 2. Opening RhoGuest
 
 Log into Frappe Desk.

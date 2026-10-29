@@ -9,12 +9,14 @@
   "identity_section",
   "company",
   "brand_location_label",
+  "identity_column_break",
   "show_company_logo",
   "show_company_name",
   "presentation_section",
   "menu_theme",
   "menu_layout",
   "category_navigation",
+  "presentation_column_break",
   "show_search",
   "show_item_images",
   "show_item_description",
@@ -24,10 +26,12 @@
   "guest_hub_enabled",
   "guest_hub_title",
   "guest_hub_subtitle",
+  "guest_hub_column_break",
   "show_service_items_on_hub",
   "laundry_integration_section",
   "laundry_folio_posting_mode",
   "laundry_folio_posting_method",
+  "laundry_integration_column_break",
   "laundry_staff_in_app_notifications",
   "laundry_guest_email_notifications",
   "laundry_staff_email_notifications",
@@ -36,25 +40,31 @@
   "public_menu_route",
   "route_redirect_http_status",
   "keep_previous_routes",
+  "routing_column_break",
   "route_preview",
+  "routing_alias_section",
   "legacy_qr_routes",
   "catalog_section",
   "default_selling_price_list",
   "default_food_menu",
+  "catalog_column_break",
   "default_drinks_menu",
   "hide_unavailable_items",
   "ordering_section",
   "self_ordering_enabled",
   "require_payment",
+  "minimum_order_amount",
+  "ordering_column_break",
   "default_customer",
   "payment_gateway_account",
-  "minimum_order_amount",
   "service_section",
   "allow_room_service",
   "allow_dine_in",
+  "service_column_break",
   "allow_takeaway",
   "accounting_section",
   "warehouse",
+  "accounting_column_break",
   "sales_taxes_and_charges_template"
  ],
  "fields": [
@@ -386,6 +396,56 @@
    "label": "Sales Taxes and Charges Template",
    "fieldtype": "Link",
    "options": "Sales Taxes and Charges Template"
+  },
+  {
+   "fieldname": "identity_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "presentation_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "guest_hub_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "laundry_integration_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "routing_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "routing_alias_section",
+   "label": "Legacy QR Aliases",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "catalog_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ordering_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "service_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "accounting_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
   }
  ],
  "permissions": [

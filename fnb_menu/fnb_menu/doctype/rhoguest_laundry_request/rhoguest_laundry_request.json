@@ -11,12 +11,14 @@
   "guest_section",
   "guest_name",
   "room_number",
+  "guest_column_break",
   "email",
   "phone",
   "request_section",
   "requested_pickup_at",
-  "pickup_note",
   "status",
+  "request_column_break",
+  "pickup_note",
   "public_token",
   "items_section",
   "items",
@@ -25,6 +27,7 @@
   "billing_status",
   "currency",
   "estimated_total",
+  "billing_column_break",
   "company",
   "folio_reference",
   "folio_posting_mode",
@@ -37,6 +40,7 @@
   "collected_at",
   "ready_at",
   "delivered_at",
+  "operations_column_break",
   "internal_notes"
  ],
  "fields": [
@@ -239,6 +243,26 @@
    "fieldname": "internal_notes",
    "label": "Internal Notes",
    "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "guest_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "request_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "billing_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "operations_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
   }
  ],
  "permissions": [

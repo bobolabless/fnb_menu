@@ -13,6 +13,7 @@
   "resource_name",
   "resource_key",
   "resource_type",
+  "identity_column_break",
   "employee",
   "user",
   "location",
@@ -23,30 +24,141 @@
   "services",
   "availability_section",
   "availability",
+  "notes_section",
   "notes"
  ],
  "fields": [
-  {"fieldname":"identity_section","label":"Resource Identity","fieldtype":"Section Break"},
-  {"fieldname":"resource_name","label":"Resource Name","fieldtype":"Data","reqd":1,"in_list_view":1},
-  {"fieldname":"resource_key","label":"Resource Key","fieldtype":"Data","reqd":1,"unique":1,"in_list_view":1,"description":"Stable lower-case key used by the Spa booking engine."},
-  {"fieldname":"resource_type","label":"Resource Type","fieldtype":"Select","options":"Therapist\nTreatment Room\nEquipment\nOther","default":"Therapist","reqd":1,"in_list_view":1,"in_standard_filter":1},
-  {"fieldname":"employee","label":"Employee","fieldtype":"Link","options":"Employee"},
-  {"fieldname":"user","label":"System User","fieldtype":"Link","options":"User"},
-  {"fieldname":"location","label":"Location","fieldtype":"Data","in_list_view":1},
-  {"fieldname":"sort_order","label":"Display Order","fieldtype":"Int","default":"0"},
-  {"fieldname":"enabled","label":"Enabled","fieldtype":"Check","default":"1","in_list_view":1,"in_standard_filter":1},
-  {"fieldname":"allow_public_selection","label":"Allow Guest to Select This Resource","fieldtype":"Check","default":"1","in_list_view":1,"description":"When disabled, the resource can still be chosen automatically by the server or assigned by staff, but its name is hidden from guest selection."},
-  {"fieldname":"services_section","label":"Supported Treatments","fieldtype":"Section Break"},
-  {"fieldname":"services","label":"Spa Services","fieldtype":"Table","options":"RhoGuest Spa Resource Service"},
-  {"fieldname":"availability_section","label":"Weekly Availability","fieldtype":"Section Break"},
-  {"fieldname":"availability","label":"Availability","fieldtype":"Table","options":"RhoGuest Spa Resource Availability"},
-  {"fieldname":"notes","label":"Internal Notes","fieldtype":"Small Text"}
+  {
+   "fieldname": "identity_section",
+   "label": "Resource Identity",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "resource_name",
+   "label": "Resource Name",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "resource_key",
+   "label": "Resource Key",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1,
+   "description": "Stable lower-case key used by the Spa booking engine."
+  },
+  {
+   "fieldname": "resource_type",
+   "label": "Resource Type",
+   "fieldtype": "Select",
+   "options": "Therapist\nTreatment Room\nEquipment\nOther",
+   "default": "Therapist",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "employee",
+   "label": "Employee",
+   "fieldtype": "Link",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "user",
+   "label": "System User",
+   "fieldtype": "Link",
+   "options": "User"
+  },
+  {
+   "fieldname": "location",
+   "label": "Location",
+   "fieldtype": "Data",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "sort_order",
+   "label": "Display Order",
+   "fieldtype": "Int",
+   "default": "0"
+  },
+  {
+   "fieldname": "enabled",
+   "label": "Enabled",
+   "fieldtype": "Check",
+   "default": "1",
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "allow_public_selection",
+   "label": "Allow Guest to Select This Resource",
+   "fieldtype": "Check",
+   "default": "1",
+   "in_list_view": 1,
+   "description": "When disabled, the resource can still be chosen automatically by the server or assigned by staff, but its name is hidden from guest selection."
+  },
+  {
+   "fieldname": "services_section",
+   "label": "Supported Treatments",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "services",
+   "label": "Spa Services",
+   "fieldtype": "Table",
+   "options": "RhoGuest Spa Resource Service"
+  },
+  {
+   "fieldname": "availability_section",
+   "label": "Weekly Availability",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "availability",
+   "label": "Availability",
+   "fieldtype": "Table",
+   "options": "RhoGuest Spa Resource Availability"
+  },
+  {
+   "fieldname": "notes",
+   "label": "Internal Notes",
+   "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "identity_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "notes_section",
+   "label": "Internal Notes",
+   "fieldtype": "Section Break"
+  }
  ],
  "permissions": [
-  {"role":"System Manager","read":1,"write":1,"create":1,"delete":1,"report":1,"export":1},
-  {"role":"Sales Manager","read":1,"write":1,"create":1,"report":1},
-  {"role":"Sales User","read":1}
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1
+  },
+  {
+   "role": "Sales Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1
+  },
+  {
+   "role": "Sales User",
+   "read": 1
+  }
  ],
- "sort_field":"sort_order",
- "sort_order":"ASC"
+ "sort_field": "sort_order",
+ "sort_order": "ASC"
 }

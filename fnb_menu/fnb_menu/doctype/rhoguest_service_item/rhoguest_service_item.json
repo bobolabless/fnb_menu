@@ -13,17 +13,20 @@
   "service_category",
   "service_name",
   "service_key",
+  "identity_column_break",
   "description",
   "image",
   "publication_section",
   "sort_order",
   "enabled",
+  "publication_column_break",
   "available_to_guests",
   "availability_note",
   "pricing_section",
   "pricing_mode",
   "pricing_basis",
   "fixed_price",
+  "pricing_column_break",
   "currency",
   "erpnext_item",
   "allow_charge_to_room",
@@ -31,6 +34,7 @@
   "requires_reservation",
   "duration_minutes",
   "fulfilment_time_minutes",
+  "fulfilment_column_break",
   "capacity",
   "location"
  ],
@@ -192,6 +196,26 @@
    "label": "Location Override",
    "fieldtype": "Data",
    "description": "Optional item-specific location. Leave blank to use the category location."
+  },
+  {
+   "fieldname": "identity_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "publication_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pricing_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "fulfilment_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
   }
  ],
  "permissions": [

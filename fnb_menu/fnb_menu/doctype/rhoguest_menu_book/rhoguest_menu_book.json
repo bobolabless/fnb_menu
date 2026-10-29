@@ -6,6 +6,7 @@
  "autoname": "format:{company}-{menu_type}-{#####}",
  "track_changes": 1,
  "field_order": [
+  "menu_book_section",
   "title",
   "company",
   "menu_type",
@@ -15,6 +16,7 @@
   "subtitle",
   "sort_order",
   "default_item_image",
+  "notes_section",
   "notes"
  ],
  "fields": [
@@ -79,6 +81,16 @@
    "fieldname": "notes",
    "label": "Internal Notes",
    "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "menu_book_section",
+   "label": "Menu Book",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "notes_section",
+   "label": "Internal Notes",
+   "fieldtype": "Section Break"
   }
  ],
  "permissions": [

@@ -12,21 +12,25 @@
   "identity_section",
   "category_name",
   "service_key",
+  "identity_column_break",
   "service_type",
   "workflow_type",
   "presentation_section",
   "icon",
   "image",
   "short_description",
+  "presentation_column_break",
   "sort_order",
   "enabled",
   "show_on_portal",
   "operations_section",
   "operating_hours",
+  "operations_column_break",
   "location",
   "guest_requirements_section",
   "requires_guest_identification",
   "requires_room_number",
+  "guest_requirements_column_break",
   "allows_reservation",
   "allows_ordering",
   "allows_payment",
@@ -171,6 +175,26 @@
    "label": "Allows Charge to Room",
    "fieldtype": "Check",
    "default": "0"
+  },
+  {
+   "fieldname": "identity_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "presentation_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "operations_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "guest_requirements_column_break",
+   "label": "",
+   "fieldtype": "Column Break"
   }
  ],
  "permissions": [

@@ -131,6 +131,12 @@ It is the principal staff navigation area and contains:
 - RhoGuest Menu Settings.
 - Guest Hub and public menu shortcuts.
 
+### 5.1 Two-column Desk layout
+
+RhoGuest uses two-column sections on configuration and operational DocTypes where fields naturally pair together. Tables, long instructions, availability grids and child-item lists remain full-width. This reduces vertical scrolling on desktop without compressing transactional tables.
+
+The former FNB user-facing DocType names have been replaced by RhoGuest names. The technical package `fnb_menu` and legacy internal routes remain unchanged for upgrade compatibility.
+
 If the Workspace does not appear after migration:
 
 ```bash
