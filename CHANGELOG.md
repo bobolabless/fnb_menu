@@ -61,6 +61,17 @@
 - Added staff Reschedule / Change Resource controls and Spa operational List View queues.
 - Added Spa KPIs and Recent Spa Appointments to the RhoGuest Dashboard and Workspace.
 - Added a v0.2.0 Spa & Wellness static contract validator.
+- Added dedicated **Transport booking and dispatch workflow** with public route `/rhoguest-transport`.
+- Added **RhoGuest Transport Vehicle** fleet master with passenger/luggage capacity.
+- Added **RhoGuest Transport Driver** master with licence expiry and optional Employee/System User links.
+- Added **RhoGuest Transport Booking** with token-protected public tracking.
+- Added server-authoritative Transport pricing, duration and estimated drop-off.
+- Added vehicle/driver row locking and active-trip overlap protection.
+- Added driver licence and vehicle passenger/luggage capacity validation.
+- Added Requested → Confirmed → Dispatched → Arrived at Pickup → In Transit → Completed workflow plus Cancelled/No Show paths.
+- Added staff assignment/reassignment and rescheduling with full conflict revalidation.
+- Added Transport List View queues, Dashboard KPIs and Workspace navigation.
+- Added a v0.2.0 Transport dispatch static contract validator.
 
 ## 0.1.0
 
