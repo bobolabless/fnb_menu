@@ -56,6 +56,8 @@ def main():
     ):
         assert request_fields[fieldname]["read_only"] == 1
 
+    install = (ROOT / "fnb_menu/install.py").read_text()
+
     settings_py = (
         ROOT
         / "fnb_menu/fnb_menu/doctype/fnb_menu_settings/"
@@ -71,6 +73,15 @@ def main():
     ).read_text()
     setup = (ROOT / "docs/RHOGUEST_SETUP_MANUAL.md").read_text()
     user = (ROOT / "docs/RHOGUEST_USER_MANUAL.md").read_text()
+
+    assert "def ensure_settings_defaults" in install
+    assert '"laundry_folio_posting_mode": "Manual"' in install
+    assert '"laundry_staff_in_app_notifications": "1"' in install
+    assert '"laundry_guest_email_notifications": "0"' in install
+    assert '"laundry_staff_email_notifications": "0"' in install
+    assert "select value" in install
+    assert "from tabSingles" in install
+    assert "frappe.db.set_single_value" in install
 
     assert "_validate_laundry_integration" in settings_py
     assert 'mode not in {"Manual", "Custom Integration"}' in settings_py
