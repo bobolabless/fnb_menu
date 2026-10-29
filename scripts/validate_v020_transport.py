@@ -75,6 +75,9 @@ def main():
     hooks = (ROOT / "fnb_menu/hooks.py").read_text()
     dashboard = (ROOT / "fnb_menu/api/dashboard.py").read_text()
     workspace = load("fnb_menu/fnb_menu/workspace/rhoguest/rhoguest.json")
+    setup = (ROOT / "docs/RHOGUEST_SETUP_MANUAL.md").read_text()
+    user = (ROOT / "docs/RHOGUEST_USER_MANUAL.md").read_text()
+    readme = (ROOT / "README.md").read_text()
 
     assert 'TRANSPORT_CATEGORY_KEY = "transport"' in service
     assert "for update" in service.lower()
@@ -143,6 +146,12 @@ def main():
         row.get("data", {}).get("shortcut_name") == "Transport Bookings"
         for row in content
     )
+
+    assert "Transport Setup" in setup
+    assert "Vehicle and driver assignment" in setup
+    assert "Transport Bookings" in user
+    assert "Guest tracking" in user
+    assert "v0.2.0 Transport Booking & Dispatch" in readme
 
     print("RhoGuest v0.2.0 Transport booking/dispatch: PASS")
 
