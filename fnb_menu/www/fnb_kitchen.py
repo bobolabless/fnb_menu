@@ -10,9 +10,9 @@ def get_context(context):
 
     context.no_cache = 1
     context.csrf_token = get_csrf_token()
-    context.title = "FNB Kitchen"
+    context.title = "RhoGuest Kitchen"
     context.orders = frappe.get_all(
-        "FNB Self Order",
+        "RhoGuest Self Order",
         filters={
             "payment_status": "Paid",
             "status": ["in", ["Sent to Kitchen", "Preparing", "Ready"]],
@@ -32,8 +32,8 @@ def get_context(context):
 
     for order in context.orders:
         order["order_items"] = frappe.get_all(
-            "FNB Self Order Item",
-            filters={"parent": order.name, "parenttype": "FNB Self Order"},
+            "RhoGuest Self Order Item",
+            filters={"parent": order.name, "parenttype": "RhoGuest Self Order"},
             fields=["item_name", "qty", "special_instruction"],
             order_by="idx asc",
         )

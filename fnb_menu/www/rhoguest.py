@@ -16,7 +16,7 @@ def get_context(context):
     context.brand = hub.brand
     context.services = hub.services
     context.theme_slug = theme_slug(
-        frappe.db.get_single_value("FNB Menu Settings", "menu_theme")
+        frappe.db.get_single_value("RhoGuest Menu Settings", "menu_theme")
         or "Classic Gold"
     )
     context.title = f"{hub.brand.hotel_name} - {hub.title}"

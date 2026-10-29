@@ -1,5 +1,5 @@
 /*!
- * RhoHMS F&B Menu v0.1.0
+ * RhoGuest Food & Beverage Menu
  * Complete public-menu controller
  *
  * Features:
@@ -1847,7 +1847,7 @@
 
       } catch (error) {
         console.error(
-          "FNB Menu Checkout Error:",
+          "RhoGuest Checkout Error:",
           error
         );
 

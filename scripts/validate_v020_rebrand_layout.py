@@ -141,6 +141,18 @@ def main():
     for old in RENAMED:
         assert old not in runtime
 
+    # Public website controllers are runtime code too. The original rebrand
+    # contract intentionally expands beyond API/services so renamed DocTypes
+    # cannot survive in a page controller and cause a post-migrate 500.
+    public_page_files = sorted((ROOT / "fnb_menu/www").glob("*.py"))
+    public_runtime = "\n".join(path.read_text() for path in public_page_files)
+    for old in RENAMED:
+        assert old not in public_runtime
+
+    kitchen_html = (ROOT / "fnb_menu/www/fnb_kitchen.html").read_text()
+    assert "RhoHMS F&B Menu" not in kitchen_html
+    assert "RhoGuest Food & Beverage" in kitchen_html
+
     print("RhoGuest v0.2.0 rebrand and two-column layouts: PASS")
 
 
