@@ -1,2 +1,2 @@
 from frappe.model.document import Document
-class FNBSelfOrderItem(Document): pass
+class RhoGuestMenuBook(Document): pass

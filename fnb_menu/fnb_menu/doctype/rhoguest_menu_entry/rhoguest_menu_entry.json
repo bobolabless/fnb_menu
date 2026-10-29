@@ -1,6 +1,6 @@
 {
  "doctype": "DocType",
- "name": "FNB Menu Entry",
+ "name": "RhoGuest Menu Entry",
  "module": "FNB Menu",
  "engine": "InnoDB",
  "autoname": "format:{menu_book}-{#####}",
@@ -33,7 +33,7 @@
    "fieldname": "menu_book",
    "label": "Menu Book",
    "fieldtype": "Link",
-   "options": "FNB Menu Book",
+   "options": "RhoGuest Menu Book",
    "reqd": 1,
    "in_list_view": 1
   },
@@ -41,7 +41,7 @@
    "fieldname": "category",
    "label": "Category",
    "fieldtype": "Link",
-   "options": "FNB Menu Category",
+   "options": "RhoGuest Menu Category",
    "reqd": 1,
    "in_list_view": 1
   },

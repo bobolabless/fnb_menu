@@ -1,9 +1,9 @@
 {
  "doctype": "DocType",
- "name": "FNB Self Order",
+ "name": "RhoGuest Self Order",
  "module": "FNB Menu",
  "engine": "InnoDB",
- "autoname": "format:FNB-{YYYY}-{#####}",
+ "autoname": "format:RGO-{YYYY}-{#####}",
  "track_changes": 1,
  "field_order": [
   "guest_name",
@@ -125,7 +125,7 @@
    "fieldname": "items",
    "label": "Items",
    "fieldtype": "Table",
-   "options": "FNB Self Order Item",
+   "options": "RhoGuest Self Order Item",
    "reqd": 1
   },
   {

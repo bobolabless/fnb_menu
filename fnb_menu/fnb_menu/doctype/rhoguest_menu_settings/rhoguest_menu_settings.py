@@ -10,7 +10,7 @@ from fnb_menu.routing import (
 )
 
 
-class FNBMenuSettings(Document):
+class RhoGuestMenuSettings(Document):
     def validate(self):
         # Public self-orders must remain prepaid.
         self.require_payment = 1
@@ -56,7 +56,7 @@ class FNBMenuSettings(Document):
 
     def _validate_menu(self, menu_name, expected_type):
         row = frappe.db.get_value(
-            "FNB Menu Book",
+            "RhoGuest Menu Book",
             menu_name,
             ["company", "menu_type"],
             as_dict=True,

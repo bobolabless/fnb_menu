@@ -38,7 +38,7 @@ function render_route_preview(frm) {
   field.$wrapper.append(container);
 }
 
-frappe.ui.form.on("FNB Menu Settings", {
+frappe.ui.form.on("RhoGuest Menu Settings", {
   refresh(frm) {
     render_route_preview(frm);
 

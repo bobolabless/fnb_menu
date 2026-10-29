@@ -1,6 +1,6 @@
 {
  "doctype": "DocType",
- "name": "FNB Menu Category",
+ "name": "RhoGuest Menu Category",
  "module": "FNB Menu",
  "engine": "InnoDB",
  "autoname": "format:{menu_book}-{category_name}-{#####}",
@@ -18,7 +18,7 @@
    "fieldname": "menu_book",
    "label": "Menu Book",
    "fieldtype": "Link",
-   "options": "FNB Menu Book",
+   "options": "RhoGuest Menu Book",
    "reqd": 1,
    "in_list_view": 1
   },

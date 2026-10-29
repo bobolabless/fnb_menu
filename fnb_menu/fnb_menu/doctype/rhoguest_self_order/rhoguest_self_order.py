@@ -2,7 +2,7 @@ import secrets
 import frappe
 from frappe.model.document import Document
 from frappe.utils import flt
-class FNBSelfOrder(Document):
+class RhoGuestSelfOrder(Document):
     def before_insert(self):
         if not self.public_token: self.public_token=secrets.token_urlsafe(24)
     def validate(self):

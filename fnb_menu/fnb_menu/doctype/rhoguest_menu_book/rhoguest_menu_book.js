@@ -1,4 +1,4 @@
-frappe.ui.form.on("FNB Menu Book", {
+frappe.ui.form.on("RhoGuest Menu Book", {
   refresh(frm) {
     if (frm.is_new()) return;
 

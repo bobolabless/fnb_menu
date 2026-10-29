@@ -1,6 +1,6 @@
 {
  "doctype": "DocType",
- "name": "FNB Self Order Item",
+ "name": "RhoGuest Self Order Item",
  "module": "FNB Menu",
  "istable": 1,
  "editable_grid": 1,

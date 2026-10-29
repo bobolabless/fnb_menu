@@ -1,6 +1,6 @@
 {
  "doctype": "DocType",
- "name": "FNB Menu Settings",
+ "name": "RhoGuest Menu Settings",
  "module": "FNB Menu",
  "issingle": 1,
  "engine": "InnoDB",
@@ -297,13 +297,13 @@
    "fieldname": "default_food_menu",
    "label": "Food Menu",
    "fieldtype": "Link",
-   "options": "FNB Menu Book"
+   "options": "RhoGuest Menu Book"
   },
   {
    "fieldname": "default_drinks_menu",
    "label": "Drinks Menu",
    "fieldtype": "Link",
-   "options": "FNB Menu Book"
+   "options": "RhoGuest Menu Book"
   },
   {
    "fieldname": "hide_unavailable_items",

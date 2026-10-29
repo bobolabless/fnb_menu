@@ -3,11 +3,11 @@ from frappe.model.document import Document
 from frappe.utils import flt
 
 
-class FNBMenuEntry(Document):
+class RhoGuestMenuEntry(Document):
     def validate(self):
         if self.category:
             category_book = frappe.db.get_value(
-                "FNB Menu Category",
+                "RhoGuest Menu Category",
                 self.category,
                 "menu_book"
             )
