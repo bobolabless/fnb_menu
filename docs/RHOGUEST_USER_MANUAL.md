@@ -257,6 +257,39 @@ RhoGuest automatically records timestamps when applicable:
 - Ready At.
 - Delivered At.
 
+### 7.3 Form Action Buttons
+
+Open a Laundry Request and use the **Laundry Actions** group instead of editing Status manually.
+
+Available actions depend on the current state:
+
+- Submitted: Schedule Pickup, Mark Collected, Cancel Request.
+- Pickup Scheduled: Reschedule Pickup, Mark Collected, Cancel Request.
+- Collected: Start Processing, Cancel Request.
+- Processing: Mark Ready, Cancel Request.
+- Ready: Out for Delivery, Mark Delivered, Cancel Request.
+- Out for Delivery: Mark Delivered, Cancel Request.
+- Delivered / Cancelled: no further fulfilment transition is available.
+
+Use **Operations → Assign Staff** to assign an open request to an enabled System User. Use **Unassign** to remove the current assignment.
+
+The server validates every action. A button being visible does not bypass the server-side workflow rules.
+
+### 7.4 Laundry Queue Filters
+
+The Laundry Request List includes quick **Queues**:
+
+- Open Queue.
+- Awaiting Pickup.
+- Processing.
+- Ready / Delivery.
+- Pending Folio.
+- All Requests.
+
+Standard filters are also available for Status, Billing Status, Room Number, Assigned To and Requested Pickup Time.
+
+Use these queues during shift handover and daily operational review.
+
 ---
 
 ## 8. Laundry Billing

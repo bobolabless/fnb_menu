@@ -32,6 +32,9 @@
 - Added recent Laundry activity and quick navigation from the Dashboard.
 - Added updated **RhoGuest Setup Manual** and **RhoGuest User Manual** under `docs/`.
 - Added a v0.2.0 Desk/Workspace/manual static contract validator.
+- Added **Laundry staff operations UI** with workflow-safe form action buttons, pickup scheduling, staff assignment and operational List View queues.
+- Added standard Laundry filters for Status, Billing Status, Room Number, Assigned To and Requested Pickup Time.
+- Added a v0.2.0 Laundry operations UI static contract validator.
 
 ## 0.1.0
 

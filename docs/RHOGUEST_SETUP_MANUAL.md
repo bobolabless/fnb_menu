@@ -355,6 +355,16 @@ The Hub shows **Request Laundry Service** only when Laundry is enabled and publi
 
 RhoGuest v0.2.0 does not directly post to a RhoHMS guest folio. This is intentional to avoid unsafe or installation-specific accounting side effects.
 
+### 10.5 Staff Operations UI
+
+The **RhoGuest Laundry Request** form exposes workflow-safe action buttons rather than requiring staff to edit Status.
+
+The List View includes operational queue filters for Open Queue, Awaiting Pickup, Processing, Ready / Delivery and Pending Folio. Status, Billing Status, Room Number, Assigned To and Requested Pickup Time are also standard filters.
+
+Staff assignment is restricted to enabled Frappe **System User** accounts. Delivered or Cancelled requests cannot be reassigned.
+
+Pickup scheduling is allowed only for Submitted or Pickup Scheduled requests and requires a future Date/Time.
+
 ---
 
 ## 11. Permissions

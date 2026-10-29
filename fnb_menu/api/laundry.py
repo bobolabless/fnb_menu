@@ -24,6 +24,23 @@ STATUS_TRANSITIONS = {
 }
 
 
+def _get_staff_request(request_name):
+    """Load one Laundry Request after enforcing authenticated write access."""
+
+    if frappe.session.user == "Guest":
+        frappe.throw(_("Login required."), frappe.PermissionError)
+
+    request = frappe.get_doc("RhoGuest Laundry Request", request_name)
+
+    if not request.has_permission("write"):
+        frappe.throw(
+            _("You do not have permission to update this Laundry Request."),
+            frappe.PermissionError,
+        )
+
+    return request
+
+
 @frappe.whitelist(allow_guest=True, methods=["POST"])
 def create_request(
     guest_name,
@@ -138,15 +155,7 @@ def get_request_status(request_name, token):
 def update_status(request_name, status):
     """Advance a request through the controlled Laundry fulfilment graph."""
 
-    if frappe.session.user == "Guest":
-        frappe.throw(_("Login required."), frappe.PermissionError)
-
-    request = frappe.get_doc("RhoGuest Laundry Request", request_name)
-    if not request.has_permission("write"):
-        frappe.throw(
-            _("You do not have permission to update this Laundry Request."),
-            frappe.PermissionError,
-        )
+    request = _get_staff_request(request_name)
 
     status = (status or "").strip()
     if status not in STATUS_TRANSITIONS.get(request.status, set()):
@@ -175,4 +184,65 @@ def update_status(request_name, status):
         "request": request.name,
         "status": status,
         "billing_status": values.get("billing_status", request.billing_status),
+    }
+
+
+
+@frappe.whitelist(methods=["POST"])
+def schedule_pickup(request_name, requested_pickup_at):
+    """Schedule or reschedule a future Laundry pickup for an open request."""
+
+    request = _get_staff_request(request_name)
+
+    if request.status not in {"Submitted", "Pickup Scheduled"}:
+        frappe.throw(
+            _("Pickup can only be scheduled while the request is Submitted or Pickup Scheduled.")
+        )
+
+    requested = validate_requested_pickup(requested_pickup_at)
+    if not requested:
+        frappe.throw(_("Requested Pickup Time is required."))
+
+    values = {"requested_pickup_at": requested}
+
+    # Scheduling the initial pickup is itself a controlled status transition.
+    if request.status == "Submitted":
+        values["status"] = "Pickup Scheduled"
+
+    request.db_set(values)
+
+    return {
+        "request": request.name,
+        "status": values.get("status", request.status),
+        "requested_pickup_at": requested,
+    }
+
+
+@frappe.whitelist(methods=["POST"])
+def assign_request(request_name, user=None):
+    """Assign or unassign an open Laundry Request to an enabled System User."""
+
+    request = _get_staff_request(request_name)
+
+    if request.status in {"Delivered", "Cancelled"}:
+        frappe.throw(_("Completed or Cancelled Laundry Requests cannot be reassigned."))
+
+    user = (user or "").strip()
+
+    if user:
+        account = frappe.db.get_value(
+            "User",
+            user,
+            ["enabled", "user_type"],
+            as_dict=True,
+        )
+
+        if not account or not cint(account.enabled) or account.user_type != "System User":
+            frappe.throw(_("Assign Laundry Requests only to an enabled System User."))
+
+    request.db_set("assigned_to", user or None)
+
+    return {
+        "request": request.name,
+        "assigned_to": user or None,
     }

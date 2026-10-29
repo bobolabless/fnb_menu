@@ -35,36 +35,198 @@
   "internal_notes"
  ],
  "fields": [
-  {"fieldname":"guest_section","label":"Guest","fieldtype":"Section Break"},
-  {"fieldname":"guest_name","label":"Guest Name","fieldtype":"Data","reqd":1,"in_list_view":1},
-  {"fieldname":"room_number","label":"Room Number","fieldtype":"Data","reqd":1,"in_list_view":1},
-  {"fieldname":"email","label":"Email","fieldtype":"Data","options":"Email"},
-  {"fieldname":"phone","label":"Phone","fieldtype":"Data"},
-  {"fieldname":"request_section","label":"Pickup Request","fieldtype":"Section Break"},
-  {"fieldname":"requested_pickup_at","label":"Requested Pickup Time","fieldtype":"Datetime"},
-  {"fieldname":"pickup_note","label":"Pickup / Laundry Instructions","fieldtype":"Small Text"},
-  {"fieldname":"status","label":"Status","fieldtype":"Select","options":"Submitted\nPickup Scheduled\nCollected\nProcessing\nReady\nOut for Delivery\nDelivered\nCancelled","default":"Submitted","read_only":1,"in_list_view":1},
-  {"fieldname":"public_token","label":"Public Token","fieldtype":"Data","hidden":1,"read_only":1,"unique":1,"no_copy":1},
-  {"fieldname":"items_section","label":"Laundry Items","fieldtype":"Section Break"},
-  {"fieldname":"items","label":"Items","fieldtype":"Table","options":"RhoGuest Laundry Request Item","reqd":1},
-  {"fieldname":"billing_section","label":"Billing","fieldtype":"Section Break"},
-  {"fieldname":"billing_preference","label":"Billing Preference","fieldtype":"Select","options":"Pay at Hotel\nCharge to Room","default":"Pay at Hotel","reqd":1,"in_list_view":1},
-  {"fieldname":"billing_status","label":"Billing Status","fieldtype":"Select","options":"Unbilled\nPending Folio Posting\nPosted to Room\nSettled\nCancelled","default":"Unbilled","read_only":1,"in_list_view":1},
-  {"fieldname":"currency","label":"Currency","fieldtype":"Link","options":"Currency","read_only":1},
-  {"fieldname":"estimated_total","label":"Estimated Total","fieldtype":"Currency","options":"currency","read_only":1,"in_list_view":1},
-  {"fieldname":"company","label":"Company","fieldtype":"Link","options":"Company","read_only":1},
-  {"fieldname":"folio_reference","label":"Room Folio Reference","fieldtype":"Data","read_only":1,"description":"Reserved for later RhoHMS folio integration."},
-  {"fieldname":"operations_section","label":"Fulfilment","fieldtype":"Section Break"},
-  {"fieldname":"assigned_to","label":"Assigned To","fieldtype":"Link","options":"User"},
-  {"fieldname":"collected_at","label":"Collected At","fieldtype":"Datetime","read_only":1},
-  {"fieldname":"ready_at","label":"Ready At","fieldtype":"Datetime","read_only":1},
-  {"fieldname":"delivered_at","label":"Delivered At","fieldtype":"Datetime","read_only":1},
-  {"fieldname":"internal_notes","label":"Internal Notes","fieldtype":"Small Text"}
+  {
+   "fieldname": "guest_section",
+   "label": "Guest",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "guest_name",
+   "label": "Guest Name",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "room_number",
+   "label": "Room Number",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "email",
+   "label": "Email",
+   "fieldtype": "Data",
+   "options": "Email"
+  },
+  {
+   "fieldname": "phone",
+   "label": "Phone",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "request_section",
+   "label": "Pickup Request",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "requested_pickup_at",
+   "label": "Requested Pickup Time",
+   "fieldtype": "Datetime",
+   "in_standard_filter": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "pickup_note",
+   "label": "Pickup / Laundry Instructions",
+   "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "status",
+   "label": "Status",
+   "fieldtype": "Select",
+   "options": "Submitted\nPickup Scheduled\nCollected\nProcessing\nReady\nOut for Delivery\nDelivered\nCancelled",
+   "default": "Submitted",
+   "read_only": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "public_token",
+   "label": "Public Token",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "read_only": 1,
+   "unique": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "items_section",
+   "label": "Laundry Items",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "items",
+   "label": "Items",
+   "fieldtype": "Table",
+   "options": "RhoGuest Laundry Request Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "billing_section",
+   "label": "Billing",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "billing_preference",
+   "label": "Billing Preference",
+   "fieldtype": "Select",
+   "options": "Pay at Hotel\nCharge to Room",
+   "default": "Pay at Hotel",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "billing_status",
+   "label": "Billing Status",
+   "fieldtype": "Select",
+   "options": "Unbilled\nPending Folio Posting\nPosted to Room\nSettled\nCancelled",
+   "default": "Unbilled",
+   "read_only": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "currency",
+   "label": "Currency",
+   "fieldtype": "Link",
+   "options": "Currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "estimated_total",
+   "label": "Estimated Total",
+   "fieldtype": "Currency",
+   "options": "currency",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "company",
+   "label": "Company",
+   "fieldtype": "Link",
+   "options": "Company",
+   "read_only": 1
+  },
+  {
+   "fieldname": "folio_reference",
+   "label": "Room Folio Reference",
+   "fieldtype": "Data",
+   "read_only": 1,
+   "description": "Reserved for later RhoHMS folio integration."
+  },
+  {
+   "fieldname": "operations_section",
+   "label": "Fulfilment",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "assigned_to",
+   "label": "Assigned To",
+   "fieldtype": "Link",
+   "options": "User",
+   "in_standard_filter": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "collected_at",
+   "label": "Collected At",
+   "fieldtype": "Datetime",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ready_at",
+   "label": "Ready At",
+   "fieldtype": "Datetime",
+   "read_only": 1
+  },
+  {
+   "fieldname": "delivered_at",
+   "label": "Delivered At",
+   "fieldtype": "Datetime",
+   "read_only": 1
+  },
+  {
+   "fieldname": "internal_notes",
+   "label": "Internal Notes",
+   "fieldtype": "Small Text"
+  }
  ],
  "permissions": [
-  {"role":"System Manager","read":1,"write":1,"create":1,"delete":1,"report":1,"export":1},
-  {"role":"Sales Manager","read":1,"write":1,"create":1,"report":1},
-  {"role":"Sales User","read":1,"write":1,"report":1}
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1
+  },
+  {
+   "role": "Sales Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1
+  },
+  {
+   "role": "Sales User",
+   "read": 1,
+   "write": 1,
+   "report": 1
+  }
  ],
  "sort_field": "creation",
  "sort_order": "DESC"
