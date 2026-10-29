@@ -35,6 +35,11 @@
 - Added **Laundry staff operations UI** with workflow-safe form action buttons, pickup scheduling, staff assignment and operational List View queues.
 - Added standard Laundry filters for Status, Billing Status, Room Number, Assigned To and Requested Pickup Time.
 - Added a v0.2.0 Laundry operations UI static contract validator.
+- Added a configurable Laundry **folio-posting adapter** with Manual and Custom Integration modes, idempotency key, row locking and external-reference enforcement.
+- Added audited Folio Posted At/By/Mode and Billing Settled At/By fields.
+- Added authorized Billing form actions for Post to Folio, Record Folio Posting and Mark Settled.
+- Added Laundry lifecycle in-app notifications plus opt-in guest/staff email notifications.
+- Added a v0.2.0 Laundry billing/integration/notifications static contract validator.
 
 ## 0.1.0
 

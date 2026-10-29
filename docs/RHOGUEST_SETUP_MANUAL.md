@@ -365,6 +365,72 @@ Staff assignment is restricted to enabled Frappe **System User** accounts. Deliv
 
 Pickup scheduling is allowed only for Submitted or Pickup Scheduled requests and requires a future Date/Time.
 
+### 10.6 Folio Integration Modes
+
+Open **FNB Menu Settings → RhoGuest Laundry Billing & Notifications**.
+
+**Manual** is the safe default. RhoGuest never changes the request to Posted to Room until an authorized System Manager or Sales Manager records the real external folio/PMS reference.
+
+**Custom Integration** calls one trusted dotted Python method configured by System Manager. The method receives:
+
+```python
+payload = {
+    "source_doctype": "RhoGuest Laundry Request",
+    "source_name": "RGL-2026-00001",
+    "idempotency_key": "RhoGuest Laundry Request:RGL-2026-00001",
+    "company": "...",
+    "guest_name": "...",
+    "room_number": "...",
+    "currency": "NGN",
+    "amount": 5000.0,
+    "billing_preference": "Charge to Room",
+    "items": [
+        {
+            "service_item": "RGS-00001",
+            "service_name": "Shirt — Wash & Iron",
+            "service_key": "shirt-wash-iron",
+            "qty": 2,
+            "rate": 2500.0,
+            "amount": 5000.0,
+            "currency": "NGN",
+        }
+    ],
+}
+```
+
+The configured callable must use signature:
+
+```python
+def post_laundry_charge(payload):
+    # Validate the room/stay in the PMS.
+    # Create or reuse the charge using payload["idempotency_key"].
+    # Return the real external folio reference.
+    return {
+        "success": True,
+        "reference": "FOLIO-CHARGE-000123",
+        "message": "Posted successfully",
+    }
+```
+
+RhoGuest marks the request **Posted to Room** only when `success` is true and a non-empty `reference` is returned. Integration failures leave the request at **Pending Folio Posting**.
+
+The RhoGuest API also applies a database row lock before billing mutation. Once a request has a confirmed folio reference, repeated post calls return the existing reference rather than creating a second posting.
+
+Manual posting remains available as an authorized fallback even when Custom Integration is configured.
+
+### 10.7 Laundry Notification Settings
+
+The same Settings section contains:
+
+- **Laundry Staff In-App Notifications** — enabled by default. The assigned System User receives Frappe alerts for operational events.
+- **Laundry Guest Email Notifications** — disabled by default.
+- **Laundry Staff Email Notifications** — disabled by default.
+- **Laundry Operations Email Recipients** — optional comma, semicolon or newline-separated staff addresses.
+
+Guest email notifications are limited to selected guest-relevant events such as Submitted, Pickup Scheduled, Ready, Out for Delivery, Delivered, Cancelled and Posted to Room.
+
+Email/notification delivery errors are logged but do not roll back the Laundry operational transaction.
+
 ---
 
 ## 11. Permissions
@@ -413,6 +479,8 @@ PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_s
 PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_guest_hub.py
 PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_laundry.py
 PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_desk.py
+PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_laundry_ops.py
+PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_laundry_billing.py
 ```
 
 All should report PASS.

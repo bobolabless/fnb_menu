@@ -393,8 +393,7 @@ def record_folio_posting(request_name, folio_reference):
 def mark_billing_settled(request_name):
     """Mark a previously posted room charge as settled with audit metadata."""
 
-    _require_billing_manager()
-    request = _get_staff_request(request_name)
+    request = _lock_billing_request(request_name)
 
     if request.billing_status == "Settled":
         return {

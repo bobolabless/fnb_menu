@@ -70,7 +70,15 @@ Laundry is the first transactional ancillary-service workflow built on the gener
 
 Guest-submitted prices are never trusted. The browser sends only service-item identifiers, quantities and instructions; RhoGuest resolves current availability and prices again on the server before creating **RhoGuest Laundry Request**.
 
-Charge-to-Room is recorded as **Pending Folio Posting** only. RhoGuest does not silently post to a RhoHMS folio until a dedicated integration is implemented.
+Charge-to-Room is recorded as **Pending Folio Posting**. RhoGuest supports a safe **Manual** folio workflow and an optional **Custom Integration** adapter without creating a hard dependency on RhoHMS.
+
+### Laundry folio integration
+
+System Manager can configure a trusted dotted Python method in **FNB Menu Settings → RhoGuest Laundry Billing & Notifications**. RhoGuest supplies a stable payload with an idempotency key and marks the request Posted to Room only when the adapter returns `success=True` and a concrete external reference.
+
+Manual posting remains available to authorized billing managers and also requires a real external reference.
+
+Laundry guest/staff email notifications are opt-in; assigned staff in-app notifications are enabled by default.
 
 ## RhoGuest Desk Workspace & Dashboard
 

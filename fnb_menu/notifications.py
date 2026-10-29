@@ -70,7 +70,7 @@ def notify_laundry_event(request, event, actor=None):
             enqueue_create_notification(
                 users=[request.assigned_to],
                 doc={
-                    "type": "Assignment",
+                    "type": "Alert",
                     "title": title,
                     "description": description,
                     "document_type": "RhoGuest Laundry Request",

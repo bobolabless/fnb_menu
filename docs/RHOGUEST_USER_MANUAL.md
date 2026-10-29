@@ -312,6 +312,45 @@ It does not mean the guest folio has already been charged.
 
 Do not change the status to Posted to Room until the actual hotel folio/accounting process has completed and the appropriate reference is available.
 
+### Manual Folio Posting
+
+For a request showing **Pending Folio Posting**, an authorized System Manager or Sales Manager uses:
+
+**Billing → Record Folio Posting**
+
+Enter the real external folio/PMS transaction reference only after the charge has actually been posted.
+
+RhoGuest records:
+
+- Folio Reference.
+- Folio Posting Mode.
+- Folio Posted At.
+- Folio Posted By.
+
+### Custom Folio Integration
+
+When System Manager has configured **Custom Integration**, the form also shows:
+
+**Billing → Post to Folio**
+
+RhoGuest sends the request through the configured server-side adapter. The request changes to **Posted to Room** only after the integration confirms success and returns an external reference.
+
+If the integration fails, do not manually invent a reference. Resolve the external PMS issue or use the authorized manual fallback only after a real posting has been completed.
+
+### Mark Settled
+
+Once Billing Status is **Posted to Room**, an authorized billing manager may use **Billing → Mark Settled** after the hotel billing process confirms settlement.
+
+RhoGuest stores the settlement timestamp and user for audit purposes.
+
+### Laundry Notifications
+
+The hotel may enable guest and staff email notifications in FNB Menu Settings.
+
+Assigned staff can also receive in-app Frappe alerts for Laundry lifecycle events.
+
+Email notifications are supplementary. Staff should continue to use the RhoGuest Dashboard and Laundry operational queues as the source of truth.
+
 ---
 
 ## 9. Managing Service Categories
