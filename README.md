@@ -59,7 +59,7 @@ Phase 2B is intentionally read-only:
 
 - Food & Beverage links to the existing configured public menu route.
 - Other published categories can show their approved RhoGuest Service Items, operating hours, location, availability and safe server-resolved pricing.
-- Laundry requests, Spa bookings, Pool/Gym admission, Transport jobs and other transactional actions are not exposed until their dedicated server workflows are implemented.
+- Transport, Housekeeping and other unfinished transactional services remain display-only until their dedicated server workflows are implemented.
 - ERPNext Item Price service items are displayed only when a current valid selling price can be resolved from the configured Selling Price List.
 
 This separates public presentation from operational fulfilment and prevents the guest UI from creating unsupported transactions.
@@ -104,6 +104,28 @@ The shared **RhoGuest Facility Reservation** transaction model provides:
 
 Paid facility reservations are recorded as **Pay at Hotel** in this release. Pool/Gym do not yet use the Laundry Charge-to-Room adapter.
 
+## v0.2.0 Spa & Wellness Appointments
+
+RhoGuest now provides a dedicated **Spa & Wellness appointment engine** at `/rhoguest-spa`.
+
+Spa is deliberately resource-aware rather than reusing the Pool/Gym capacity model. The workflow includes:
+
+- **RhoGuest Spa Resource** for therapists, treatment rooms, equipment or other bookable resources.
+- Treatment-to-resource mapping.
+- Structured weekly availability by day/start/end time.
+- Guest choice of a public resource or **Any available**.
+- Server-side auto-selection of an eligible free resource.
+- Candidate-resource row locking before conflict checks.
+- Overlap protection against Requested, Confirmed, Checked In and In Treatment appointments.
+- Server-authoritative treatment duration, appointment end and pricing.
+- Requested → Confirmed → Checked In → In Treatment → Completed workflow.
+- Cancelled / No Show terminal states.
+- Staff rescheduling/resource reassignment with availability revalidation.
+- Public token-based appointment status lookup.
+- Spa Dashboard KPIs, recent appointments and Workspace navigation.
+
+Paid Spa appointments are recorded as **Pay at Hotel** in v0.2.0. Charge-to-Room remains limited to the Laundry adapter until a generic ancillary billing interface is released.
+
 ## RhoGuest Desk Workspace & Dashboard
 
 RhoGuest includes a standard Frappe **Workspace** named **RhoGuest**. It is public to permitted Desk users and uses the `share-people` Workspace icon so RhoGuest appears as its own entry in the Frappe Desk sidebar/home navigation.
@@ -113,6 +135,8 @@ The Workspace provides direct access to:
 - **RhoGuest Dashboard** — operational KPIs and recent Laundry activity.
 - **RhoGuest Laundry Request** — operational Laundry queue.
 - **RhoGuest Facility Reservation** — Pool/Gym reservation and access queue.
+- **RhoGuest Spa Appointment** — Spa treatment appointment queue.
+- **RhoGuest Spa Resource** — therapists/treatment resources and weekly availability.
 - **RhoGuest Service Category** and **RhoGuest Service Item** — guest-service catalog configuration.
 - **FNB Self Order** and **FNB Menu Book** — Food & Beverage operations.
 - **FNB Menu Settings** — RhoGuest branding, routing, hub and F&B configuration.
