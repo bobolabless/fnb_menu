@@ -433,7 +433,143 @@ Email/notification delivery errors are logged but do not roll back the Laundry o
 
 ---
 
-## 11. Permissions
+## 11. Pool & Gym Setup
+
+RhoGuest uses one shared **RhoGuest Facility Reservation** engine for Swimming Pool and Gym & Fitness because both follow the same access/reservation semantics while remaining separately published services.
+
+### 11.1 Enable the category
+
+Open **RhoGuest Service Category → Swimming Pool** or **Gym & Fitness**.
+
+Configure:
+
+- Enabled.
+- Show on Guest Portal.
+- Allows Reservation.
+- Description.
+- Operating Hours.
+- Location.
+- Requires Room Number if hotel policy requires it.
+
+The public routes are:
+
+- Swimming Pool: `/rhoguest-pool`
+- Gym & Fitness: `/rhoguest-gym`
+
+### 11.2 Create reservable Service Items
+
+Each reservable Pool/Gym option must be a **RhoGuest Service Item** with:
+
+- Correct Service Category.
+- Enabled.
+- Available to Guests.
+- Requires Reservation.
+- Duration greater than zero.
+- Optional Capacity.
+- Pricing Mode.
+- Pricing Basis.
+
+**Pricing Basis** supports:
+
+- **Per Reservation** — one resolved rate for the whole booking.
+- **Per Person** — resolved rate multiplied by Party Size.
+
+Example Pool item:
+
+- Service Name: Pool Day Access.
+- Service Key: `pool-day-access`.
+- Duration: 240 minutes.
+- Capacity: 30.
+- Pricing Mode: Fixed Price.
+- Pricing Basis: Per Person.
+
+Example Gym item:
+
+- Service Name: Gym Session.
+- Service Key: `gym-session`.
+- Duration: 60 minutes.
+- Capacity: 12.
+- Pricing Mode: Free or Fixed Price.
+
+### 11.3 Capacity protection
+
+When Capacity is greater than zero, RhoGuest locks the Service Item row before checking overlapping active reservations.
+
+Capacity is consumed by reservations in:
+
+- Requested.
+- Confirmed.
+- Checked In.
+
+The overlap rule is:
+
+`existing.start < requested.end AND existing.end > requested.start`
+
+This prevents simultaneous requests from oversubscribing the same slot.
+
+Capacity `0` means no explicit capacity limit is enforced by the Service Item master.
+
+### 11.4 Reservation workflow
+
+The controlled staff workflow is:
+
+`Requested → Confirmed → Checked In → Completed`
+
+Additional terminal paths:
+
+- Requested → Cancelled.
+- Confirmed → Cancelled.
+- Confirmed → No Show.
+
+Staff can reschedule only Requested or Confirmed reservations. Rescheduling recalculates the slot end and rechecks capacity while excluding the current reservation itself.
+
+### 11.5 Public security rules
+
+The guest browser submits only:
+
+- Facility category key.
+- Service Item identifier.
+- Guest/contact details.
+- Reservation start.
+- Party size.
+- Guest note.
+
+The browser does **not** submit authoritative rate, amount, duration, end time or capacity.
+
+RhoGuest resolves all of these again on the server before inserting the reservation.
+
+Reservations are currently limited to 180 days in advance.
+
+Paid Pool/Gym reservations use **Pay at Hotel** in v0.2.0. Charge-to-Room integration remains limited to the Laundry workflow until a generic facility billing adapter is released.
+
+### 11.6 Staff operations
+
+Open **RhoGuest → Facility Reservations**.
+
+Form actions include:
+
+- Confirm Reservation.
+- Reschedule.
+- Check In.
+- Mark No Show.
+- Complete Visit.
+- Cancel Reservation.
+- Assign Staff / Unassign.
+
+The List View provides queues:
+
+- Upcoming.
+- Awaiting Confirmation.
+- Checked In.
+- Pool.
+- Gym.
+- All Reservations.
+
+The RhoGuest Dashboard includes Upcoming Facilities, Pool Today, Gym Today, Checked In, and Recent Facility Reservations.
+
+---
+
+## 12. Permissions
 
 Current standard Desk roles used by RhoGuest include:
 
@@ -453,7 +589,7 @@ Staff-only APIs reject Guest sessions.
 
 ---
 
-## 12. Security Model
+## 13. Security Model
 
 RhoGuest follows these rules:
 
@@ -469,7 +605,7 @@ RhoGuest follows these rules:
 
 ---
 
-## 13. Validation Commands
+## 14. Validation Commands
 
 From the Bench directory:
 
@@ -481,13 +617,14 @@ PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_l
 PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_desk.py
 PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_laundry_ops.py
 PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_laundry_billing.py
+PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_facilities.py
 ```
 
 All should report PASS.
 
 ---
 
-## 14. Troubleshooting
+## 15. Troubleshooting
 
 ### Workspace not visible
 
@@ -528,7 +665,7 @@ RhoGuest refuses protected/conflicting routes. Choose another route instead of o
 
 ---
 
-## 15. Backup and Recovery
+## 16. Backup and Recovery
 
 Before upgrades or major configuration changes:
 
@@ -542,7 +679,7 @@ Restore procedures should follow the normal Frappe Bench recovery process for th
 
 ---
 
-## 16. Support and Ownership
+## 17. Support and Ownership
 
 RhoGuest is developed and maintained by **Rhocom Technology Limited** as a RhoHMS add-on application.
 
