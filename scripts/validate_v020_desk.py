@@ -34,10 +34,10 @@ def main():
         "RhoGuest Dashboard",
         "Laundry Requests",
         "Guest Services Hub",
-        "Public F&B Menu",
+        "Public Food & Beverage Menu",
         "Service Categories",
         "Service Items",
-        "RhoGuest Settings",
+        "RhoGuest Menu Settings",
     } <= shortcut_labels
 
     assert page["doctype"] == "Page"
