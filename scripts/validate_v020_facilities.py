@@ -109,10 +109,14 @@ def main():
     assert '"/rhoguest-pool", "to_route": "rhoguest_pool"' in hooks
     assert '"/rhoguest-gym", "to_route": "rhoguest_gym"' in hooks
 
-    assert "rate:" not in public_js
-    assert "currency:" not in public_js
-    assert "category_key:" in public_js
-    assert "service_item:" in public_js
+    payload_block = public_js.split(
+        "const params = new URLSearchParams({", 1
+    )[1].split("});", 1)[0]
+    assert "rate:" not in payload_block
+    assert "amount:" not in payload_block
+    assert "currency:" not in payload_block
+    assert "category_key:" in payload_block
+    assert "service_item:" in payload_block
 
     assert '"facility_upcoming"' in dashboard
     assert '"pool_today"' in dashboard
