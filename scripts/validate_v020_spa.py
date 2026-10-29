@@ -77,6 +77,9 @@ def main():
     hooks = (ROOT / "fnb_menu/hooks.py").read_text()
     dashboard = (ROOT / "fnb_menu/api/dashboard.py").read_text()
     workspace = load_json("fnb_menu/fnb_menu/workspace/rhoguest/rhoguest.json")
+    setup = (ROOT / "docs/RHOGUEST_SETUP_MANUAL.md").read_text()
+    user = (ROOT / "docs/RHOGUEST_USER_MANUAL.md").read_text()
+    readme = (ROOT / "README.md").read_text()
 
     assert "Spa Resource availability overlaps" in resource_py
     assert 'service_category != "spa-wellness"' in resource_py
@@ -141,6 +144,12 @@ def main():
         row.get("data", {}).get("shortcut_name") == "Spa Appointments"
         for row in content
     )
+
+    assert "Spa & Wellness Setup" in setup
+    assert "Candidate resources are row-locked" in setup
+    assert "Spa & Wellness Appointments" in user
+    assert "Any available" in user
+    assert "v0.2.0 Spa & Wellness Appointments" in readme
 
     print("RhoGuest v0.2.0 Spa & Wellness appointments: PASS")
 
