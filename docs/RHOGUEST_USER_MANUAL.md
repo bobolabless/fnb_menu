@@ -20,6 +20,8 @@ Current operational areas are:
 - Dashboard.
 - Food & Beverage.
 - Laundry.
+- Pool & Gym reservations.
+- Spa & Wellness appointments.
 - Guest-service catalog.
 - Public Guest Services Hub configuration.
 
@@ -35,6 +37,9 @@ The Workspace provides shortcuts to:
 
 - RhoGuest Dashboard.
 - Laundry Requests.
+- Facility Reservations.
+- Spa Appointments.
+- Spa Resources.
 - Service Categories.
 - Service Items.
 - F&B Orders.
@@ -117,6 +122,10 @@ A service must have:
 Food & Beverage opens the hotel's configured public menu.
 
 Laundry opens the Laundry Request page when Laundry is published.
+
+Swimming Pool and Gym open their reservation pages when published.
+
+Spa & Wellness opens the Spa Appointment page when published.
 
 Do not publish future service categories merely because they exist. Publish only when their guest-facing and staff workflows are operational.
 
@@ -429,7 +438,106 @@ Staff can also filter by Facility, Status, Reservation Start, Room Number and As
 
 ---
 
-## 10. Managing Service Categories
+## 10. Spa & Wellness Appointments
+
+Guests use:
+
+`/rhoguest-spa`
+
+A guest:
+
+1. Selects a published Spa treatment.
+2. Enters Guest Name.
+3. Enters Room Number if applicable.
+4. Provides phone or email.
+5. Selects Appointment Start.
+6. Optionally chooses a public therapist/resource, or leaves **Any available**.
+7. Adds an optional Guest Note.
+8. Submits.
+
+RhoGuest resolves the treatment price, duration, end time and actual available resource on the server.
+
+### 10.1 Staff workflow
+
+Open **RhoGuest → Spa Appointments**.
+
+**Requested**
+- Confirm Appointment.
+- Reschedule / Change Resource.
+- Cancel Appointment.
+
+**Confirmed**
+- Check In.
+- Reschedule / Change Resource.
+- Mark No Show.
+- Cancel Appointment.
+
+**Checked In**
+- Start Treatment.
+
+**In Treatment**
+- Complete Treatment.
+
+**Completed**, **Cancelled**, and **No Show** are terminal.
+
+### 10.2 Spa resources
+
+System Manager/Sales Manager configure **RhoGuest Spa Resource** records.
+
+A resource may represent:
+
+- Therapist.
+- Treatment Room.
+- Equipment.
+- Other.
+
+A Spa Resource must be mapped to the treatments it can perform and given weekly availability.
+
+If a resource is not marked **Allow Guest to Select This Resource**, guests will not see its name; the server may still assign it automatically when **Any available** is selected.
+
+### 10.3 Availability and conflicts
+
+RhoGuest rejects a Spa booking when:
+
+- No enabled resource supports the treatment.
+- The selected resource is outside its configured weekly availability.
+- Another active appointment overlaps that resource.
+- A duplicate active appointment exists for the same guest contact/treatment/time.
+- The appointment is more than 180 days in advance.
+
+Requested appointments already reserve the resource to prevent double booking while staff confirmation is pending.
+
+### 10.4 Pricing and settlement
+
+Spa pricing is always resolved by the server.
+
+The guest browser cannot set:
+
+- Rate.
+- Amount.
+- Duration.
+- Appointment End.
+
+Settlement is currently:
+
+- Complimentary; or
+- Pay at Hotel.
+
+### 10.5 Spa queues
+
+The Spa Appointment List provides:
+
+- Upcoming.
+- Awaiting Confirmation.
+- Checked In.
+- In Treatment.
+- All Appointments.
+
+The RhoGuest Dashboard also shows Upcoming Spa, Spa Today, In Treatment and Recent Spa Appointments.
+
+---
+
+## 11. Managing Service Categories
 
 Open **RhoGuest Service Category**.
 
@@ -453,7 +561,7 @@ Do not change the Service Key of an existing category.
 
 ---
 
-## 11. Managing Service Items
+## 12. Managing Service Items
 
 Open **RhoGuest Service Item**.
 
@@ -480,7 +588,7 @@ Quote-only items can be displayed but should not be treated as a fixed-price tra
 
 ---
 
-## 12. FNB Menu Settings
+## 13. FNB Menu Settings
 
 System Managers use FNB Menu Settings for:
 
@@ -501,7 +609,7 @@ Operational users should not alter routing/payment configuration unless authoriz
 
 ---
 
-## 13. Daily Operating Checklist
+## 14. Daily Operating Checklist
 
 At start of shift:
 
@@ -513,8 +621,9 @@ At start of shift:
 6. Review Pending Folio Posting.
 7. Review Upcoming Pool/Gym reservations.
 8. Review guests currently Checked In to facilities.
-9. Confirm published services are actually available.
-10. Confirm no unavailable Laundry or Facility item remains guest-visible.
+9. Review Upcoming Spa appointments and treatments In Treatment.
+10. Confirm published services are actually available.
+11. Confirm no unavailable Laundry, Facility or Spa treatment remains guest-visible.
 
 During shift:
 
@@ -533,7 +642,7 @@ End of shift:
 
 ---
 
-## 14. Security and Privacy
+## 15. Security and Privacy
 
 Staff should:
 
@@ -547,7 +656,7 @@ RhoGuest intentionally does not trust browser-submitted prices.
 
 ---
 
-## 15. Common Issues
+## 16. Common Issues
 
 ### Guest cannot see a service
 
@@ -573,17 +682,20 @@ Follow the documented Laundry workflow sequence.
 
 Confirm payment is verified Paid and order status is eligible for kitchen release.
 
+### Spa appointment cannot be booked
+
+Check the treatment is published/reservable and that at least one mapped enabled Spa Resource has weekly availability covering the requested time without an overlapping active appointment.
+
 ### RhoGuest menu not visible in Desk
 
 Contact System Manager to verify roles, run migrate/clear-cache if recently upgraded, then hard-refresh.
 
 ---
 
-## 16. Future Modules
+## 17. Future Modules
 
 The generic RhoGuest service framework is designed to support additional operational workflows including:
 
-- Spa & Wellness.
 - Transport.
 - Housekeeping.
 - Recreation.
@@ -594,7 +706,7 @@ A category may exist before its transaction workflow is released. Staff must not
 
 ---
 
-## 17. Support
+## 18. Support
 
 RhoGuest is a RhoHMS add-on application developed by **Rhocom Technology Limited**.
 
