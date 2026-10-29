@@ -7,10 +7,10 @@ OLD_BOOK = "Luxury Menu Book"
 OLD_CATEGORY = "Luxury Menu Category"
 OLD_ENTRY = "Luxury Menu Entry"
 
-NEW_SETTINGS = "FNB Menu Settings"
-NEW_BOOK = "FNB Menu Book"
-NEW_CATEGORY = "FNB Menu Category"
-NEW_ENTRY = "FNB Menu Entry"
+NEW_SETTINGS = "RhoGuest Menu Settings"
+NEW_BOOK = "RhoGuest Menu Book"
+NEW_CATEGORY = "RhoGuest Menu Category"
+NEW_ENTRY = "RhoGuest Menu Entry"
 
 
 def _doctype_exists(name):

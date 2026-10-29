@@ -214,7 +214,7 @@ def validate_rhoguest_settings(settings) -> None:
 def sync_rhoguest_routes(settings=None) -> dict[str, str]:
     """Synchronize RhoGuest-owned redirects into Website Settings only."""
 
-    settings = settings or frappe.get_single("FNB Menu Settings")
+    settings = settings or frappe.get_single("RhoGuest Menu Settings")
     validate_rhoguest_settings(settings)
 
     desired = _desired_redirects(settings)
@@ -276,7 +276,7 @@ def sync_rhoguest_routes(settings=None) -> dict[str, str]:
 def get_public_menu_route() -> str:
     """Return the configured hotel-facing menu route."""
 
-    route = frappe.db.get_single_value("FNB Menu Settings", "public_menu_route")
+    route = frappe.db.get_single_value("RhoGuest Menu Settings", "public_menu_route")
     return normalize_route(route) or INTERNAL_MENU_ROUTE
 
 

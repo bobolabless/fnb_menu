@@ -5,7 +5,7 @@ from frappe.utils import cint, flt, getdate, nowdate
 
 
 def get_settings():
-    return frappe.get_single("FNB Menu Settings")
+    return frappe.get_single("RhoGuest Menu Settings")
 
 
 def get_company_brand(company_name):
@@ -107,7 +107,7 @@ def get_menu_book_payload(book_name):
     if not book_name:
         return None
 
-    book = frappe.get_cached_doc("FNB Menu Book", book_name)
+    book = frappe.get_cached_doc("RhoGuest Menu Book", book_name)
 
     if not cint(book.published):
         return None
@@ -122,7 +122,7 @@ def get_menu_book_payload(book_name):
     )
 
     categories = frappe.get_all(
-        "FNB Menu Category",
+        "RhoGuest Menu Category",
         filters={"menu_book": book.name, "enabled": 1},
         fields=[
             "name",
@@ -136,7 +136,7 @@ def get_menu_book_payload(book_name):
     )
 
     entries = frappe.get_all(
-        "FNB Menu Entry",
+        "RhoGuest Menu Entry",
         filters={"menu_book": book.name, "show_on_menu": 1},
         fields=[
             "name",
@@ -193,7 +193,7 @@ def get_menu_book_payload(book_name):
         if not resolved:
             if entry.price_source != "No Price":
                 frappe.db.set_value(
-                    "FNB Menu Entry",
+                    "RhoGuest Menu Entry",
                     entry.name,
                     "price_source",
                     "No Price",
@@ -208,7 +208,7 @@ def get_menu_book_payload(book_name):
             or entry.price_source != resolved.source
         ):
             frappe.db.set_value(
-                "FNB Menu Entry",
+                "RhoGuest Menu Entry",
                 entry.name,
                 {
                     "link_status": link_status,

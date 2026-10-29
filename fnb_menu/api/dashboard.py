@@ -141,7 +141,7 @@ def get_dashboard_data():
         limit_page_length=100,
     )
 
-    settings = frappe.get_single("FNB Menu Settings")
+    settings = frappe.get_single("RhoGuest Menu Settings")
 
     return {
         "generated_at": frappe.utils.now(),
@@ -154,11 +154,11 @@ def get_dashboard_data():
                 {"enabled": 1, "available_to_guests": 1},
             ),
             "fnb_active": _count(
-                "FNB Self Order",
+                "RhoGuest Self Order",
                 {"status": ["in", ["Sent to Kitchen", "Preparing", "Ready"]]},
             ),
             "fnb_pending_payment": _count(
-                "FNB Self Order",
+                "RhoGuest Self Order",
                 {"payment_status": "Pending"},
             ),
             "laundry_open": _count(

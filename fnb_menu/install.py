@@ -16,13 +16,13 @@ _SETTINGS_DEFAULTS = {
 
 
 def ensure_settings_defaults():
-    """Backfill newly-added FNB Menu Settings values on existing sites.
+    """Backfill newly-added RhoGuest Menu Settings values on existing sites.
 
     Only missing tabSingles rows are inserted. Existing hotel configuration,
     including explicit zero values for notification toggles, is never changed.
     """
 
-    doctype = "FNB Menu Settings"
+    doctype = "RhoGuest Menu Settings"
 
     for fieldname, default in _SETTINGS_DEFAULTS.items():
         existing = frappe.db.sql(

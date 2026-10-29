@@ -61,7 +61,7 @@ def _email_message(request, event):
 def notify_laundry_event(request, event, actor=None):
     """Dispatch enabled in-app/email notifications without blocking operations."""
 
-    settings = frappe.get_single("FNB Menu Settings")
+    settings = frappe.get_single("RhoGuest Menu Settings")
     actor = actor or frappe.session.user
     title, description = _event_text(request, event)
 
