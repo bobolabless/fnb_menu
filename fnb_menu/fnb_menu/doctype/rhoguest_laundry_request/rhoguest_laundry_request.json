@@ -27,6 +27,11 @@
   "estimated_total",
   "company",
   "folio_reference",
+  "folio_posting_mode",
+  "folio_posted_at",
+  "folio_posted_by",
+  "billing_settled_at",
+  "billing_settled_by",
   "operations_section",
   "assigned_to",
   "collected_at",
@@ -166,6 +171,38 @@
    "fieldtype": "Data",
    "read_only": 1,
    "description": "Reserved for later RhoHMS folio integration."
+  },
+  {
+   "fieldname": "folio_posting_mode",
+   "label": "Folio Posting Mode",
+   "fieldtype": "Data",
+   "read_only": 1
+  },
+  {
+   "fieldname": "folio_posted_at",
+   "label": "Folio Posted At",
+   "fieldtype": "Datetime",
+   "read_only": 1
+  },
+  {
+   "fieldname": "folio_posted_by",
+   "label": "Folio Posted By",
+   "fieldtype": "Link",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "billing_settled_at",
+   "label": "Billing Settled At",
+   "fieldtype": "Datetime",
+   "read_only": 1
+  },
+  {
+   "fieldname": "billing_settled_by",
+   "label": "Billing Settled By",
+   "fieldtype": "Link",
+   "options": "User",
+   "read_only": 1
   },
   {
    "fieldname": "operations_section",

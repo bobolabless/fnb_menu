@@ -9,6 +9,7 @@ frappe.ui.form.on("RhoGuest Laundry Request", {
     if (!frm.doc.__islocal && frappe.model.can_write(frm.doctype)) {
       add_assignment_buttons(frm);
       add_fulfilment_buttons(frm);
+      add_billing_buttons(frm);
     }
   },
 });
@@ -265,4 +266,146 @@ function assign_request(frm, user, dialog = null) {
       }
     },
   });
+}
+
+
+function can_manage_laundry_billing() {
+  return (
+    frappe.user.has_role("System Manager") ||
+    frappe.user.has_role("Sales Manager")
+  );
+}
+
+function add_billing_buttons(frm) {
+  if (!can_manage_laundry_billing()) return;
+  if (frm.doc.billing_preference !== "Charge to Room") return;
+
+  if (frm.doc.billing_status === "Pending Folio Posting") {
+    frappe.call({
+      method: "fnb_menu.api.laundry.get_folio_posting_mode",
+      callback(r) {
+        if (frm.doc.billing_status !== "Pending Folio Posting") return;
+
+        const mode = r.message?.mode || "Manual";
+
+        if (mode === "Custom Integration") {
+          frm.add_custom_button(
+            __("Post to Folio"),
+            () => post_to_folio(frm),
+            __("Billing")
+          );
+        }
+
+        frm.add_custom_button(
+          __("Record Folio Posting"),
+          () => show_manual_folio_dialog(frm),
+          __("Billing")
+        );
+      },
+    });
+  }
+
+  if (frm.doc.billing_status === "Posted to Room" && frm.doc.folio_reference) {
+    frm.add_custom_button(
+      __("Mark Settled"),
+      () => mark_billing_settled(frm),
+      __("Billing")
+    );
+  }
+}
+
+function post_to_folio(frm) {
+  frappe.confirm(
+    __(
+      "Post Laundry Request {0} to the configured room-folio integration?",
+      [frm.doc.name]
+    ),
+    () => {
+      frappe.call({
+        method: "fnb_menu.api.laundry.post_to_folio",
+        args: { request_name: frm.doc.name },
+        freeze: true,
+        freeze_message: __("Posting Laundry charge to folio…"),
+        callback(r) {
+          if (!r.exc) {
+            frappe.show_alert({
+              message: __("Posted to folio: {0}", [r.message?.folio_reference || ""]),
+              indicator: "green",
+            });
+            frm.reload_doc();
+          }
+        },
+      });
+    }
+  );
+}
+
+function show_manual_folio_dialog(frm) {
+  const dialog = new frappe.ui.Dialog({
+    title: __("Record Laundry Folio Posting"),
+    fields: [
+      {
+        fieldname: "folio_reference",
+        fieldtype: "Data",
+        label: __("External Folio Reference"),
+        reqd: 1,
+        description: __(
+          "Enter the real PMS/folio transaction reference after the room charge has been posted."
+        ),
+      },
+    ],
+    primary_action_label: __("Confirm Posted to Room"),
+    primary_action(values) {
+      dialog.disable_primary_action();
+
+      frappe.call({
+        method: "fnb_menu.api.laundry.record_folio_posting",
+        args: {
+          request_name: frm.doc.name,
+          folio_reference: values.folio_reference,
+        },
+        freeze: true,
+        freeze_message: __("Recording folio posting…"),
+        callback(r) {
+          if (!r.exc) {
+            dialog.hide();
+            frappe.show_alert({
+              message: __("Room folio posting recorded."),
+              indicator: "green",
+            });
+            frm.reload_doc();
+          } else {
+            dialog.enable_primary_action();
+          }
+        },
+      });
+    },
+  });
+
+  dialog.show();
+}
+
+function mark_billing_settled(frm) {
+  frappe.confirm(
+    __(
+      "Confirm that the posted Laundry room charge has been settled in the hotel billing process?"
+    ),
+    () => {
+      frappe.call({
+        method: "fnb_menu.api.laundry.mark_billing_settled",
+        args: { request_name: frm.doc.name },
+        freeze: true,
+        freeze_message: __("Updating Laundry billing…"),
+        callback(r) {
+          if (!r.exc) {
+            frappe.show_alert({
+              message: __("Laundry billing marked Settled."),
+              indicator: "green",
+            });
+            frm.reload_doc();
+          }
+        },
+      });
+    }
+  );
 }

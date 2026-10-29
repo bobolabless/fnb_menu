@@ -22,6 +22,7 @@ class FNBMenuSettings(Document):
         # Validate public QR routes independently of F&B/payment configuration.
         preserve_previous_public_route(self)
         validate_rhoguest_settings(self)
+        self._validate_laundry_integration()
 
         if self.default_food_menu:
             self._validate_menu(self.default_food_menu, "Food")
@@ -69,3 +70,35 @@ class FNBMenuSettings(Document):
 
         if row.menu_type != expected_type:
             frappe.throw(_("{0} must be a {1} menu.").format(menu_name, expected_type))
+
+
+    def _validate_laundry_integration(self):
+        """Validate the optional server-side Laundry folio adapter."""
+
+        mode = self.get("laundry_folio_posting_mode") or "Manual"
+
+        if mode not in {"Manual", "Custom Integration"}:
+            frappe.throw(_("Invalid Laundry Folio Posting Mode."))
+
+        if mode != "Custom Integration":
+            return
+
+        method = (self.get("laundry_folio_posting_method") or "").strip()
+        if not method:
+            frappe.throw(
+                _("Custom Folio Posting Method is required for Custom Integration mode.")
+            )
+
+        try:
+            handler = frappe.get_attr(method)
+        except Exception:
+            frappe.throw(
+                _("Custom Folio Posting Method {0} could not be loaded.").format(
+                    frappe.bold(method)
+                )
+            )
+
+        if not callable(handler):
+            frappe.throw(
+                _("Custom Folio Posting Method must resolve to a callable Python function.")
+            )

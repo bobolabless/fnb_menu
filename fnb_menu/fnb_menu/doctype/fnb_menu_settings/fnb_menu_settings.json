@@ -25,6 +25,13 @@
   "guest_hub_title",
   "guest_hub_subtitle",
   "show_service_items_on_hub",
+  "laundry_integration_section",
+  "laundry_folio_posting_mode",
+  "laundry_folio_posting_method",
+  "laundry_staff_in_app_notifications",
+  "laundry_guest_email_notifications",
+  "laundry_staff_email_notifications",
+  "laundry_operations_emails",
   "routing_section",
   "public_menu_route",
   "route_redirect_http_status",
@@ -169,6 +176,63 @@
    "fieldtype": "Check",
    "default": "1",
    "description": "Show enabled guest-available RhoGuest Service Items beneath each published service category. This remains display-only until a workflow is implemented."
+  },
+  {
+   "fieldname": "laundry_integration_section",
+   "label": "RhoGuest Laundry Billing & Notifications",
+   "fieldtype": "Section Break",
+   "description": "Controls optional room-folio integration and Laundry operational notifications. These settings are restricted to System Manager.",
+   "permlevel": 1
+  },
+  {
+   "fieldname": "laundry_folio_posting_mode",
+   "label": "Laundry Folio Posting Mode",
+   "fieldtype": "Select",
+   "options": "Manual\nCustom Integration",
+   "default": "Manual",
+   "reqd": 1,
+   "permlevel": 1,
+   "description": "Manual requires an authorized manager to record the external folio reference. Custom Integration calls the configured Python method."
+  },
+  {
+   "fieldname": "laundry_folio_posting_method",
+   "label": "Custom Folio Posting Method",
+   "fieldtype": "Data",
+   "permlevel": 1,
+   "depends_on": "eval:doc.laundry_folio_posting_mode==\"Custom Integration\"",
+   "mandatory_depends_on": "eval:doc.laundry_folio_posting_mode==\"Custom Integration\"",
+   "description": "Dotted Python path. The callable receives payload=<dict> and must return {success: true, reference: <external folio reference>}."
+  },
+  {
+   "fieldname": "laundry_staff_in_app_notifications",
+   "label": "Laundry Staff In-App Notifications",
+   "fieldtype": "Check",
+   "default": "1",
+   "permlevel": 1,
+   "description": "Notify the assigned System User in Frappe when Laundry operational events occur."
+  },
+  {
+   "fieldname": "laundry_guest_email_notifications",
+   "label": "Laundry Guest Email Notifications",
+   "fieldtype": "Check",
+   "default": "0",
+   "permlevel": 1,
+   "description": "Send selected Laundry lifecycle updates to the guest email address. Disabled by default."
+  },
+  {
+   "fieldname": "laundry_staff_email_notifications",
+   "label": "Laundry Staff Email Notifications",
+   "fieldtype": "Check",
+   "default": "0",
+   "permlevel": 1,
+   "description": "Send Laundry lifecycle emails to the assigned user and configured operations recipients. Disabled by default."
+  },
+  {
+   "fieldname": "laundry_operations_emails",
+   "label": "Laundry Operations Email Recipients",
+   "fieldtype": "Small Text",
+   "permlevel": 1,
+   "description": "Optional comma, semicolon or newline-separated operations email addresses."
   },
   {
    "fieldname": "routing_section",

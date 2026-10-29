@@ -10,7 +10,9 @@ from fnb_menu.laundry_service import (
     resolve_laundry_request_lines,
     validate_requested_pickup,
 )
+from fnb_menu.integrations.folio import post_laundry_request_to_folio
 from fnb_menu.menu_service import get_settings
+from fnb_menu.notifications import notify_laundry_event
 
 STATUS_TRANSITIONS = {
     "Submitted": {"Pickup Scheduled", "Collected", "Cancelled"},
@@ -113,6 +115,7 @@ def create_request(
         }
     )
     request.insert(ignore_permissions=True)
+    notify_laundry_event(request, "Submitted")
 
     return {
         "request": request.name,
@@ -180,6 +183,9 @@ def update_status(request_name, status):
         values["billing_status"] = "Cancelled"
 
     request.db_set(values)
+    request.reload()
+    notify_laundry_event(request, status)
+
     return {
         "request": request.name,
         "status": status,
@@ -210,6 +216,8 @@ def schedule_pickup(request_name, requested_pickup_at):
         values["status"] = "Pickup Scheduled"
 
     request.db_set(values)
+    request.reload()
+    notify_laundry_event(request, "Pickup Scheduled")
 
     return {
         "request": request.name,
@@ -241,8 +249,177 @@ def assign_request(request_name, user=None):
             frappe.throw(_("Assign Laundry Requests only to an enabled System User."))
 
     request.db_set("assigned_to", user or None)
+    request.reload()
+    if user:
+        notify_laundry_event(request, "Assigned")
 
     return {
         "request": request.name,
         "assigned_to": user or None,
+    }
+
+
+
+def _require_billing_manager():
+    """Restrict folio/billing actions to System Manager or Sales Manager."""
+
+    if frappe.session.user == "Guest":
+        frappe.throw(_("Login required."), frappe.PermissionError)
+
+    roles = set(frappe.get_roles(frappe.session.user))
+    if not roles.intersection({"System Manager", "Sales Manager"}):
+        frappe.throw(
+            _("System Manager or Sales Manager role is required for Laundry billing actions."),
+            frappe.PermissionError,
+        )
+
+
+def _lock_billing_request(request_name):
+    """Lock and reload one Laundry Request before an external billing mutation."""
+
+    _require_billing_manager()
+
+    frappe.db.sql(
+        """
+        select name
+        from `tabRhoGuest Laundry Request`
+        where name = %s
+        for update
+        """,
+        request_name,
+    )
+
+    request = _get_staff_request(request_name)
+
+    if request.billing_preference != "Charge to Room":
+        frappe.throw(_("This Laundry Request is not configured for Charge to Room."))
+
+    if request.status == "Cancelled":
+        frappe.throw(_("Cancelled Laundry Requests cannot be posted to a folio."))
+
+    return request
+
+
+def _mark_folio_posted(request, reference, mode):
+    """Persist a confirmed external folio posting with audit metadata."""
+
+    reference = (reference or "").strip()
+    if not reference:
+        frappe.throw(_("Folio Reference is required."))
+
+    if request.billing_status in {"Posted to Room", "Settled"} and request.folio_reference:
+        return {
+            "request": request.name,
+            "billing_status": request.billing_status,
+            "folio_reference": request.folio_reference,
+            "idempotent": 1,
+        }
+
+    if request.billing_status != "Pending Folio Posting":
+        frappe.throw(
+            _("Only Laundry Requests awaiting folio posting can be posted to room.")
+        )
+
+    values = {
+        "billing_status": "Posted to Room",
+        "folio_reference": reference[:140],
+        "folio_posting_mode": mode,
+        "folio_posted_at": now_datetime(),
+        "folio_posted_by": frappe.session.user,
+    }
+    request.db_set(values)
+    request.reload()
+    notify_laundry_event(request, "Posted to Room")
+
+    return {
+        "request": request.name,
+        "billing_status": request.billing_status,
+        "folio_reference": request.folio_reference,
+        "idempotent": 0,
+    }
+
+
+@frappe.whitelist()
+def get_folio_posting_mode():
+    """Return non-sensitive Laundry folio integration state for the Desk form."""
+
+    _require_billing_manager()
+    settings = get_settings()
+    mode = settings.get("laundry_folio_posting_mode") or "Manual"
+
+    return {
+        "mode": mode,
+        "custom_integration_configured": bool(
+            (settings.get("laundry_folio_posting_method") or "").strip()
+        ),
+    }
+
+
+@frappe.whitelist(methods=["POST"])
+def post_to_folio(request_name):
+    """Post a Charge-to-Room Laundry Request through the configured adapter."""
+
+    request = _lock_billing_request(request_name)
+
+    if request.billing_status in {"Posted to Room", "Settled"} and request.folio_reference:
+        return {
+            "request": request.name,
+            "billing_status": request.billing_status,
+            "folio_reference": request.folio_reference,
+            "idempotent": 1,
+        }
+
+    result = post_laundry_request_to_folio(request)
+    return _mark_folio_posted(
+        request,
+        result.reference,
+        result.mode,
+    )
+
+
+@frappe.whitelist(methods=["POST"])
+def record_folio_posting(request_name, folio_reference):
+    """Record a manually completed posting using its real external reference."""
+
+    request = _lock_billing_request(request_name)
+    return _mark_folio_posted(
+        request,
+        folio_reference,
+        "Manual",
+    )
+
+
+@frappe.whitelist(methods=["POST"])
+def mark_billing_settled(request_name):
+    """Mark a previously posted room charge as settled with audit metadata."""
+
+    _require_billing_manager()
+    request = _get_staff_request(request_name)
+
+    if request.billing_status == "Settled":
+        return {
+            "request": request.name,
+            "billing_status": request.billing_status,
+            "idempotent": 1,
+        }
+
+    if request.billing_status != "Posted to Room" or not request.folio_reference:
+        frappe.throw(
+            _("Billing can be marked Settled only after a confirmed folio posting.")
+        )
+
+    request.db_set(
+        {
+            "billing_status": "Settled",
+            "billing_settled_at": now_datetime(),
+            "billing_settled_by": frappe.session.user,
+        }
+    )
+    request.reload()
+    notify_laundry_event(request, "Settled")
+
+    return {
+        "request": request.name,
+        "billing_status": request.billing_status,
+        "idempotent": 0,
     }
