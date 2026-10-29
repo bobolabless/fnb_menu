@@ -1,0 +1,48 @@
+{
+ "doctype": "DocType",
+ "name": "RhoGuest Transport Driver",
+ "module": "FNB Menu",
+ "engine": "InnoDB",
+ "autoname": "field:driver_key",
+ "title_field": "driver_name",
+ "show_title_field_in_link": 1,
+ "search_fields": "driver_name,driver_key,license_number,phone,employee,user",
+ "track_changes": 1,
+ "field_order": [
+  "identity_section",
+  "driver_name",
+  "driver_key",
+  "phone",
+  "identity_column_break",
+  "employee",
+  "user",
+  "enabled",
+  "license_section",
+  "license_number",
+  "license_expiry",
+  "notes_section",
+  "notes"
+ ],
+ "fields": [
+  {"fieldname":"identity_section","label":"Driver Identity","fieldtype":"Section Break"},
+  {"fieldname":"driver_name","label":"Driver Name","fieldtype":"Data","reqd":1,"in_list_view":1},
+  {"fieldname":"driver_key","label":"Driver Key","fieldtype":"Data","reqd":1,"unique":1,"in_list_view":1},
+  {"fieldname":"phone","label":"Phone","fieldtype":"Data","in_list_view":1},
+  {"fieldname":"identity_column_break","fieldtype":"Column Break"},
+  {"fieldname":"employee","label":"Employee","fieldtype":"Link","options":"Employee"},
+  {"fieldname":"user","label":"System User","fieldtype":"Link","options":"User"},
+  {"fieldname":"enabled","label":"Enabled","fieldtype":"Check","default":"1","in_list_view":1,"in_standard_filter":1},
+  {"fieldname":"license_section","label":"Driving Licence","fieldtype":"Section Break"},
+  {"fieldname":"license_number","label":"Licence Number","fieldtype":"Data","reqd":1,"unique":1,"in_list_view":1},
+  {"fieldname":"license_expiry","label":"Licence Expiry","fieldtype":"Date","reqd":1,"in_list_view":1},
+  {"fieldname":"notes_section","label":"Internal Notes","fieldtype":"Section Break"},
+  {"fieldname":"notes","label":"Notes","fieldtype":"Small Text"}
+ ],
+ "permissions": [
+  {"role":"System Manager","read":1,"write":1,"create":1,"delete":1,"report":1,"export":1},
+  {"role":"Sales Manager","read":1,"write":1,"create":1,"report":1},
+  {"role":"Sales User","read":1}
+ ],
+ "sort_field":"driver_name",
+ "sort_order":"ASC"
+}

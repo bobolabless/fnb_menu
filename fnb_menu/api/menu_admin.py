@@ -8,12 +8,12 @@ def bulk_set_self_ordering(menu_book, enabled=1):
     if not menu_book:
         frappe.throw(_("Menu Book is required."))
 
-    frappe.get_doc("FNB Menu Book", menu_book)
+    frappe.get_doc("RhoGuest Menu Book", menu_book)
 
     enabled = cint(enabled)
 
     rows = frappe.get_all(
-        "FNB Menu Entry",
+        "RhoGuest Menu Entry",
         filters={"menu_book": menu_book},
         fields=[
             "name",
@@ -38,7 +38,7 @@ def bulk_set_self_ordering(menu_book, enabled=1):
             value = 0
 
         frappe.db.set_value(
-            "FNB Menu Entry",
+            "RhoGuest Menu Entry",
             row.name,
             "allow_self_order",
             value,

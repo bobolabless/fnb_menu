@@ -65,7 +65,7 @@ def _make_payment_request(sales_order, settings, email, phone):
         "currency": sales_order.currency,
         "grand_total": sales_order.grand_total,
         "email_to": email,
-        "subject": _("Payment for RhoHMS F&B Menu order {0}").format(sales_order.name),
+        "subject": _("Payment for RhoGuest Food & Beverage order {0}").format(sales_order.name),
         "reference_doctype": "Sales Order",
         "reference_name": sales_order.name,
         "company": sales_order.company,
@@ -178,7 +178,7 @@ def create_checkout(
 
     order = frappe.get_doc(
         {
-            "doctype": "FNB Self Order",
+            "doctype": "RhoGuest Self Order",
             "guest_name": guest_name,
             "email": email,
             "phone": phone,
@@ -261,7 +261,7 @@ def create_checkout(
     except Exception:
         order.db_set({"status": "Payment Failed", "payment_status": "Failed"})
         frappe.log_error(
-            title=f"RhoHMS F&B Menu Payment Request Failed - {order.name}",
+            title=f"RhoGuest Food & Beverage Payment Request Failed - {order.name}",
             message=frappe.get_traceback(),
         )
         raise
@@ -282,7 +282,7 @@ def create_checkout(
 @frappe.whitelist(allow_guest=True)
 def get_order_status(order_name, token):
     order = frappe.db.get_value(
-        "FNB Self Order",
+        "RhoGuest Self Order",
         {"name": order_name, "public_token": token},
         ["name", "status", "payment_status", "grand_total", "currency", "creation", "service_type"],
         as_dict=True,

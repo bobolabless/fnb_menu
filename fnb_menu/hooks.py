@@ -15,6 +15,11 @@ after_migrate = "fnb_menu.install.after_migrate"
 website_route_rules = [
     {"from_route": "/fnb-menu", "to_route": "fnb_menu"},
     {"from_route": "/fnb-kitchen", "to_route": "fnb_kitchen"},
+    {"from_route": "/rhoguest-laundry", "to_route": "rhoguest_laundry"},
+    {"from_route": "/rhoguest-pool", "to_route": "rhoguest_pool"},
+    {"from_route": "/rhoguest-gym", "to_route": "rhoguest_gym"},
+    {"from_route": "/rhoguest-spa", "to_route": "rhoguest_spa"},
+    {"from_route": "/rhoguest-transport", "to_route": "rhoguest_transport"},
 ]
 
 doc_events = {

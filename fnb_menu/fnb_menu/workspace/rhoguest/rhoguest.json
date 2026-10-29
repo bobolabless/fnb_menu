@@ -1,0 +1,342 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"rg-head-1\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>RhoGuest Operations</b></span>\",\"col\":12}},{\"id\":\"rg-sc-1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"RhoGuest Dashboard\",\"col\":3}},{\"id\":\"rg-sc-2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Laundry Requests\",\"col\":3}},{\"id\":\"rg-sc-facilities\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Facility Reservations\",\"col\":3}},{\"id\":\"rg-sc-spa\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Spa Appointments\",\"col\":3}},{\"id\":\"rg-sc-transport\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Transport Bookings\",\"col\":3}},{\"id\":\"rg-sc-3\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Guest Services Hub\",\"col\":3}},{\"id\":\"rg-sc-4\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Public Food & Beverage Menu\",\"col\":3}},{\"id\":\"rg-space-1\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"rg-head-2\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Configuration & Masters</b></span>\",\"col\":12}},{\"id\":\"rg-card-1\",\"type\":\"card\",\"data\":{\"card_name\":\"Operations\",\"col\":4}},{\"id\":\"rg-card-2\",\"type\":\"card\",\"data\":{\"card_name\":\"Service Catalog\",\"col\":4}},{\"id\":\"rg-card-3\",\"type\":\"card\",\"data\":{\"card_name\":\"Configuration\",\"col\":4}}]",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "share-people",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "RhoGuest",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Operations",
+   "link_count": 0,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Laundry Requests",
+   "link_count": 0,
+   "link_to": "RhoGuest Laundry Request",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Facility Reservations",
+   "link_count": 0,
+   "link_to": "RhoGuest Facility Reservation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Spa Appointments",
+   "link_count": 0,
+   "link_to": "RhoGuest Spa Appointment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Transport Bookings",
+   "link_count": 0,
+   "link_to": "RhoGuest Transport Booking",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Food & Beverage Orders",
+   "link_count": 0,
+   "link_to": "RhoGuest Self Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Service Catalog",
+   "link_count": 0,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Service Categories",
+   "link_count": 0,
+   "link_to": "RhoGuest Service Category",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Service Items",
+   "link_count": 0,
+   "link_to": "RhoGuest Service Item",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Menu Books",
+   "link_count": 0,
+   "link_to": "RhoGuest Menu Book",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Menu Categories",
+   "link_count": 0,
+   "link_to": "RhoGuest Menu Category",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Menu Entries",
+   "link_count": 0,
+   "link_to": "RhoGuest Menu Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Configuration",
+   "link_count": 0,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Spa Resources",
+   "link_count": 0,
+   "link_to": "RhoGuest Spa Resource",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Transport Vehicles",
+   "link_count": 0,
+   "link_to": "RhoGuest Transport Vehicle",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Transport Drivers",
+   "link_count": 0,
+   "link_to": "RhoGuest Transport Driver",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "RhoGuest Menu Settings",
+   "link_count": 0,
+   "link_to": "RhoGuest Menu Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "module": "FNB Menu",
+ "name": "RhoGuest",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "restrict_to_domain": "",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Sales Manager"
+  },
+  {
+   "role": "Sales User"
+  }
+ ],
+ "sequence_id": 20,
+ "shortcuts": [
+  {
+   "color": "Blue",
+   "label": "RhoGuest Dashboard",
+   "link_to": "rhoguest-dashboard",
+   "type": "Page"
+  },
+  {
+   "color": "Orange",
+   "doc_view": "List",
+   "label": "Laundry Requests",
+   "link_to": "RhoGuest Laundry Request",
+   "type": "DocType"
+  },
+  {
+   "color": "Purple",
+   "doc_view": "List",
+   "label": "Facility Reservations",
+   "link_to": "RhoGuest Facility Reservation",
+   "type": "DocType"
+  },
+  {
+   "color": "Pink",
+   "doc_view": "List",
+   "label": "Spa Appointments",
+   "link_to": "RhoGuest Spa Appointment",
+   "type": "DocType"
+  },
+  {
+   "color": "Cyan",
+   "doc_view": "List",
+   "label": "Transport Bookings",
+   "link_to": "RhoGuest Transport Booking",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "label": "Guest Services Hub",
+   "type": "URL",
+   "url": "/rhoguest"
+  },
+  {
+   "color": "Grey",
+   "label": "Public Food & Beverage Menu",
+   "type": "URL",
+   "url": "/fnb-menu"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Service Categories",
+   "link_to": "RhoGuest Service Category",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Service Items",
+   "link_to": "RhoGuest Service Item",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Food & Beverage Orders",
+   "link_to": "RhoGuest Self Order",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Menu Books",
+   "link_to": "RhoGuest Menu Book",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "label": "RhoGuest Menu Settings",
+   "link_to": "RhoGuest Menu Settings",
+   "type": "DocType"
+  },
+  {
+   "color": "Blue",
+   "label": "Public Pool",
+   "type": "URL",
+   "url": "/rhoguest-pool"
+  },
+  {
+   "color": "Blue",
+   "label": "Public Gym",
+   "type": "URL",
+   "url": "/rhoguest-gym"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Spa Resources",
+   "link_to": "RhoGuest Spa Resource",
+   "type": "DocType"
+  },
+  {
+   "color": "Pink",
+   "label": "Public Spa",
+   "type": "URL",
+   "url": "/rhoguest-spa"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Transport Vehicles",
+   "link_to": "RhoGuest Transport Vehicle",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Transport Drivers",
+   "link_to": "RhoGuest Transport Driver",
+   "type": "DocType"
+  },
+  {
+   "color": "Cyan",
+   "label": "Public Transport",
+   "type": "URL",
+   "url": "/rhoguest-transport"
+  }
+ ],
+ "title": "RhoGuest",
+ "type": "Workspace"
+}

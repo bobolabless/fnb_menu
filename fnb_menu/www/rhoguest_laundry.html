@@ -1,0 +1,125 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_content %}
+<div class="rgl-shell theme-{{ theme_slug }}">
+  <div class="rgl-frame">
+    <header class="rgl-head">
+      <a href="/rhoguest" class="rgl-back">← Guest Services</a>
+      {% if brand.logo %}
+        <img class="rgl-logo" src="{{ brand.logo }}" alt="{{ brand.hotel_name }}">
+      {% endif %}
+      <p class="rgl-eyebrow">RhoGuest</p>
+      <h1>Laundry Service</h1>
+      {% if catalog.category and catalog.category.short_description %}
+        <p class="rgl-intro">{{ catalog.category.short_description }}</p>
+      {% else %}
+        <p class="rgl-intro">Select your laundry items and request collection from your room.</p>
+      {% endif %}
+    </header>
+
+    {% if not catalog.available %}
+      <section class="rgl-state">
+        <h2>Laundry service is not currently available online</h2>
+        <p>Please contact reception or the hotel team for assistance.</p>
+      </section>
+    {% elif not catalog["items"] %}
+      <section class="rgl-state">
+        <h2>No laundry items are configured yet</h2>
+        <p>Please contact the hotel team for the current laundry list.</p>
+      </section>
+    {% else %}
+      <form id="rgl-form" class="rgl-layout">
+        <section class="rgl-card">
+          <div class="rgl-section-head"><span>01</span><div><small>SELECT</small><h2>Laundry Items</h2></div></div>
+
+          <div class="rgl-items">
+            {% for item in catalog["items"] %}
+              <article
+                class="rgl-item {% if not item.selectable %}is-readonly{% endif %}"
+                data-laundry-item
+                data-service-item="{{ item.name }}"
+                data-rate="{{ item.rate if item.rate is not none else '' }}"
+              >
+                <div class="rgl-item-copy">
+                  <div class="rgl-item-title">
+                    <h3>{{ item.service_name }}</h3>
+                    <strong>
+                      {% if item.price_label %}
+                        {{ item.price_label }}
+                      {% else %}
+                        {{ frappe.utils.fmt_money(item.rate, currency=item.currency) }}
+                      {% endif %}
+                    </strong>
+                  </div>
+                  {% if item.description %}<p>{{ item.description }}</p>{% endif %}
+                  {% if item.availability_note %}<small>{{ item.availability_note }}</small>{% endif %}
+                </div>
+
+                {% if item.selectable %}
+                  <div class="rgl-qty">
+                    <button type="button" data-qty-minus>−</button>
+                    <input type="number" min="0" max="50" step="1" value="0" data-qty>
+                    <button type="button" data-qty-plus>+</button>
+                  </div>
+                  <input class="rgl-line-note" type="text" maxlength="500" placeholder="Optional item instruction" data-line-note>
+                {% else %}
+                  <span class="rgl-quote-note">Contact hotel team</span>
+                {% endif %}
+              </article>
+            {% endfor %}
+          </div>
+        </section>
+
+        <section class="rgl-card">
+          <div class="rgl-section-head"><span>02</span><div><small>DETAILS</small><h2>Collection Request</h2></div></div>
+
+          <div class="rgl-fields">
+            <label>Guest Name<input id="rgl-guest-name" required maxlength="140" autocomplete="name"></label>
+            <label>Room Number<input id="rgl-room-number" required maxlength="30"></label>
+            <label>Phone<input id="rgl-phone" type="tel" maxlength="40" autocomplete="tel"></label>
+            <label>Email<input id="rgl-email" type="email" maxlength="140" autocomplete="email"></label>
+            <label>Preferred Pickup Time<input id="rgl-pickup-at" type="datetime-local"></label>
+            <label>
+              Billing Preference
+              <select id="rgl-billing">
+                <option value="Pay at Hotel">Pay at Hotel</option>
+                {% if catalog.category.allows_charge_to_room %}
+                  <option value="Charge to Room">Charge to Room</option>
+                {% endif %}
+              </select>
+            </label>
+            <label class="rgl-full">Pickup / Laundry Instructions<textarea id="rgl-pickup-note" maxlength="1000" rows="4"></textarea></label>
+          </div>
+
+          <div class="rgl-total"><span>Estimated total</span><strong id="rgl-total">0</strong></div>
+          <p class="rgl-billing-note">
+            Prices are validated again when submitted. “Charge to Room” queues
+            the request for folio posting; it does not silently post a charge.
+          </p>
+          <button id="rgl-submit" class="rgl-submit" type="submit">Submit Laundry Request</button>
+          <div id="rgl-message" class="rgl-message" aria-live="polite"></div>
+        </section>
+      </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="/assets/fnb_menu/css/rhoguest_laundry.css">
+{% endblock %}
+
+{% block script %}
+{% if catalog.available and catalog["items"] %}
+<script>
+window.RHOGUEST_LAUNDRY_CONFIG = {
+  createUrl: "/api/method/fnb_menu.api.laundry.create_request",
+  csrfToken: "{{ csrf_token }}",
+  currency: "{{ catalog.currency or brand.currency or 'NGN' }}"
+};
+</script>
+<script src="/assets/fnb_menu/js/rhoguest_laundry.js"></script>
+{% endif %}
+{% endblock %}

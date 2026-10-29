@@ -2,8 +2,8 @@
 
 ## 0.2.0-dev
 
-- Rebranded the guest-facing product from **RhoHMS F&B Menu** to **RhoGuest — Digital Menu & Guest Services** while retaining the technical app slug `fnb_menu`.
-- Added an editable hotel-facing public menu route in **FNB Menu Settings**.
+- Rebranded the guest-facing product from **RhoHMS Food & Beverage Menu** to **RhoGuest — Digital Menu & Guest Services** while retaining the technical app slug `fnb_menu`.
+- Added an editable hotel-facing public menu route in **RhoGuest Menu Settings**.
 - Added protected legacy/existing QR aliases so already-printed hotel QR codes can continue to work.
 - Preserved `/fnb-menu` and `/fnb-kitchen` as stable internal compatibility routes.
 - Added automatic retention of the previous public menu route when the primary route changes.
@@ -11,7 +11,67 @@
 - Added route validation for protected Frappe paths and conflicting Website Settings redirects.
 - Added a route preview and dynamic Preview Public Menu button.
 - Added a v0.2.0 routing-foundation static contract validator.
-- Laundry, Swimming Pool, Gym and other ancillary-service workflows are intentionally deferred until the routing layer passes live-site acceptance.
+- Live-site routing acceptance passed for the configurable public route, legacy QR aliases and stable `/fnb-menu` compatibility endpoint.
+- Added **RhoGuest Service Category** as a generic guest-service family master with workflow, publication, operating-information and capability controls.
+- Added **RhoGuest Service Item** as a generic service-choice master with availability, pricing, reservation, capacity and ERPNext Item mapping.
+- Added non-destructive default category provisioning for Food & Beverage, Laundry, Swimming Pool, Gym & Fitness, Spa & Wellness, Transport, Housekeeping, Recreation, Guest Requests and Hotel Information.
+- Default service categories are created disabled and unpublished so migration never exposes ancillary services automatically.
+- Added server-side validation for immutable category keys, publication state, information-only workflows, pricing modes, reservation capability, Charge to Room capability and duplicate service-item keys.
+- Added a v0.2.0 generic-services static contract validator.
+- Added a read-only **Guest Services Hub** at `/rhoguest`, disabled by default.
+- Added Guest Hub settings for title, subtitle and service-item visibility.
+- Guest Hub publication requires both category **Enabled** and **Show on Guest Portal** flags.
+- Food & Beverage routes from the hub to the existing tested public menu route; unsupported service transactions remain unavailable.
+- Added server-authoritative public Service Item price resolution, including current ERPNext Item Price checks.
+- Added a v0.2.0 Guest Services Hub static contract validator.
+
+- Added **Laundry Request & Fulfilment** with server-authoritative pricing, public status tokens and controlled fulfilment transitions.
+- Added stable public Laundry route `/rhoguest-laundry`.
+- Added **RhoGuest Workspace** with a `share-people` icon for Frappe Desk sidebar/home navigation.
+- Added **RhoGuest Dashboard** Desk page with service, Food & Beverage, Laundry and pending-folio operational KPIs.
+- Added recent Laundry activity and quick navigation from the Dashboard.
+- Added updated **RhoGuest Setup Manual** and **RhoGuest User Manual** under `docs/`.
+- Added a v0.2.0 Desk/Workspace/manual static contract validator.
+- Added **Laundry staff operations UI** with workflow-safe form action buttons, pickup scheduling, staff assignment and operational List View queues.
+- Added standard Laundry filters for Status, Billing Status, Room Number, Assigned To and Requested Pickup Time.
+- Added a v0.2.0 Laundry operations UI static contract validator.
+- Added a configurable Laundry **folio-posting adapter** with Manual and Custom Integration modes, idempotency key, row locking and external-reference enforcement.
+- Added audited Folio Posted At/By/Mode and Billing Settled At/By fields.
+- Added authorized Billing form actions for Post to Folio, Record Folio Posting and Mark Settled.
+- Added Laundry lifecycle in-app notifications plus opt-in guest/staff email notifications.
+- Added a v0.2.0 Laundry billing/integration/notifications static contract validator.
+- Added shared **Pool & Gym reservation workflow** using RhoGuest Facility Reservation.
+- Added public Pool route `/rhoguest-pool` and Gym route `/rhoguest-gym`.
+- Added Service Item **Pricing Basis** with Per Reservation and Per Person options.
+- Added server-authoritative reservation duration, end-time, price and settlement snapshot.
+- Added capacity-aware overlapping-slot checks protected by Service Item row locking.
+- Added Requested → Confirmed → Checked In → Completed workflow plus Cancelled/No Show terminal states.
+- Added staff Reschedule and Assign Staff actions plus Facility List View operational queues.
+- Added Pool/Gym KPIs and Recent Facility Reservations to the RhoGuest Dashboard.
+- Added Facility Reservations to the RhoGuest Workspace.
+- Updated Setup/User manuals for Pool/Gym configuration and operations.
+- Added a v0.2.0 Pool/Gym facility reservations static contract validator.
+- Added resource-aware **Spa & Wellness appointment workflow** with public route `/rhoguest-spa`.
+- Added **RhoGuest Spa Resource** for therapists, treatment rooms, equipment and other bookable Spa resources.
+- Added treatment-to-resource mapping plus structured weekly availability.
+- Added public guest resource preference and server-side **Any available** resource selection.
+- Added resource row locking and overlap protection for active Spa appointments.
+- Added server-authoritative treatment duration, appointment end, resource assignment and pricing.
+- Added Requested → Confirmed → Checked In → In Treatment → Completed Spa workflow plus Cancelled/No Show terminal states.
+- Added staff Reschedule / Change Resource controls and Spa operational List View queues.
+- Added Spa KPIs and Recent Spa Appointments to the RhoGuest Dashboard and Workspace.
+- Added a v0.2.0 Spa & Wellness static contract validator.
+- Added dedicated **Transport booking and dispatch workflow** with public route `/rhoguest-transport`.
+- Added **RhoGuest Transport Vehicle** fleet master with passenger/luggage capacity.
+- Added **RhoGuest Transport Driver** master with licence expiry and optional Employee/System User links.
+- Added **RhoGuest Transport Booking** with token-protected public tracking.
+- Added server-authoritative Transport pricing, duration and estimated drop-off.
+- Added vehicle/driver row locking and active-trip overlap protection.
+- Added driver licence and vehicle passenger/luggage capacity validation.
+- Added Requested → Confirmed → Dispatched → Arrived at Pickup → In Transit → Completed workflow plus Cancelled/No Show paths.
+- Added staff assignment/reassignment and rescheduling with full conflict revalidation.
+- Added Transport List View queues, Dashboard KPIs and Workspace navigation.
+- Added a v0.2.0 Transport dispatch static contract validator.
 
 ## 0.1.0
 

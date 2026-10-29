@@ -34,3 +34,23 @@ jobs:
           find fnb_menu -name '*.js' -print0 | while IFS= read -r -d '' file; do node --check "$file"; done
       - name: RhoGuest v0.2.0 routing contract
         run: python scripts/validate_v020_foundation.py
+      - name: RhoGuest v0.2.0 services foundation contract
+        run: python scripts/validate_v020_services_foundation.py
+      - name: RhoGuest v0.2.0 guest hub contract
+        run: python scripts/validate_v020_guest_hub.py
+      - name: RhoGuest v0.2.0 laundry workflow contract
+        run: python scripts/validate_v020_laundry.py
+      - name: RhoGuest v0.2.0 desk workspace contract
+        run: python scripts/validate_v020_desk.py
+      - name: RhoGuest v0.2.0 laundry operations UI contract
+        run: python scripts/validate_v020_laundry_ops.py
+      - name: RhoGuest v0.2.0 laundry folio and notifications contract
+        run: python scripts/validate_v020_laundry_billing.py
+      - name: RhoGuest v0.2.0 facility reservations contract
+        run: python scripts/validate_v020_facilities.py
+      - name: RhoGuest v0.2.0 spa appointments contract
+        run: python scripts/validate_v020_spa.py
+      - name: RhoGuest v0.2.0 rebrand and form layout contract
+        run: python scripts/validate_v020_rebrand_layout.py
+      - name: RhoGuest v0.2.0 transport dispatch contract
+        run: python scripts/validate_v020_transport.py

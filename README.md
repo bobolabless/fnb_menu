@@ -4,26 +4,26 @@
 
 The technical Frappe app and repository remain **`fnb_menu`** for upgrade and import compatibility. RhoGuest is the product identity from v0.2.0 onward.
 
-The current F&B capability provides Food and Drinks menu books, themed responsive public menus, category navigation, ERPNext item/price integration, guest carts, prepaid self-ordering, Payment Request integration and a kitchen workflow. The v0.2.0 line expands the product toward additional hotel guest services such as Laundry, Swimming Pool and Gym.
+The current Food & Beverage capability provides Food and Drinks menu books, themed responsive public menus, category navigation, ERPNext item/price integration, guest carts, prepaid self-ordering, Payment Request integration and a kitchen workflow. The v0.2.0 line expands the product toward additional hotel guest services such as Laundry, Swimming Pool, Gym, Spa, Transport, Housekeeping and Recreation.
 
 ## Stable technical identity
 
 - Frappe app / GitHub repository: `fnb_menu`
 - Product title: `RhoGuest`
-- Frappe module: `FNB Menu`
-- Existing Settings DocType: `FNB Menu Settings`
+- Internal Frappe module: retained for technical compatibility; hotel-facing Desk identity is **RhoGuest**.
+- Existing Settings DocType: `RhoGuest Menu Settings`
 - Stable internal menu endpoint: `/fnb-menu`
 - Kitchen board: `/fnb-kitchen`
 - Publisher: Rhocom Technology Limited
 - ERPNext/Frappe: v15.x
 
-Existing Python imports, DocType names and `/fnb-menu` are intentionally retained. Do not rename the technical app to `rhoguest` on an installed site.
+Existing Python imports, the technical app slug and `/fnb-menu` are intentionally retained. User-facing legacy FNB DocTypes have been migrated to RhoGuest names. Do not rename the technical app package to `rhoguest` on an installed site.
 
 ## v0.2.0 routing foundation
 
 RhoGuest allows each hotel to choose a hotel-facing menu URL without editing `hooks.py`.
 
-Open **FNB Menu Settings → RhoGuest Public Menu & Legacy QR Routing** and configure:
+Open **RhoGuest Menu Settings → RhoGuest Public Menu & Legacy QR Routing** and configure:
 
 - **Public Menu Route** — for example `/menu`, `/dine` or `/guest-menu`.
 - **Keep Previous Public Route as Alias** — preserves an old public route automatically when the primary route changes.
@@ -34,7 +34,150 @@ The internal `/fnb-menu` route always remains available. RhoGuest-managed aliase
 
 Protected Frappe paths such as `/app`, `/api`, `/assets`, `/files`, `/private`, `/login` and `/desk` cannot be claimed as RhoGuest QR routes.
 
-Route changes take effect after saving FNB Menu Settings and the website routing cache is cleared automatically; a Bench restart is not required merely to change a QR alias.
+Route changes take effect after saving RhoGuest Menu Settings and the website routing cache is cleared automatically; a Bench restart is not required merely to change a QR alias.
+
+## v0.2.0 generic guest-service foundation
+
+RhoGuest provides two generic configuration masters:
+
+- **RhoGuest Service Category** — describes a service family, its guest interaction model, operating information, publication state and supported capabilities.
+- **RhoGuest Service Item** — describes a guest-visible service choice, availability, price source, reservation requirements, capacity and optional ERPNext Item mapping.
+
+The application seeds ten standard hospitality categories: Food & Beverage, Laundry, Swimming Pool, Gym & Fitness, Spa & Wellness, Transport, Housekeeping, Recreation, Guest Requests and Hotel Information.
+
+Seeded categories are **disabled and unpublished**. Migration therefore does not expose new guest services automatically. A hotel enables only the services it actually provides.
+
+The generic masters are presentation/configuration records, not transaction documents. Existing Food & Beverage ordering and kitchen/KOT behavior remains unchanged. Specialized operational workflows such as Laundry, Pool/Gym, Spa and Transport use separate transaction models that reference these masters.
+
+## v0.2.0 Guest Services Hub
+
+The stable internal guest-services landing page is `/rhoguest`.
+
+The hub is **disabled by default**. When enabled in **RhoGuest Menu Settings → RhoGuest Guest Services Hub**, it renders only service categories where both **Enabled** and **Show on Guest Portal** are checked.
+
+Phase 2B is intentionally read-only:
+
+- Food & Beverage links to the existing configured public menu route.
+- Other published categories can show their approved RhoGuest Service Items, operating hours, location, availability and safe server-resolved pricing.
+- Housekeeping and other unfinished transactional services remain display-only until their dedicated server workflows are implemented.
+- ERPNext Item Price service items are displayed only when a current valid selling price can be resolved from the configured Selling Price List.
+
+This separates public presentation from operational fulfilment and prevents the guest UI from creating unsupported transactions.
+
+## v0.2.0 Laundry Request & Fulfilment
+
+Laundry is the first transactional ancillary-service workflow built on the generic service catalog. When the Laundry category is enabled and published, the Guest Services Hub links to `/rhoguest-laundry`.
+
+Guest-submitted prices are never trusted. The browser sends only service-item identifiers, quantities and instructions; RhoGuest resolves current availability and prices again on the server before creating **RhoGuest Laundry Request**.
+
+Charge-to-Room is recorded as **Pending Folio Posting**. RhoGuest supports a safe **Manual** folio workflow and an optional **Custom Integration** adapter without creating a hard dependency on RhoHMS.
+
+### Laundry folio integration
+
+System Manager can configure a trusted dotted Python method in **RhoGuest Menu Settings → RhoGuest Laundry Billing & Notifications**. RhoGuest supplies a stable payload with an idempotency key and marks the request Posted to Room only when the adapter returns `success=True` and a concrete external reference.
+
+Manual posting remains available to authorized billing managers and also requires a real external reference.
+
+Laundry guest/staff email notifications are opt-in; assigned staff in-app notifications are enabled by default.
+
+## v0.2.0 Pool & Gym Reservations
+
+RhoGuest now supports public and staff-managed **Swimming Pool** and **Gym & Fitness** reservations.
+
+Public routes:
+
+- `/rhoguest-pool`
+- `/rhoguest-gym`
+
+The shared **RhoGuest Facility Reservation** transaction model provides:
+
+- Requested → Confirmed → Checked In → Completed workflow.
+- Cancelled and No Show terminal states.
+- Server-authoritative duration, end time and pricing.
+- Pricing Basis: Per Reservation or Per Person.
+- Capacity-aware overlapping-slot protection.
+- Service Item row locking to prevent concurrent overbooking.
+- Staff rescheduling with capacity revalidation.
+- Public token-based status lookup.
+- Staff assignment and operational List View queues.
+- Dashboard KPIs and recent Facility Reservations.
+
+Paid facility reservations are recorded as **Pay at Hotel** in this release. Pool/Gym do not yet use the Laundry Charge-to-Room adapter.
+
+## v0.2.0 Spa & Wellness Appointments
+
+RhoGuest now provides a dedicated **Spa & Wellness appointment engine** at `/rhoguest-spa`.
+
+Spa is deliberately resource-aware rather than reusing the Pool/Gym capacity model. The workflow includes:
+
+- **RhoGuest Spa Resource** for therapists, treatment rooms, equipment or other bookable resources.
+- Treatment-to-resource mapping.
+- Structured weekly availability by day/start/end time.
+- Guest choice of a public resource or **Any available**.
+- Server-side auto-selection of an eligible free resource.
+- Candidate-resource row locking before conflict checks.
+- Overlap protection against Requested, Confirmed, Checked In and In Treatment appointments.
+- Server-authoritative treatment duration, appointment end and pricing.
+- Requested → Confirmed → Checked In → In Treatment → Completed workflow.
+- Cancelled / No Show terminal states.
+- Staff rescheduling/resource reassignment with availability revalidation.
+- Public token-based appointment status lookup.
+- Spa Dashboard KPIs, recent appointments and Workspace navigation.
+
+Paid Spa appointments are recorded as **Pay at Hotel** in v0.2.0. Charge-to-Room remains limited to the Laundry adapter until a generic ancillary billing interface is released.
+
+## v0.2.0 Transport Booking & Dispatch
+
+RhoGuest provides a dedicated Transport workflow at `/rhoguest-transport`.
+
+Operational records:
+
+- **RhoGuest Transport Booking**
+- **RhoGuest Transport Vehicle**
+- **RhoGuest Transport Driver**
+
+The workflow supports:
+
+- Airport pickup/drop-off, chauffeur, shuttle and other Transport Service Items.
+- Server-authoritative price, duration and estimated drop-off.
+- Per Reservation / Per Person pricing.
+- Passenger and luggage capacity validation.
+- Driver licence expiry validation against the scheduled trip date.
+- Vehicle + driver row locking before assignment/conflict decisions.
+- Overlap protection across active assigned trips.
+- Requested → Confirmed → Dispatched → Arrived at Pickup → In Transit → Completed.
+- Cancelled / No Show terminal paths.
+- Staff rescheduling with conflict revalidation.
+- Token-protected guest trip tracking.
+- Transport Dashboard KPIs and Workspace navigation.
+
+Paid Transport bookings are **Pay at Hotel** in v0.2.0.
+
+## RhoGuest Desk Workspace & Dashboard
+
+RhoGuest includes a standard Frappe **Workspace** named **RhoGuest**. It is public to permitted Desk users and uses the `share-people` Workspace icon so RhoGuest appears as its own entry in the Frappe Desk sidebar/home navigation.
+
+The Workspace provides direct access to:
+
+- **RhoGuest Dashboard** — operational KPIs and recent Laundry activity.
+- **RhoGuest Laundry Request** — operational Laundry queue.
+- **RhoGuest Facility Reservation** — Pool/Gym reservation and access queue.
+- **RhoGuest Spa Appointment** — Spa treatment appointment queue.
+- **RhoGuest Spa Resource** — therapists/treatment resources and weekly availability.
+- **RhoGuest Transport Booking** — guest trip and dispatch queue.
+- **RhoGuest Transport Vehicle** — fleet and passenger/luggage capacities.
+- **RhoGuest Transport Driver** — driver identity and licence validity.
+- **RhoGuest Service Category** and **RhoGuest Service Item** — guest-service catalog configuration.
+- **RhoGuest Self Order** and **RhoGuest Menu Book** — Food & Beverage operations.
+- **RhoGuest Menu Settings** — RhoGuest branding, routing, hub and Food & Beverage configuration.
+- **Guest Services Hub** and the configured public Food & Beverage menu.
+
+The Dashboard is available at Desk route `/app/rhoguest-dashboard`.
+
+## Manuals
+
+- [RhoGuest Setup Manual](docs/RHOGUEST_SETUP_MANUAL.md)
+- [RhoGuest User Manual](docs/RHOGUEST_USER_MANUAL.md)
 
 ## Install from GitHub
 

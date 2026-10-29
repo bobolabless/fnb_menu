@@ -64,7 +64,7 @@ def _fallback_price(row):
 
 @frappe.whitelist()
 def import_menu_csv(menu_book, file_url, replace_existing=0):
-    book = frappe.get_doc("FNB Menu Book", menu_book)
+    book = frappe.get_doc("RhoGuest Menu Book", menu_book)
     content = _file_content(file_url)
     if not content.strip():
         frappe.throw(_("Uploaded CSV file is empty."))
@@ -82,18 +82,18 @@ def import_menu_csv(menu_book, file_url, replace_existing=0):
 
     if cint(replace_existing):
         for name in frappe.get_all(
-            "FNB Menu Entry", filters={"menu_book": book.name}, pluck="name"
+            "RhoGuest Menu Entry", filters={"menu_book": book.name}, pluck="name"
         ):
-            frappe.delete_doc("FNB Menu Entry", name, ignore_permissions=True)
+            frappe.delete_doc("RhoGuest Menu Entry", name, ignore_permissions=True)
         for name in frappe.get_all(
-            "FNB Menu Category", filters={"menu_book": book.name}, pluck="name"
+            "RhoGuest Menu Category", filters={"menu_book": book.name}, pluck="name"
         ):
-            frappe.delete_doc("FNB Menu Category", name, ignore_permissions=True)
+            frappe.delete_doc("RhoGuest Menu Category", name, ignore_permissions=True)
 
     categories = {
         row.category_name: row.name
         for row in frappe.get_all(
-            "FNB Menu Category",
+            "RhoGuest Menu Category",
             filters={"menu_book": book.name},
             fields=["name", "category_name"],
             limit_page_length=1000,
@@ -133,7 +133,7 @@ def import_menu_csv(menu_book, file_url, replace_existing=0):
                 category_counter += 1
                 category = frappe.get_doc(
                     {
-                        "doctype": "FNB Menu Category",
+                        "doctype": "RhoGuest Menu Category",
                         "menu_book": book.name,
                         "category_name": category_name,
                         "display_title": row.get("category_display_title") or category_name,
@@ -165,7 +165,7 @@ def import_menu_csv(menu_book, file_url, replace_existing=0):
 
             doc = frappe.get_doc(
                 {
-                    "doctype": "FNB Menu Entry",
+                    "doctype": "RhoGuest Menu Entry",
                     "menu_book": book.name,
                     "category": categories[category_name],
                     "display_name": display_name,
@@ -208,7 +208,7 @@ def import_menu_csv(menu_book, file_url, replace_existing=0):
 @frappe.whitelist()
 def auto_link_items(menu_book):
     rows = frappe.get_all(
-        "FNB Menu Entry",
+        "RhoGuest Menu Entry",
         filters={"menu_book": menu_book, "erpnext_item": ["is", "not set"]},
         fields=["name", "display_name", "fallback_price"],
         limit_page_length=2000,
@@ -220,7 +220,7 @@ def auto_link_items(menu_book):
         item = _exact_item_match(row.display_name)
         if item:
             frappe.db.set_value(
-                "FNB Menu Entry",
+                "RhoGuest Menu Entry",
                 row.name,
                 {"erpnext_item": item, "link_status": "Linked"},
                 update_modified=False,

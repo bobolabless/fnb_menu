@@ -1,0 +1,157 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_content %}
+<div class="rhoguest-shell theme-{{ theme_slug }}">
+  <div class="rhoguest-frame">
+    <header class="rhoguest-hero">
+      {% if brand.logo %}
+        <img class="rhoguest-logo" src="{{ brand.logo }}" alt="{{ brand.hotel_name }}">
+      {% endif %}
+
+      <p class="rhoguest-eyebrow">RhoGuest</p>
+      <h1>{{ brand.hotel_name }}</h1>
+      <div class="rhoguest-rule"><span></span><b>◆</b><span></span></div>
+      <h2>{{ hub.title }}</h2>
+
+      {% if hub.subtitle %}
+        <p class="rhoguest-subtitle">{{ hub.subtitle }}</p>
+      {% endif %}
+    </header>
+
+    {% if not hub.enabled %}
+      <section class="rhoguest-state">
+        <h3>Guest services are not published yet</h3>
+        <p>Please contact the hotel reception for assistance.</p>
+      </section>
+    {% elif not services %}
+      <section class="rhoguest-state">
+        <h3>No guest services are currently published</h3>
+        <p>Please contact the hotel reception for assistance.</p>
+      </section>
+    {% else %}
+      <main class="rhoguest-grid" aria-label="Hotel guest services">
+        {% for service in services %}
+          <article class="rhoguest-card">
+            {% if service.image %}
+              <div class="rhoguest-card-image">
+                <img
+                  src="{{ service.image }}"
+                  alt="{{ service.category_name }}"
+                  loading="lazy"
+                  decoding="async"
+                >
+              </div>
+            {% endif %}
+
+            <div class="rhoguest-card-body">
+              <div class="rhoguest-card-heading">
+                <span class="rhoguest-service-mark" aria-hidden="true">
+                  {{ service.icon or service.category_name[:2]|upper }}
+                </span>
+
+                <div>
+                  <p>{{ service.service_type }}</p>
+                  <h3>{{ service.category_name }}</h3>
+                </div>
+              </div>
+
+              {% if service.short_description %}
+                <p class="rhoguest-description">{{ service.short_description }}</p>
+              {% endif %}
+
+              {% if service.location or service.operating_hours %}
+                <dl class="rhoguest-meta">
+                  {% if service.location %}
+                    <div>
+                      <dt>Location</dt>
+                      <dd>{{ service.location }}</dd>
+                    </div>
+                  {% endif %}
+                  {% if service.operating_hours %}
+                    <div>
+                      <dt>Hours</dt>
+                      <dd>{{ service.operating_hours }}</dd>
+                    </div>
+                  {% endif %}
+                </dl>
+              {% endif %}
+
+              {% if service["items"] %}
+                <div class="rhoguest-items">
+                  {% for item in service["items"] %}
+                    <div class="rhoguest-item">
+                      {% if item.image %}
+                        <img
+                          src="{{ item.image }}"
+                          alt="{{ item.service_name }}"
+                          loading="lazy"
+                          decoding="async"
+                        >
+                      {% endif %}
+
+                      <div class="rhoguest-item-copy">
+                        <div class="rhoguest-item-topline">
+                          <h4>{{ item.service_name }}</h4>
+
+                          <strong>
+                            {% if item.price_label %}
+                              {{ item.price_label }}
+                            {% elif item.rate is not none %}
+                              {{ frappe.utils.fmt_money(item.rate, currency=item.currency) }}
+                            {% endif %}
+                          </strong>
+                        </div>
+
+                        {% if item.description %}
+                          <p>{{ item.description }}</p>
+                        {% endif %}
+
+                        <div class="rhoguest-item-tags">
+                          {% if item.requires_reservation %}
+                            <span>Reservation required</span>
+                          {% endif %}
+                          {% if item.duration_minutes %}
+                            <span>{{ item.duration_minutes }} min</span>
+                          {% endif %}
+                          {% if item.location %}
+                            <span>{{ item.location }}</span>
+                          {% endif %}
+                          {% if item.availability_note %}
+                            <span>{{ item.availability_note }}</span>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+              {% if service.action_url %}
+                <a class="rhoguest-primary-action" href="{{ service.action_url }}">
+                  {{ service.action_label }}
+                  <span aria-hidden="true">→</span>
+                </a>
+              {% elif service.workflow_type != "Information Only" %}
+                <p class="rhoguest-readonly-note">
+                  Please contact the hotel team for this service.
+                </p>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </main>
+    {% endif %}
+
+    <footer class="rhoguest-footer">
+      <span>RhoGuest</span>
+      <span>Digital Menu & Guest Services</span>
+    </footer>
+  </div>
+</div>
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="/assets/fnb_menu/css/rhoguest.css">
+{% endblock %}

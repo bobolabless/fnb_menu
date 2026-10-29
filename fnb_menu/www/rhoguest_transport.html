@@ -1,0 +1,140 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_content %}
+<div class="rgt-shell theme-{{ theme_slug }}">
+  <div class="rgt-frame">
+    <header class="rgt-head">
+      <a href="/rhoguest" class="rgt-back">← Guest Services</a>
+      {% if brand.logo %}
+        <img class="rgt-logo" src="{{ brand.logo }}" alt="{{ brand.hotel_name }}">
+      {% endif %}
+      <p class="rgt-eyebrow">RhoGuest</p>
+      <h1>Transport</h1>
+      {% if catalog.category and catalog.category.short_description %}
+        <p class="rgt-intro">{{ catalog.category.short_description }}</p>
+      {% else %}
+        <p class="rgt-intro">Book airport transfers, chauffeur trips and hotel transport.</p>
+      {% endif %}
+      {% if catalog.category and catalog.category.operating_hours %}
+        <div class="rgt-meta"><span>{{ catalog.category.operating_hours }}</span></div>
+      {% endif %}
+    </header>
+
+    {% if not catalog.available %}
+      <section class="rgt-state">
+        <h2>Transport bookings are not currently available online</h2>
+        <p>Please contact the hotel team for assistance.</p>
+      </section>
+    {% elif not catalog["items"] %}
+      <section class="rgt-state">
+        <h2>No Transport services are configured yet</h2>
+        <p>Please contact the hotel team for current transfer options.</p>
+      </section>
+    {% else %}
+      <form id="rgt-form" class="rgt-layout">
+        <section class="rgt-card">
+          <div class="rgt-section-head"><span>01</span><div><small>SERVICE</small><h2>Select Transport</h2></div></div>
+
+          <div class="rgt-items">
+            {% for item in catalog["items"] %}
+              <label class="rgt-item {% if not item.selectable %}is-readonly{% endif %}">
+                {% if item.selectable %}
+                  <input
+                    type="radio"
+                    name="transport_item"
+                    value="{{ item.name }}"
+                    data-rate="{{ item.rate if item.rate is not none else '' }}"
+                    data-basis="{{ item.pricing_basis }}"
+                    data-duration="{{ item.duration_minutes }}"
+                    data-capacity="{{ item.capacity }}"
+                  >
+                {% endif %}
+                <div>
+                  <div class="rgt-item-title">
+                    <h3>{{ item.service_name }}</h3>
+                    <strong>
+                      {% if item.price_label %}
+                        {{ item.price_label }}
+                      {% else %}
+                        {{ frappe.utils.fmt_money(item.rate, currency=item.currency) }}
+                      {% endif %}
+                    </strong>
+                  </div>
+                  {% if item.description %}<p>{{ item.description }}</p>{% endif %}
+                  <div class="rgt-tags">
+                    {% if item.duration_minutes %}<span>{{ item.duration_minutes }} min planned</span>{% endif %}
+                    {% if item.capacity %}<span>Up to {{ item.capacity }} passengers</span>{% endif %}
+                    {% if item.pricing_basis == "Per Person" %}<span>Per person</span>{% endif %}
+                    {% if item.availability_note %}<span>{{ item.availability_note }}</span>{% endif %}
+                  </div>
+                </div>
+              </label>
+            {% endfor %}
+          </div>
+        </section>
+
+        <section class="rgt-card">
+          <div class="rgt-section-head"><span>02</span><div><small>BOOK</small><h2>Trip Details</h2></div></div>
+
+          <div class="rgt-fields">
+            <label>Guest Name<input id="rgt-guest-name" required maxlength="140" autocomplete="name"></label>
+            <label>Room Number<input id="rgt-room-number" maxlength="30"></label>
+            <label>Phone<input id="rgt-phone" type="tel" maxlength="40" autocomplete="tel"></label>
+            <label>Email<input id="rgt-email" type="email" maxlength="140" autocomplete="email"></label>
+            <label>Scheduled Pickup<input id="rgt-pickup-time" type="datetime-local" required></label>
+            <label>Passengers<input id="rgt-passengers" type="number" min="1" max="50" value="1" required></label>
+            <label>Pickup Location<input id="rgt-pickup-location" maxlength="240" required></label>
+            <label>Drop-off Location<input id="rgt-dropoff-location" maxlength="240" required></label>
+            <label>Luggage Pieces<input id="rgt-luggage" type="number" min="0" max="100" value="0"></label>
+            <label>Flight Number<input id="rgt-flight-number" maxlength="40"></label>
+            <label class="rgt-full">Trip Note<textarea id="rgt-note" maxlength="1000" rows="4"></textarea></label>
+          </div>
+
+          <div class="rgt-summary">
+            <div><span>Planned Duration</span><strong id="rgt-duration">—</strong></div>
+            <div><span>Estimated Total</span><strong id="rgt-total">—</strong></div>
+          </div>
+
+          <p class="rgt-note">
+            Price, duration and passenger limits are validated again by the hotel system.
+            Vehicle and driver are assigned by hotel staff after your request is received.
+          </p>
+
+          <button id="rgt-submit" class="rgt-submit" type="submit">Submit Transport Request</button>
+          <div id="rgt-message" class="rgt-message" aria-live="polite"></div>
+        </section>
+      </form>
+
+      <section class="rgt-card rgt-tracking">
+        <div class="rgt-section-head"><span>03</span><div><small>TRACK</small><h2>Track Existing Booking</h2></div></div>
+        <div class="rgt-fields">
+          <label>Booking Reference<input id="rgt-track-booking" maxlength="40"></label>
+          <label>Access Token<input id="rgt-track-token" maxlength="160"></label>
+        </div>
+        <button id="rgt-track" class="rgt-secondary" type="button">Check Status</button>
+        <div id="rgt-track-result" class="rgt-track-result" aria-live="polite"></div>
+      </section>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="/assets/fnb_menu/css/rhoguest_transport.css">
+{% endblock %}
+
+{% block script %}
+{% if catalog.available and catalog["items"] %}
+<script>
+window.RHOGUEST_TRANSPORT_CONFIG = {
+  createUrl: "/api/method/fnb_menu.api.transport.create_booking",
+  statusUrl: "/api/method/fnb_menu.api.transport.get_booking_status",
+  csrfToken: "{{ csrf_token }}",
+  currency: "{{ catalog.currency or brand.currency or 'NGN' }}"
+};
+</script>
+<script src="/assets/fnb_menu/js/rhoguest_transport.js"></script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_content %}
+<div class="rgs-shell theme-{{ theme_slug }}">
+  <div class="rgs-frame">
+    <header class="rgs-head">
+      <a href="/rhoguest" class="rgs-back">← Guest Services</a>
+      {% if brand.logo %}
+        <img class="rgs-logo" src="{{ brand.logo }}" alt="{{ brand.hotel_name }}">
+      {% endif %}
+      <p class="rgs-eyebrow">RhoGuest</p>
+      <h1>Spa & Wellness</h1>
+      {% if catalog.category and catalog.category.short_description %}
+        <p class="rgs-intro">{{ catalog.category.short_description }}</p>
+      {% else %}
+        <p class="rgs-intro">Book a relaxing treatment with the hotel spa team.</p>
+      {% endif %}
+      {% if catalog.category and (catalog.category.location or catalog.category.operating_hours) %}
+        <div class="rgs-meta">
+          {% if catalog.category.location %}<span>{{ catalog.category.location }}</span>{% endif %}
+          {% if catalog.category.operating_hours %}<span>{{ catalog.category.operating_hours }}</span>{% endif %}
+        </div>
+      {% endif %}
+    </header>
+
+    {% if not catalog.available %}
+      <section class="rgs-state">
+        <h2>Spa appointments are not currently available online</h2>
+        <p>Please contact the hotel team for assistance.</p>
+      </section>
+    {% elif not catalog["items"] %}
+      <section class="rgs-state">
+        <h2>No Spa treatments are configured yet</h2>
+        <p>Please contact the hotel team for current treatments.</p>
+      </section>
+    {% else %}
+      <form id="rgs-form" class="rgs-layout">
+        <section class="rgs-card">
+          <div class="rgs-section-head"><span>01</span><div><small>TREATMENT</small><h2>Select Treatment</h2></div></div>
+
+          <div class="rgs-items">
+            {% for item in catalog["items"] %}
+              <label class="rgs-item {% if not item.selectable %}is-readonly{% endif %}">
+                {% if item.selectable %}
+                  <input
+                    type="radio"
+                    name="spa_item"
+                    value="{{ item.name }}"
+                    data-rate="{{ item.rate if item.rate is not none else '' }}"
+                    data-duration="{{ item.duration_minutes }}"
+                  >
+                {% endif %}
+                <div>
+                  <div class="rgs-item-title">
+                    <h3>{{ item.service_name }}</h3>
+                    <strong>
+                      {% if item.price_label %}
+                        {{ item.price_label }}
+                      {% else %}
+                        {{ frappe.utils.fmt_money(item.rate, currency=item.currency) }}
+                      {% endif %}
+                    </strong>
+                  </div>
+                  {% if item.description %}<p>{{ item.description }}</p>{% endif %}
+                  <div class="rgs-tags">
+                    {% if item.duration_minutes %}<span>{{ item.duration_minutes }} min</span>{% endif %}
+                    {% if item.location %}<span>{{ item.location }}</span>{% endif %}
+                    {% if item.availability_note %}<span>{{ item.availability_note }}</span>{% endif %}
+                  </div>
+                </div>
+              </label>
+            {% endfor %}
+          </div>
+        </section>
+
+        <section class="rgs-card">
+          <div class="rgs-section-head"><span>02</span><div><small>APPOINTMENT</small><h2>Guest & Time</h2></div></div>
+
+          <div class="rgs-fields">
+            <label>Guest Name<input id="rgs-guest-name" required maxlength="140" autocomplete="name"></label>
+            <label>Room Number<input id="rgs-room-number" maxlength="30"></label>
+            <label>Phone<input id="rgs-phone" type="tel" maxlength="40" autocomplete="tel"></label>
+            <label>Email<input id="rgs-email" type="email" maxlength="140" autocomplete="email"></label>
+            <label>Appointment Start<input id="rgs-start" type="datetime-local" required></label>
+            <label>
+              Preferred Therapist / Resource
+              <select id="rgs-resource">
+                <option value="">Any available</option>
+                {% for item in catalog["items"] %}
+                  {% for resource in item.resources %}
+                    <option
+                      value="{{ resource.name }}"
+                      data-service-item="{{ item.name }}"
+                      hidden
+                    >{{ resource.resource_name }} · {{ resource.resource_type }}</option>
+                  {% endfor %}
+                {% endfor %}
+              </select>
+            </label>
+            <label class="rgs-full">Guest Note<textarea id="rgs-note" maxlength="1000" rows="4"></textarea></label>
+          </div>
+
+          <div class="rgs-summary">
+            <div><span>Duration</span><strong id="rgs-duration">—</strong></div>
+            <div><span>Estimated Total</span><strong id="rgs-total">—</strong></div>
+          </div>
+
+          <p class="rgs-note">
+            Treatment availability, duration, resource assignment and price are checked again by the hotel system when you submit.
+            Paid Spa appointments are settled at the hotel in this release.
+          </p>
+
+          <button id="rgs-submit" class="rgs-submit" type="submit">Submit Spa Appointment</button>
+          <div id="rgs-message" class="rgs-message" aria-live="polite"></div>
+        </section>
+      </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="/assets/fnb_menu/css/rhoguest_spa.css">
+{% endblock %}
+
+{% block script %}
+{% if catalog.available and catalog["items"] %}
+<script>
+window.RHOGUEST_SPA_CONFIG = {
+  createUrl: "/api/method/fnb_menu.api.spa.create_appointment",
+  csrfToken: "{{ csrf_token }}",
+  currency: "{{ catalog.currency or brand.currency or 'NGN' }}"
+};
+</script>
+<script src="/assets/fnb_menu/js/rhoguest_spa.js"></script>
+{% endif %}
+{% endblock %}
