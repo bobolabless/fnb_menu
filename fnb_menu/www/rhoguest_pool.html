@@ -1,0 +1,131 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_content %}
+<div class="rgf-shell theme-{{ theme_slug }}">
+  <div class="rgf-frame">
+    <header class="rgf-head">
+      <a href="/rhoguest" class="rgf-back">← Guest Services</a>
+      {% if brand.logo %}
+        <img class="rgf-logo" src="{{ brand.logo }}" alt="{{ brand.hotel_name }}">
+      {% endif %}
+      <p class="rgf-eyebrow">RhoGuest</p>
+      <h1>{{ facility_name }}</h1>
+      {% if catalog.category and catalog.category.short_description %}
+        <p class="rgf-intro">{{ catalog.category.short_description }}</p>
+      {% else %}
+        <p class="rgf-intro">Reserve your preferred access time.</p>
+      {% endif %}
+      {% if catalog.category and (catalog.category.location or catalog.category.operating_hours) %}
+        <div class="rgf-meta">
+          {% if catalog.category.location %}<span>{{ catalog.category.location }}</span>{% endif %}
+          {% if catalog.category.operating_hours %}<span>{{ catalog.category.operating_hours }}</span>{% endif %}
+        </div>
+      {% endif %}
+    </header>
+
+    {% if not catalog.available %}
+      <section class="rgf-state">
+        <h2>{{ facility_name }} reservations are not currently available online</h2>
+        <p>Please contact the hotel team for assistance.</p>
+      </section>
+    {% elif not catalog["items"] %}
+      <section class="rgf-state">
+        <h2>No reservable {{ facility_name }} services are configured yet</h2>
+        <p>Please contact the hotel team for current access options.</p>
+      </section>
+    {% else %}
+      <form id="rgf-form" class="rgf-layout">
+        <section class="rgf-card">
+          <div class="rgf-section-head"><span>01</span><div><small>SELECT</small><h2>Access Option</h2></div></div>
+
+          <div class="rgf-items">
+            {% for item in catalog["items"] %}
+              <label class="rgf-item {% if not item.selectable %}is-readonly{% endif %}">
+                {% if item.selectable %}
+                  <input
+                    type="radio"
+                    name="facility_item"
+                    value="{{ item.name }}"
+                    data-rate="{{ item.rate if item.rate is not none else '' }}"
+                    data-basis="{{ item.pricing_basis }}"
+                    data-duration="{{ item.duration_minutes }}"
+                    data-capacity="{{ item.capacity }}"
+                  >
+                {% endif %}
+                <div>
+                  <div class="rgf-item-title">
+                    <h3>{{ item.service_name }}</h3>
+                    <strong>
+                      {% if item.price_label %}
+                        {{ item.price_label }}
+                      {% else %}
+                        {{ frappe.utils.fmt_money(item.rate, currency=item.currency) }}
+                      {% endif %}
+                    </strong>
+                  </div>
+                  {% if item.description %}<p>{{ item.description }}</p>{% endif %}
+                  <div class="rgf-tags">
+                    {% if item.duration_minutes %}<span>{{ item.duration_minutes }} min</span>{% endif %}
+                    {% if item.capacity %}<span>Capacity {{ item.capacity }}</span>{% endif %}
+                    {% if item.location %}<span>{{ item.location }}</span>{% endif %}
+                    {% if item.availability_note %}<span>{{ item.availability_note }}</span>{% endif %}
+                    {% if item.pricing_basis == "Per Person" %}<span>Per person</span>{% endif %}
+                  </div>
+                </div>
+                {% if not item.selectable %}<small>Contact hotel team</small>{% endif %}
+              </label>
+            {% endfor %}
+          </div>
+        </section>
+
+        <section class="rgf-card">
+          <div class="rgf-section-head"><span>02</span><div><small>RESERVE</small><h2>Guest & Time</h2></div></div>
+
+          <div class="rgf-fields">
+            <label>Guest Name<input id="rgf-guest-name" required maxlength="140" autocomplete="name"></label>
+            <label>Room Number<input id="rgf-room-number" maxlength="30"></label>
+            <label>Phone<input id="rgf-phone" type="tel" maxlength="40" autocomplete="tel"></label>
+            <label>Email<input id="rgf-email" type="email" maxlength="140" autocomplete="email"></label>
+            <label>Reservation Start<input id="rgf-start" type="datetime-local" required></label>
+            <label>Party Size<input id="rgf-party-size" type="number" min="1" max="50" value="1" required></label>
+            <label class="rgf-full">Guest Note<textarea id="rgf-note" maxlength="1000" rows="4"></textarea></label>
+          </div>
+
+          <div class="rgf-summary">
+            <div><span>Duration</span><strong id="rgf-duration">—</strong></div>
+            <div><span>Estimated Total</span><strong id="rgf-total">—</strong></div>
+          </div>
+
+          <p class="rgf-note">
+            Availability, capacity, duration and price are checked again by the hotel system when you submit.
+            Paid facility reservations are settled at the hotel in this release.
+          </p>
+
+          <button id="rgf-submit" class="rgf-submit" type="submit">Submit Reservation Request</button>
+          <div id="rgf-message" class="rgf-message" aria-live="polite"></div>
+        </section>
+      </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="/assets/fnb_menu/css/rhoguest_facility.css">
+{% endblock %}
+
+{% block script %}
+{% if catalog.available and catalog["items"] %}
+<script>
+window.RHOGUEST_FACILITY_CONFIG = {
+  createUrl: "/api/method/fnb_menu.api.facility.create_reservation",
+  csrfToken: "{{ csrf_token }}",
+  categoryKey: "{{ category_key }}",
+  currency: "{{ catalog.currency or brand.currency or 'NGN' }}"
+};
+</script>
+<script src="/assets/fnb_menu/js/rhoguest_facility.js"></script>
+{% endif %}
+{% endblock %}

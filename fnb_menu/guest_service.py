@@ -113,6 +113,7 @@ def get_public_service_catalog(settings=None, brand=None):
                 "sort_order",
                 "availability_note",
                 "pricing_mode",
+                "pricing_basis",
                 "fixed_price",
                 "currency",
                 "erpnext_item",
@@ -153,6 +154,12 @@ def get_public_service_catalog(settings=None, brand=None):
             # action remains publication-gated by the category above.
             action_url = "/rhoguest-laundry"
             action_label = "Request Laundry Service"
+        elif category.service_key == "swimming-pool":
+            action_url = "/rhoguest-pool"
+            action_label = "Reserve Pool Access"
+        elif category.service_key == "gym-fitness":
+            action_url = "/rhoguest-gym"
+            action_label = "Reserve Gym Access"
 
         output.append(
             frappe._dict(
@@ -224,6 +231,7 @@ def resolve_public_service_item(row, settings, company_currency):
             "image": row.image,
             "availability_note": row.availability_note or "",
             "pricing_mode": mode,
+            "pricing_basis": row.get("pricing_basis") or "Per Reservation",
             "rate": rate,
             "currency": currency,
             "price_label": price_label,

@@ -102,6 +102,10 @@ class RhoGuestServiceItem(Document):
         """Validate pricing configuration without trusting browser-side values."""
 
         mode = self.pricing_mode or "Free"
+        self.pricing_basis = self.pricing_basis or "Per Reservation"
+
+        if self.pricing_basis not in {"Per Reservation", "Per Person"}:
+            frappe.throw(_("Invalid Pricing Basis."))
 
         if mode == "Free":
             self.fixed_price = 0

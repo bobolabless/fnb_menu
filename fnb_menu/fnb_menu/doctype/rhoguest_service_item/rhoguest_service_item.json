@@ -22,6 +22,7 @@
   "availability_note",
   "pricing_section",
   "pricing_mode",
+  "pricing_basis",
   "fixed_price",
   "currency",
   "erpnext_item",
@@ -117,6 +118,15 @@
    "default": "Free",
    "reqd": 1,
    "in_list_view": 1
+  },
+  {
+   "fieldname": "pricing_basis",
+   "label": "Pricing Basis",
+   "fieldtype": "Select",
+   "options": "Per Reservation\nPer Person",
+   "default": "Per Reservation",
+   "reqd": 1,
+   "description": "For reservable services, choose whether the resolved rate applies once per reservation or once per participant."
   },
   {
    "fieldname": "fixed_price",

@@ -10,6 +10,9 @@ frappe.pages["rhoguest-dashboard"].on_page_load = function (wrapper) {
   page.add_inner_button(__("Laundry Requests"), () => {
     frappe.set_route("List", "RhoGuest Laundry Request");
   });
+  page.add_inner_button(__("Facility Reservations"), () => {
+    frappe.set_route("List", "RhoGuest Facility Reservation");
+  });
   page.add_inner_button(__("Settings"), () => {
     frappe.set_route("Form", "FNB Menu Settings");
   });
@@ -81,6 +84,10 @@ function render_dashboard(body, data) {
     card(__("Ready / Delivery"), c.laundry_ready, __("Ready or out for delivery"), "List/RhoGuest Laundry Request"),
     card(__("Delivered Today"), c.laundry_delivered_today, __("Completed today"), "List/RhoGuest Laundry Request"),
     card(__("Pending Folio Posting"), c.pending_folio_posting, __("Charge-to-Room queue"), "List/RhoGuest Laundry Request"),
+    card(__("Upcoming Facilities"), c.facility_upcoming, __("Requested / confirmed"), "List/RhoGuest Facility Reservation"),
+    card(__("Pool Today"), c.pool_today, __("Active reservations today"), "List/RhoGuest Facility Reservation"),
+    card(__("Gym Today"), c.gym_today, __("Active reservations today"), "List/RhoGuest Facility Reservation"),
+    card(__("Checked In"), c.facility_checked_in, __("Pool/Gym guests currently checked in"), "List/RhoGuest Facility Reservation"),
   ].join("");
 
   const serviceBadges = (data.published_services || []).length
@@ -88,6 +95,23 @@ function render_dashboard(body, data) {
         .map((row) => '<span class="rgd-badge">' + escape_html(row.category_name) + "</span>")
         .join("")
     : '<span class="rgd-empty-inline">' + __("No services currently published") + "</span>";
+
+  const facilityRows = (data.recent_facilities || []).length
+    ? data.recent_facilities
+        .map(
+          (row) => [
+            '<tr data-facility-docname="' + escape_html(row.name) + '">',
+            "<td><strong>" + escape_html(row.name) + "</strong></td>",
+            "<td>" + escape_html(row.service_name) + '<small>' + escape_html(row.service_category) + "</small></td>",
+            "<td>" + escape_html(row.guest_name) + '<small>Room ' + escape_html(row.room_number || "—") + "</small></td>",
+            "<td>" + escape_html(row.reservation_start) + "</td>",
+            "<td>" + escape_html(row.party_size) + "</td>",
+            '<td><span class="rgd-status">' + escape_html(row.status) + "</span></td>",
+            "</tr>",
+          ].join("")
+        )
+        .join("")
+    : '<tr><td colspan="6" class="rgd-empty">' + __("No Facility Reservations yet") + "</td></tr>";
 
   const rows = (data.recent_laundry || []).length
     ? data.recent_laundry
@@ -131,6 +155,13 @@ function render_dashboard(body, data) {
     "<th>" + __("Request") + "</th><th>" + __("Guest") + "</th><th>" + __("Status") + "</th><th>" + __("Billing") + "</th><th>" + __("Estimated Total") + "</th>",
     "</tr></thead><tbody>" + rows + "</tbody></table></div>",
     "</section>",
+    '<section class="rgd-panel">',
+    '<div class="rgd-panel-head"><div><small>' + __("ACCESS & RESERVATIONS") + "</small><h3>" + __("Recent Facility Reservations") + "</h3></div>",
+    '<a class="rgd-link" data-all-facilities>' + __("View all") + " →</a></div>",
+    '<div class="table-responsive"><table class="table rgd-table"><thead><tr>',
+    "<th>" + __("Reservation") + "</th><th>" + __("Facility") + "</th><th>" + __("Guest") + "</th><th>" + __("Start") + "</th><th>" + __("Party") + "</th><th>" + __("Status") + "</th>",
+    "</tr></thead><tbody>" + facilityRows + "</tbody></table></div>",
+    "</section>",
     '<p class="rgd-generated">' + __("Updated") + ": " + escape_html(data.generated_at || "") + "</p>",
     "</div>",
   ].join(""));
@@ -146,6 +177,14 @@ function render_dashboard(body, data) {
 
   body.find("[data-all-laundry]").on("click", () => {
     frappe.set_route("List", "RhoGuest Laundry Request");
+  });
+
+  body.find("[data-facility-docname]").on("click", function () {
+    frappe.set_route("Form", "RhoGuest Facility Reservation", $(this).attr("data-facility-docname"));
+  });
+
+  body.find("[data-all-facilities]").on("click", () => {
+    frappe.set_route("List", "RhoGuest Facility Reservation");
   });
 
   body.find("[data-open-hub]").on("click", () => window.open("/rhoguest", "_blank"));

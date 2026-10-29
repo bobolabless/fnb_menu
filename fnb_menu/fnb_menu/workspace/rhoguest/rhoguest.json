@@ -34,6 +34,17 @@
    "dependencies": "",
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Facility Reservations",
+   "link_count": 0,
+   "link_to": "RhoGuest Facility Reservation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "F&B Self Orders",
    "link_count": 0,
    "link_to": "FNB Self Order",
@@ -159,6 +170,13 @@
    "type": "DocType"
   },
   {
+   "color": "Purple",
+   "doc_view": "List",
+   "label": "Facility Reservations",
+   "link_to": "RhoGuest Facility Reservation",
+   "type": "DocType"
+  },
+  {
    "color": "Green",
    "label": "Guest Services Hub",
    "type": "URL",
@@ -203,6 +221,18 @@
    "label": "RhoGuest Settings",
    "link_to": "FNB Menu Settings",
    "type": "DocType"
+  },
+  {
+   "color": "Blue",
+   "label": "Public Pool",
+   "type": "URL",
+   "url": "/rhoguest-pool"
+  },
+  {
+   "color": "Blue",
+   "label": "Public Gym",
+   "type": "URL",
+   "url": "/rhoguest-gym"
   }
  ],
  "title": "RhoGuest",

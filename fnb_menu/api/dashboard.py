@@ -46,6 +46,45 @@ def get_dashboard_data():
         )
     )
 
+    facility_today = frappe.get_all(
+        "RhoGuest Facility Reservation",
+        filters=[
+            ["RhoGuest Facility Reservation", "reservation_start", ">=", today],
+            ["RhoGuest Facility Reservation", "reservation_start", "<", tomorrow],
+        ],
+        fields=["name", "service_category", "status", "party_size"],
+        limit_page_length=5000,
+    )
+    pool_today = sum(
+        1 for row in facility_today
+        if row.service_category == "swimming-pool"
+        and row.status not in {"Cancelled", "No Show"}
+    )
+    gym_today = sum(
+        1 for row in facility_today
+        if row.service_category == "gym-fitness"
+        and row.status not in {"Cancelled", "No Show"}
+    )
+    checked_in_facilities = sum(
+        1 for row in facility_today if row.status == "Checked In"
+    )
+
+    recent_facilities = frappe.get_all(
+        "RhoGuest Facility Reservation",
+        fields=[
+            "name",
+            "service_category",
+            "service_name",
+            "guest_name",
+            "room_number",
+            "reservation_start",
+            "party_size",
+            "status",
+        ],
+        order_by="modified desc",
+        limit_page_length=10,
+    )
+
     recent_laundry = frappe.get_all(
         "RhoGuest Laundry Request",
         fields=[
@@ -112,7 +151,15 @@ def get_dashboard_data():
                 "RhoGuest Laundry Request",
                 {"billing_status": "Pending Folio Posting"},
             ),
+            "facility_upcoming": _count(
+                "RhoGuest Facility Reservation",
+                {"status": ["in", ["Requested", "Confirmed"]]},
+            ),
+            "pool_today": pool_today,
+            "gym_today": gym_today,
+            "facility_checked_in": checked_in_facilities,
         },
         "published_services": published_services,
         "recent_laundry": recent_laundry,
+        "recent_facilities": recent_facilities,
     }

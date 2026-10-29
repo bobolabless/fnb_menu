@@ -46,3 +46,5 @@ jobs:
         run: python scripts/validate_v020_laundry_ops.py
       - name: RhoGuest v0.2.0 laundry folio and notifications contract
         run: python scripts/validate_v020_laundry_billing.py
+      - name: RhoGuest v0.2.0 facility reservations contract
+        run: python scripts/validate_v020_facilities.py
