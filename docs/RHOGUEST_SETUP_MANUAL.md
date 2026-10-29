@@ -788,7 +788,225 @@ The Dashboard provides:
 
 ---
 
-## 13. Permissions
+## 13. Transport Setup
+
+RhoGuest Transport provides a dedicated guest booking and staff dispatch workflow for airport transfers, chauffeur services, shuttle trips and other hotel transport services.
+
+The public route is:
+
+`/rhoguest-transport`
+
+### 13.1 Enable Transport
+
+Open **RhoGuest Service Category → Transport** and configure:
+
+- Enabled.
+- Show on Guest Portal.
+- Allows Reservation.
+- Allows Paid Services when applicable.
+- Short Description.
+- Operating Hours.
+
+### 13.2 Create Transport Service Items
+
+Each public Transport option is a **RhoGuest Service Item**.
+
+A transactional Transport item must have:
+
+- Service Category: Transport.
+- Enabled.
+- Available to Guests.
+- Requires Reservation.
+- Duration greater than zero.
+- Pricing Mode other than Informational / Quote.
+- Valid server-resolvable price.
+
+Useful examples:
+
+- Airport Pickup.
+- Airport Drop-off.
+- Hourly Chauffeur Service.
+- City Transfer.
+- Conference Shuttle.
+
+**Pricing Basis** may be:
+
+- **Per Reservation**.
+- **Per Person**.
+
+When Capacity is greater than zero, RhoGuest treats it as the maximum passenger count allowed for that Transport service.
+
+### 13.3 Configure Transport Vehicles
+
+Open **RhoGuest Transport Vehicle**.
+
+Configure:
+
+- Vehicle Name.
+- Vehicle Key.
+- Vehicle Type.
+- Registration Number.
+- Make / Model.
+- Colour.
+- Base Location.
+- Passenger Capacity.
+- Luggage Capacity.
+- Enabled.
+
+Vehicle types include Sedan, SUV, Luxury, Van, Bus, Shuttle and Other.
+
+A vehicle with insufficient Passenger Capacity cannot be assigned to a booking.
+
+When Luggage Capacity is greater than zero, the requested luggage count must not exceed it.
+
+### 13.4 Configure Transport Drivers
+
+Open **RhoGuest Transport Driver**.
+
+Configure:
+
+- Driver Name.
+- Driver Key.
+- Phone.
+- Optional Employee.
+- Optional System User.
+- Licence Number.
+- Licence Expiry.
+- Enabled.
+
+An enabled driver cannot have an expired licence.
+
+At assignment/confirmation time, the driver licence must also remain valid for the scheduled trip date.
+
+### 13.5 Public booking
+
+Guests select a published Transport Service Item and provide:
+
+- Guest Name.
+- Room Number when required.
+- Phone or email.
+- Scheduled Pickup.
+- Pickup Location.
+- Drop-off Location.
+- Passenger count.
+- Luggage count.
+- Optional Flight Number.
+- Optional Trip Note.
+
+The guest browser never submits authoritative:
+
+- Rate.
+- Total.
+- Duration.
+- Estimated Drop-off.
+- Vehicle.
+- Driver.
+
+RhoGuest resolves those values on the server.
+
+Bookings are limited to 180 days in advance.
+
+### 13.6 Vehicle and driver assignment
+
+Requested/Confirmed bookings may be assigned or reassigned using:
+
+**Transport Actions → Assign / Change Vehicle & Driver**
+
+RhoGuest:
+
+1. Locks the booking.
+2. Locks the selected vehicle.
+3. Locks the selected driver.
+4. Verifies both resources are enabled.
+5. Verifies passenger/luggage capacity.
+6. Verifies the driver licence on the scheduled date.
+7. Rejects vehicle/driver overlap with other active Transport bookings.
+
+Active resource-conflict states are:
+
+- Requested.
+- Confirmed.
+- Dispatched.
+- Arrived at Pickup.
+- In Transit.
+
+### 13.7 Dispatch workflow
+
+The controlled workflow is:
+
+`Requested → Confirmed → Dispatched → Arrived at Pickup → In Transit → Completed`
+
+Additional terminal paths:
+
+- Requested → Cancelled.
+- Confirmed → Cancelled.
+- Confirmed → No Show.
+- Arrived at Pickup → No Show.
+
+A booking cannot be Confirmed until both a valid vehicle and driver have been assigned.
+
+### 13.8 Rescheduling
+
+Requested or Confirmed bookings may be rescheduled.
+
+The original service duration is preserved and the Estimated Drop-off is recalculated.
+
+If vehicle/driver resources are already assigned, RhoGuest revalidates both resources against the new trip window before saving the reschedule.
+
+### 13.9 Guest tracking
+
+The public Transport page includes a token-protected tracking panel.
+
+A successful public booking returns:
+
+- Booking Reference.
+- Secret Access Token.
+
+The browser stores the most recent pair locally for convenience.
+
+The tracking response may show:
+
+- Status.
+- Scheduled Pickup.
+- Vehicle Name.
+- Vehicle Registration.
+- Driver Name.
+
+The access token must be treated as confidential.
+
+### 13.10 Pricing and settlement
+
+Transport pricing is server-authoritative.
+
+Settlement is currently:
+
+- Complimentary; or
+- Pay at Hotel.
+
+Transport does not yet use the Laundry Charge-to-Room adapter.
+
+### 13.11 Staff operations
+
+The Transport Booking List provides:
+
+- Upcoming.
+- Awaiting Assignment.
+- Dispatched.
+- Active Trips.
+- Completed.
+- All Bookings.
+
+The RhoGuest Dashboard adds:
+
+- Upcoming Transport.
+- Awaiting Assignment.
+- Transport Today.
+- In Transit.
+- Recent Transport Bookings.
+
+---
+
+## 14. Permissions
 
 Current standard Desk roles used by RhoGuest include:
 
@@ -808,7 +1026,7 @@ Staff-only APIs reject Guest sessions.
 
 ---
 
-## 14. Security Model
+## 15. Security Model
 
 RhoGuest follows these rules:
 
@@ -824,7 +1042,7 @@ RhoGuest follows these rules:
 
 ---
 
-## 15. Validation Commands
+## 16. Validation Commands
 
 From the Bench directory:
 
@@ -838,13 +1056,14 @@ PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_l
 PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_laundry_billing.py
 PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_facilities.py
 PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_spa.py
+PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_transport.py
 ```
 
 All should report PASS.
 
 ---
 
-## 16. Troubleshooting
+## 17. Troubleshooting
 
 ### Workspace not visible
 
@@ -890,13 +1109,23 @@ Check:
 - The requested time is inside one complete weekly availability row.
 - The resource has no overlapping Requested, Confirmed, Checked In or In Treatment appointment.
 
+### Transport booking cannot be confirmed
+
+Check:
+
+- Vehicle and Driver are both assigned.
+- Both resources are enabled.
+- Vehicle Passenger/Luggage Capacity can satisfy the booking.
+- Driver licence remains valid for the trip date.
+- Neither resource is assigned to an overlapping active trip.
+
 ### QR alias conflict
 
 RhoGuest refuses protected/conflicting routes. Choose another route instead of overriding Frappe endpoints.
 
 ---
 
-## 17. Backup and Recovery
+## 18. Backup and Recovery
 
 Before upgrades or major configuration changes:
 
@@ -910,7 +1139,7 @@ Restore procedures should follow the normal Frappe Bench recovery process for th
 
 ---
 
-## 18. Support and Ownership
+## 19. Support and Ownership
 
 RhoGuest is developed and maintained by **Rhocom Technology Limited** as a RhoHMS add-on application.
 
