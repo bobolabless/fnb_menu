@@ -27,7 +27,7 @@ def main():
     assert workspace["module"] == "FNB Menu"
     assert workspace["public"] == 1
     assert workspace["is_hidden"] == 0
-    assert workspace["icon"] == "home"
+    assert workspace["icon"] == "share-people"
 
     shortcut_labels = {row["label"] for row in workspace["shortcuts"]}
     assert {

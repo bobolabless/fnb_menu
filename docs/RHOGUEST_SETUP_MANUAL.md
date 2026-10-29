@@ -72,7 +72,7 @@ bench --site <site> list-apps
 
 Confirm `fnb_menu` is listed.
 
-Then log into Frappe Desk. The left/home Workspace navigation should contain **RhoGuest** with a home icon.
+Then log into Frappe Desk. The left/home Workspace navigation should contain **RhoGuest** with a share-people icon.
 
 ---
 

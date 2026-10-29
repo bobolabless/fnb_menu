@@ -106,7 +106,7 @@ Paid facility reservations are recorded as **Pay at Hotel** in this release. Poo
 
 ## RhoGuest Desk Workspace & Dashboard
 
-RhoGuest includes a standard Frappe **Workspace** named **RhoGuest**. It is public to permitted Desk users and uses the `home` Workspace icon so RhoGuest appears as its own entry in the Frappe Desk sidebar/home navigation.
+RhoGuest includes a standard Frappe **Workspace** named **RhoGuest**. It is public to permitted Desk users and uses the `share-people` Workspace icon so RhoGuest appears as its own entry in the Frappe Desk sidebar/home navigation.
 
 The Workspace provides direct access to:
 

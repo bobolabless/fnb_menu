@@ -29,7 +29,7 @@ Current operational areas are:
 
 Log into Frappe Desk.
 
-Select **RhoGuest** from the left/home Workspace navigation. It appears with a home icon.
+Select **RhoGuest** from the left/home Workspace navigation. It appears with a share-people icon.
 
 The Workspace provides shortcuts to:
 
