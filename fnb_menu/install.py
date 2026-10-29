@@ -35,7 +35,7 @@ def ensure_settings_defaults():
             (doctype, fieldname),
         )
 
-        if existing:
+        if existing and existing[0][0] not in (None, ""):
             continue
 
         frappe.db.set_single_value(
