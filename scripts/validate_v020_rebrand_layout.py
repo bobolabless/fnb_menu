@@ -57,8 +57,20 @@ def main():
     )
     assert child["name"] == "RhoGuest Self Order Item"
 
-    # Old standard source paths must not remain, otherwise Frappe could sync
-    # duplicate legacy DocTypes back into Desk.
+    # Git cannot remove a directory when harmless local cache files remain
+    # (for example __pycache__/*.pyc).  Therefore do not fail merely because
+    # the old directory exists.  What matters for Frappe model sync is that no
+    # legacy source/schema file capable of recreating the old DocType remains.
+    legacy_source_suffixes = {".json", ".js"}
+    legacy_python_names = {
+        "fnb_menu_settings.py",
+        "fnb_menu_book.py",
+        "fnb_menu_category.py",
+        "fnb_menu_entry.py",
+        "fnb_self_order.py",
+        "fnb_self_order_item.py",
+    }
+
     for old_dir in (
         "fnb_menu_settings",
         "fnb_menu_book",
@@ -67,7 +79,25 @@ def main():
         "fnb_self_order",
         "fnb_self_order_item",
     ):
-        assert not (ROOT / "fnb_menu/fnb_menu/doctype" / old_dir).exists()
+        path = ROOT / "fnb_menu/fnb_menu/doctype" / old_dir
+        if not path.exists():
+            continue
+
+        dangerous = []
+        for candidate in path.rglob("*"):
+            if not candidate.is_file():
+                continue
+
+            if candidate.suffix in legacy_source_suffixes:
+                dangerous.append(candidate)
+
+            if candidate.name in legacy_python_names:
+                dangerous.append(candidate)
+
+        assert not dangerous, (
+            "Legacy FNB DocType source files remain and could be synced again: "
+            + ", ".join(str(item.relative_to(ROOT)) for item in dangerous)
+        )
 
     patch = (
         ROOT
