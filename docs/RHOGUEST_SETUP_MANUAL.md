@@ -22,7 +22,9 @@ RhoGuest provides a guest-facing digital-services layer while preserving the tec
 - Public Guest Services Hub.
 - Laundry Request & Fulfilment.
 - RhoGuest Desk Workspace and operational Dashboard.
-- Foundations for future Pool, Gym, Spa, Transport, Housekeeping and other services.
+- Pool & Gym access/reservations.
+- Spa & Wellness appointments with resource scheduling.
+- Foundations for future Transport, Housekeeping and other services.
 
 Do not rename the installed Frappe app from `fnb_menu`.
 
@@ -119,6 +121,9 @@ It is the principal staff navigation area and contains:
 
 - RhoGuest Dashboard.
 - Laundry Requests.
+- Facility Reservations.
+- Spa Appointments.
+- Spa Resources.
 - Service Categories.
 - Service Items.
 - F&B Self Orders.
@@ -156,7 +161,11 @@ The Dashboard reads live data server-side and displays:
 - Laundry Requests ready/out for delivery.
 - Laundry Requests delivered today.
 - Charge-to-Room requests awaiting folio posting.
-- Recent Laundry Requests.
+- Pool/Gym reservations and checked-in guests.
+- Upcoming Spa appointments.
+- Spa appointments today.
+- Treatments currently In Treatment.
+- Recent Laundry, Facility and Spa activity.
 
 The Dashboard is an operational view only. It does not bypass DocType permissions.
 
@@ -569,7 +578,211 @@ The RhoGuest Dashboard includes Upcoming Facilities, Pool Today, Gym Today, Chec
 
 ---
 
-## 12. Permissions
+## 12. Spa & Wellness Setup
+
+Spa uses a dedicated resource-aware appointment engine. It does not use the Pool/Gym shared-capacity model because Spa treatments must also reserve a specific therapist, treatment room, equipment item or other operational resource.
+
+### 12.1 Enable Spa & Wellness
+
+Open **RhoGuest Service Category → Spa & Wellness** and configure:
+
+- Enabled.
+- Show on Guest Portal.
+- Allows Reservation.
+- Description.
+- Operating Hours.
+- Location.
+- Requires Room Number if required by hotel policy.
+
+The public Spa route is:
+
+`/rhoguest-spa`
+
+### 12.2 Create Spa treatments
+
+Create one **RhoGuest Service Item** per treatment.
+
+A transactional Spa treatment must have:
+
+- Service Category: Spa & Wellness.
+- Enabled.
+- Available to Guests.
+- Requires Reservation.
+- Duration greater than zero.
+- Pricing Mode other than Informational / Quote.
+- Valid server-resolvable price.
+
+Example:
+
+- Service Name: Swedish Massage 60 Minutes.
+- Service Key: `swedish-massage-60`.
+- Pricing Mode: Fixed Price.
+- Duration: 60 minutes.
+- Location: Spa Treatment Wing.
+
+Spa appointments currently represent one treatment session for one guest. Pricing is therefore snapshotted once per appointment.
+
+### 12.3 Configure Spa Resources
+
+Open **RhoGuest Spa Resource**.
+
+Resource Type can be:
+
+- Therapist.
+- Treatment Room.
+- Equipment.
+- Other.
+
+For each resource configure:
+
+- Resource Name.
+- Stable Resource Key.
+- Optional linked Employee.
+- Optional enabled System User.
+- Location.
+- Enabled.
+- Allow Guest to Select This Resource.
+- Supported Spa Services.
+- Weekly Availability.
+
+**Allow Guest to Select This Resource** controls whether the resource name is offered explicitly on the public booking form. A hidden resource may still be selected automatically by the server when the guest chooses **Any available**.
+
+### 12.4 Weekly availability
+
+Availability rows contain:
+
+- Day.
+- Start Time.
+- End Time.
+
+End Time must be later than Start Time. Availability rows on the same day may not overlap.
+
+One availability row must cover the complete treatment period. RhoGuest does not split one appointment across multiple availability rows.
+
+Appointments that would cross midnight are rejected because a single weekly availability row must cover the full treatment.
+
+### 12.5 Treatment mapping
+
+Every Spa Resource must be mapped to each treatment it can perform.
+
+Only Spa & Wellness Service Items that:
+
+- Require Reservation; and
+- Have Duration greater than zero
+
+may be mapped to a Spa Resource.
+
+Duplicate treatment mappings are rejected.
+
+### 12.6 Guest resource selection
+
+The public booking form allows:
+
+- **Any available**; or
+- A named resource where **Allow Guest to Select This Resource** is enabled.
+
+When **Any available** is selected, the server:
+
+1. Finds enabled resources mapped to the treatment.
+2. Locks candidate resource rows.
+3. Checks weekly availability.
+4. Checks active appointment overlap.
+5. Selects the first eligible free resource.
+
+When a named resource is selected, the server verifies that the resource is guest-selectable, supports the treatment, covers the full appointment period and has no conflicting booking.
+
+### 12.7 Conflict protection
+
+Spa resources are treated as occupied while an appointment is:
+
+- Requested.
+- Confirmed.
+- Checked In.
+- In Treatment.
+
+The overlap rule is:
+
+`existing.start < requested.end AND existing.end > requested.start`
+
+Candidate resources are row-locked before the overlap decision so concurrent bookings cannot double-book the same resource.
+
+### 12.8 Appointment workflow
+
+The controlled workflow is:
+
+`Requested → Confirmed → Checked In → In Treatment → Completed`
+
+Additional terminal paths:
+
+- Requested → Cancelled.
+- Confirmed → Cancelled.
+- Confirmed → No Show.
+
+Staff may use **Reschedule / Change Resource** while an appointment is Requested or Confirmed. The server rechecks treatment capability, weekly availability and conflicts before changing the appointment.
+
+### 12.9 Public security
+
+The guest browser submits only:
+
+- Treatment identifier.
+- Optional preferred resource identifier.
+- Guest/contact details.
+- Requested start.
+- Guest note.
+
+The browser does not submit authoritative:
+
+- Rate.
+- Amount.
+- Duration.
+- Appointment End.
+- Resource capability.
+
+All are resolved again by the server.
+
+Spa bookings are limited to 180 days in advance.
+
+### 12.10 Settlement
+
+Spa appointments currently use:
+
+- Complimentary; or
+- Pay at Hotel.
+
+Spa does not yet use the Laundry Charge-to-Room adapter.
+
+### 12.11 Staff operations
+
+Open **RhoGuest → Spa Appointments**.
+
+Form actions include:
+
+- Confirm Appointment.
+- Reschedule / Change Resource.
+- Check In.
+- Start Treatment.
+- Complete Treatment.
+- Mark No Show.
+- Cancel Appointment.
+
+The List View provides:
+
+- Upcoming.
+- Awaiting Confirmation.
+- Checked In.
+- In Treatment.
+- All Appointments.
+
+The Dashboard provides:
+
+- Upcoming Spa.
+- Spa Today.
+- In Treatment.
+- Recent Spa Appointments.
+
+---
+
+## 13. Permissions
 
 Current standard Desk roles used by RhoGuest include:
 
@@ -589,7 +802,7 @@ Staff-only APIs reject Guest sessions.
 
 ---
 
-## 13. Security Model
+## 14. Security Model
 
 RhoGuest follows these rules:
 
@@ -605,7 +818,7 @@ RhoGuest follows these rules:
 
 ---
 
-## 14. Validation Commands
+## 15. Validation Commands
 
 From the Bench directory:
 
@@ -618,13 +831,14 @@ PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_d
 PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_laundry_ops.py
 PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_laundry_billing.py
 PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_facilities.py
+PYTHONDONTWRITEBYTECODE=1 ./env/bin/python apps/fnb_menu/scripts/validate_v020_spa.py
 ```
 
 All should report PASS.
 
 ---
 
-## 15. Troubleshooting
+## 16. Troubleshooting
 
 ### Workspace not visible
 
@@ -659,13 +873,24 @@ Check pricing configuration. ERPNext Item Price items require a valid active sel
 
 Check FNB Menu Settings routing section, then clear website cache.
 
+### Spa booking reports no resource available
+
+Check:
+
+- Spa category is enabled/published.
+- Treatment is enabled, guest-available and Requires Reservation.
+- Treatment Duration is greater than zero.
+- At least one enabled Spa Resource is mapped to the treatment.
+- The requested time is inside one complete weekly availability row.
+- The resource has no overlapping Requested, Confirmed, Checked In or In Treatment appointment.
+
 ### QR alias conflict
 
 RhoGuest refuses protected/conflicting routes. Choose another route instead of overriding Frappe endpoints.
 
 ---
 
-## 16. Backup and Recovery
+## 17. Backup and Recovery
 
 Before upgrades or major configuration changes:
 
@@ -679,7 +904,7 @@ Restore procedures should follow the normal Frappe Bench recovery process for th
 
 ---
 
-## 17. Support and Ownership
+## 18. Support and Ownership
 
 RhoGuest is developed and maintained by **Rhocom Technology Limited** as a RhoHMS add-on application.
 
