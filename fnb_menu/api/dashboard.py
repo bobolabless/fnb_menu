@@ -116,6 +116,40 @@ def get_dashboard_data():
         limit_page_length=10,
     )
 
+    transport_today = frappe.get_all(
+        "RhoGuest Transport Booking",
+        filters=[
+            ["RhoGuest Transport Booking", "scheduled_pickup_at", ">=", today],
+            ["RhoGuest Transport Booking", "scheduled_pickup_at", "<", tomorrow],
+        ],
+        fields=["name", "status"],
+        limit_page_length=5000,
+    )
+    transport_today_count = sum(
+        1 for row in transport_today if row.status not in {"Cancelled", "No Show"}
+    )
+    transport_in_transit = sum(
+        1 for row in transport_today if row.status == "In Transit"
+    )
+
+    recent_transport = frappe.get_all(
+        "RhoGuest Transport Booking",
+        fields=[
+            "name",
+            "service_name",
+            "guest_name",
+            "room_number",
+            "scheduled_pickup_at",
+            "pickup_location",
+            "dropoff_location",
+            "vehicle_name",
+            "driver_name",
+            "status",
+        ],
+        order_by="modified desc",
+        limit_page_length=10,
+    )
+
     recent_laundry = frappe.get_all(
         "RhoGuest Laundry Request",
         fields=[
@@ -195,9 +229,23 @@ def get_dashboard_data():
             ),
             "spa_today": spa_today_count,
             "spa_in_treatment": spa_in_treatment,
+            "transport_upcoming": _count(
+                "RhoGuest Transport Booking",
+                {"status": ["in", ["Requested", "Confirmed"]]},
+            ),
+            "transport_unassigned": _count(
+                "RhoGuest Transport Booking",
+                {
+                    "status": ["in", ["Requested", "Confirmed"]],
+                    "vehicle": ["is", "not set"],
+                },
+            ),
+            "transport_today": transport_today_count,
+            "transport_in_transit": transport_in_transit,
         },
         "published_services": published_services,
         "recent_laundry": recent_laundry,
         "recent_facilities": recent_facilities,
         "recent_spa": recent_spa,
+        "recent_transport": recent_transport,
     }

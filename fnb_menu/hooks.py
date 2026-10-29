@@ -19,6 +19,7 @@ website_route_rules = [
     {"from_route": "/rhoguest-pool", "to_route": "rhoguest_pool"},
     {"from_route": "/rhoguest-gym", "to_route": "rhoguest_gym"},
     {"from_route": "/rhoguest-spa", "to_route": "rhoguest_spa"},
+    {"from_route": "/rhoguest-transport", "to_route": "rhoguest_transport"},
 ]
 
 doc_events = {

@@ -163,6 +163,9 @@ def get_public_service_catalog(settings=None, brand=None):
         elif category.service_key == "spa-wellness":
             action_url = "/rhoguest-spa"
             action_label = "Book Spa Appointment"
+        elif category.service_key == "transport":
+            action_url = "/rhoguest-transport"
+            action_label = "Book Transport"
 
         output.append(
             frappe._dict(

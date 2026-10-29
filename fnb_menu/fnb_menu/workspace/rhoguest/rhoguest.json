@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"rg-head-1\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>RhoGuest Operations</b></span>\",\"col\":12}},{\"id\":\"rg-sc-1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"RhoGuest Dashboard\",\"col\":3}},{\"id\":\"rg-sc-2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Laundry Requests\",\"col\":3}},{\"id\":\"rg-sc-facilities\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Facility Reservations\",\"col\":3}},{\"id\":\"rg-sc-spa\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Spa Appointments\",\"col\":3}},{\"id\":\"rg-sc-3\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Guest Services Hub\",\"col\":3}},{\"id\":\"rg-sc-4\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Public Food & Beverage Menu\",\"col\":3}},{\"id\":\"rg-space-1\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"rg-head-2\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Configuration & Masters</b></span>\",\"col\":12}},{\"id\":\"rg-card-1\",\"type\":\"card\",\"data\":{\"card_name\":\"Operations\",\"col\":4}},{\"id\":\"rg-card-2\",\"type\":\"card\",\"data\":{\"card_name\":\"Service Catalog\",\"col\":4}},{\"id\":\"rg-card-3\",\"type\":\"card\",\"data\":{\"card_name\":\"Configuration\",\"col\":4}}]",
+ "content": "[{\"id\":\"rg-head-1\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>RhoGuest Operations</b></span>\",\"col\":12}},{\"id\":\"rg-sc-1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"RhoGuest Dashboard\",\"col\":3}},{\"id\":\"rg-sc-2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Laundry Requests\",\"col\":3}},{\"id\":\"rg-sc-facilities\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Facility Reservations\",\"col\":3}},{\"id\":\"rg-sc-spa\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Spa Appointments\",\"col\":3}},{\"id\":\"rg-sc-transport\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Transport Bookings\",\"col\":3}},{\"id\":\"rg-sc-3\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Guest Services Hub\",\"col\":3}},{\"id\":\"rg-sc-4\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Public Food & Beverage Menu\",\"col\":3}},{\"id\":\"rg-space-1\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"rg-head-2\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Configuration & Masters</b></span>\",\"col\":12}},{\"id\":\"rg-card-1\",\"type\":\"card\",\"data\":{\"card_name\":\"Operations\",\"col\":4}},{\"id\":\"rg-card-2\",\"type\":\"card\",\"data\":{\"card_name\":\"Service Catalog\",\"col\":4}},{\"id\":\"rg-card-3\",\"type\":\"card\",\"data\":{\"card_name\":\"Configuration\",\"col\":4}}]",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
@@ -48,6 +48,17 @@
    "label": "Spa Appointments",
    "link_count": 0,
    "link_to": "RhoGuest Spa Appointment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Transport Bookings",
+   "link_count": 0,
+   "link_to": "RhoGuest Transport Booking",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -149,6 +160,28 @@
    "dependencies": "",
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Transport Vehicles",
+   "link_count": 0,
+   "link_to": "RhoGuest Transport Vehicle",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Transport Drivers",
+   "link_count": 0,
+   "link_to": "RhoGuest Transport Driver",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "RhoGuest Menu Settings",
    "link_count": 0,
    "link_to": "RhoGuest Menu Settings",
@@ -203,6 +236,13 @@
    "doc_view": "List",
    "label": "Spa Appointments",
    "link_to": "RhoGuest Spa Appointment",
+   "type": "DocType"
+  },
+  {
+   "color": "Cyan",
+   "doc_view": "List",
+   "label": "Transport Bookings",
+   "link_to": "RhoGuest Transport Booking",
    "type": "DocType"
   },
   {
@@ -275,6 +315,26 @@
    "label": "Public Spa",
    "type": "URL",
    "url": "/rhoguest-spa"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Transport Vehicles",
+   "link_to": "RhoGuest Transport Vehicle",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Transport Drivers",
+   "link_to": "RhoGuest Transport Driver",
+   "type": "DocType"
+  },
+  {
+   "color": "Cyan",
+   "label": "Public Transport",
+   "type": "URL",
+   "url": "/rhoguest-transport"
   }
  ],
  "title": "RhoGuest",

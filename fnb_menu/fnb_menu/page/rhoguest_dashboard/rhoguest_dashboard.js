@@ -16,6 +16,9 @@ frappe.pages["rhoguest-dashboard"].on_page_load = function (wrapper) {
   page.add_inner_button(__("Spa Appointments"), () => {
     frappe.set_route("List", "RhoGuest Spa Appointment");
   });
+  page.add_inner_button(__("Transport Bookings"), () => {
+    frappe.set_route("List", "RhoGuest Transport Booking");
+  });
   page.add_inner_button(__("Settings"), () => {
     frappe.set_route("Form", "RhoGuest Menu Settings");
   });
@@ -94,6 +97,10 @@ function render_dashboard(body, data) {
     card(__("Upcoming Spa"), c.spa_upcoming, __("Requested / confirmed appointments"), "List/RhoGuest Spa Appointment"),
     card(__("Spa Today"), c.spa_today, __("Active appointments today"), "List/RhoGuest Spa Appointment"),
     card(__("In Treatment"), c.spa_in_treatment, __("Treatments currently in progress"), "List/RhoGuest Spa Appointment"),
+    card(__("Upcoming Transport"), c.transport_upcoming, __("Requested / confirmed trips"), "List/RhoGuest Transport Booking"),
+    card(__("Awaiting Assignment"), c.transport_unassigned, __("Trips without vehicle/driver"), "List/RhoGuest Transport Booking"),
+    card(__("Transport Today"), c.transport_today, __("Active scheduled trips today"), "List/RhoGuest Transport Booking"),
+    card(__("In Transit"), c.transport_in_transit, __("Trips currently underway"), "List/RhoGuest Transport Booking"),
   ].join("");
 
   const serviceBadges = (data.published_services || []).length
@@ -134,6 +141,23 @@ function render_dashboard(body, data) {
         )
         .join("")
     : '<tr><td colspan="5" class="rgd-empty">' + __("No Spa Appointments yet") + "</td></tr>";
+
+  const transportRows = (data.recent_transport || []).length
+    ? data.recent_transport
+        .map(
+          (row) => [
+            '<tr data-transport-docname="' + escape_html(row.name) + '">',
+            "<td><strong>" + escape_html(row.name) + "</strong></td>",
+            "<td>" + escape_html(row.service_name) + '<small>' + escape_html(row.vehicle_name || "Unassigned") + "</small></td>",
+            "<td>" + escape_html(row.guest_name) + '<small>Room ' + escape_html(row.room_number || "—") + "</small></td>",
+            "<td>" + escape_html(row.scheduled_pickup_at) + "</td>",
+            "<td>" + escape_html(row.pickup_location) + "<small>→ " + escape_html(row.dropoff_location) + "</small></td>",
+            '<td><span class="rgd-status">' + escape_html(row.status) + "</span></td>",
+            "</tr>",
+          ].join("")
+        )
+        .join("")
+    : '<tr><td colspan="6" class="rgd-empty">' + __("No Transport Bookings yet") + "</td></tr>";
 
   const rows = (data.recent_laundry || []).length
     ? data.recent_laundry
@@ -191,6 +215,13 @@ function render_dashboard(body, data) {
     "<th>" + __("Appointment") + "</th><th>" + __("Treatment / Resource") + "</th><th>" + __("Guest") + "</th><th>" + __("Start") + "</th><th>" + __("Status") + "</th>",
     "</tr></thead><tbody>" + spaRows + "</tbody></table></div>",
     "</section>",
+    '<section class="rgd-panel">',
+    '<div class="rgd-panel-head"><div><small>' + __("TRANSPORT") + "</small><h3>" + __("Recent Transport Bookings") + "</h3></div>",
+    '<a class="rgd-link" data-all-transport>' + __("View all") + " →</a></div>",
+    '<div class="table-responsive"><table class="table rgd-table"><thead><tr>',
+    "<th>" + __("Booking") + "</th><th>" + __("Service / Vehicle") + "</th><th>" + __("Guest") + "</th><th>" + __("Pickup") + "</th><th>" + __("Route") + "</th><th>" + __("Status") + "</th>",
+    "</tr></thead><tbody>" + transportRows + "</tbody></table></div>",
+    "</section>",
     '<p class="rgd-generated">' + __("Updated") + ": " + escape_html(data.generated_at || "") + "</p>",
     "</div>",
   ].join(""));
@@ -222,6 +253,14 @@ function render_dashboard(body, data) {
 
   body.find("[data-all-spa]").on("click", () => {
     frappe.set_route("List", "RhoGuest Spa Appointment");
+  });
+
+  body.find("[data-transport-docname]").on("click", function () {
+    frappe.set_route("Form", "RhoGuest Transport Booking", $(this).attr("data-transport-docname"));
+  });
+
+  body.find("[data-all-transport]").on("click", () => {
+    frappe.set_route("List", "RhoGuest Transport Booking");
   });
 
   body.find("[data-open-hub]").on("click", () => window.open("/rhoguest", "_blank"));

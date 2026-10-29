@@ -52,3 +52,5 @@ jobs:
         run: python scripts/validate_v020_spa.py
       - name: RhoGuest v0.2.0 rebrand and form layout contract
         run: python scripts/validate_v020_rebrand_layout.py
+      - name: RhoGuest v0.2.0 transport dispatch contract
+        run: python scripts/validate_v020_transport.py
