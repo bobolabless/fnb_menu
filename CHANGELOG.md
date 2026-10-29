@@ -40,6 +40,17 @@
 - Added authorized Billing form actions for Post to Folio, Record Folio Posting and Mark Settled.
 - Added Laundry lifecycle in-app notifications plus opt-in guest/staff email notifications.
 - Added a v0.2.0 Laundry billing/integration/notifications static contract validator.
+- Added shared **Pool & Gym reservation workflow** using RhoGuest Facility Reservation.
+- Added public Pool route `/rhoguest-pool` and Gym route `/rhoguest-gym`.
+- Added Service Item **Pricing Basis** with Per Reservation and Per Person options.
+- Added server-authoritative reservation duration, end-time, price and settlement snapshot.
+- Added capacity-aware overlapping-slot checks protected by Service Item row locking.
+- Added Requested → Confirmed → Checked In → Completed workflow plus Cancelled/No Show terminal states.
+- Added staff Reschedule and Assign Staff actions plus Facility List View operational queues.
+- Added Pool/Gym KPIs and Recent Facility Reservations to the RhoGuest Dashboard.
+- Added Facility Reservations to the RhoGuest Workspace.
+- Updated Setup/User manuals for Pool/Gym configuration and operations.
+- Added a v0.2.0 Pool/Gym facility reservations static contract validator.
 
 ## 0.1.0
 
