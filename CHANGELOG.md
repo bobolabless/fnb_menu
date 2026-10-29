@@ -51,6 +51,16 @@
 - Added Facility Reservations to the RhoGuest Workspace.
 - Updated Setup/User manuals for Pool/Gym configuration and operations.
 - Added a v0.2.0 Pool/Gym facility reservations static contract validator.
+- Added resource-aware **Spa & Wellness appointment workflow** with public route `/rhoguest-spa`.
+- Added **RhoGuest Spa Resource** for therapists, treatment rooms, equipment and other bookable Spa resources.
+- Added treatment-to-resource mapping plus structured weekly availability.
+- Added public guest resource preference and server-side **Any available** resource selection.
+- Added resource row locking and overlap protection for active Spa appointments.
+- Added server-authoritative treatment duration, appointment end, resource assignment and pricing.
+- Added Requested → Confirmed → Checked In → In Treatment → Completed Spa workflow plus Cancelled/No Show terminal states.
+- Added staff Reschedule / Change Resource controls and Spa operational List View queues.
+- Added Spa KPIs and Recent Spa Appointments to the RhoGuest Dashboard and Workspace.
+- Added a v0.2.0 Spa & Wellness static contract validator.
 
 ## 0.1.0
 
