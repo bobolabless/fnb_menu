@@ -2,8 +2,8 @@
 
 ## 0.2.0-dev
 
-- Rebranded the guest-facing product from **RhoHMS F&B Menu** to **RhoGuest — Digital Menu & Guest Services** while retaining the technical app slug `fnb_menu`.
-- Added an editable hotel-facing public menu route in **FNB Menu Settings**.
+- Rebranded the guest-facing product from **RhoHMS Food & Beverage Menu** to **RhoGuest — Digital Menu & Guest Services** while retaining the technical app slug `fnb_menu`.
+- Added an editable hotel-facing public menu route in **RhoGuest Menu Settings**.
 - Added protected legacy/existing QR aliases so already-printed hotel QR codes can continue to work.
 - Preserved `/fnb-menu` and `/fnb-kitchen` as stable internal compatibility routes.
 - Added automatic retention of the previous public menu route when the primary route changes.
@@ -28,7 +28,7 @@
 - Added **Laundry Request & Fulfilment** with server-authoritative pricing, public status tokens and controlled fulfilment transitions.
 - Added stable public Laundry route `/rhoguest-laundry`.
 - Added **RhoGuest Workspace** with a `share-people` icon for Frappe Desk sidebar/home navigation.
-- Added **RhoGuest Dashboard** Desk page with service, F&B, Laundry and pending-folio operational KPIs.
+- Added **RhoGuest Dashboard** Desk page with service, Food & Beverage, Laundry and pending-folio operational KPIs.
 - Added recent Laundry activity and quick navigation from the Dashboard.
 - Added updated **RhoGuest Setup Manual** and **RhoGuest User Manual** under `docs/`.
 - Added a v0.2.0 Desk/Workspace/manual static contract validator.

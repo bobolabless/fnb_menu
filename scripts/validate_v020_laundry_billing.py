@@ -15,7 +15,7 @@ def load_json(path):
 
 def main():
     settings = load_json(
-        "fnb_menu/fnb_menu/doctype/fnb_menu_settings/fnb_menu_settings.json"
+        "fnb_menu/fnb_menu/doctype/rhoguest_menu_settings/rhoguest_menu_settings.json"
     )
     settings_fields = {row["fieldname"]: row for row in settings["fields"]}
 
@@ -60,8 +60,8 @@ def main():
 
     settings_py = (
         ROOT
-        / "fnb_menu/fnb_menu/doctype/fnb_menu_settings/"
-        "fnb_menu_settings.py"
+        / "fnb_menu/fnb_menu/doctype/rhoguest_menu_settings/"
+        "rhoguest_menu_settings.py"
     ).read_text()
     folio = (ROOT / "fnb_menu/integrations/folio.py").read_text()
     api = (ROOT / "fnb_menu/api/laundry.py").read_text()

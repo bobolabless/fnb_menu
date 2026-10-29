@@ -4,14 +4,14 @@
 
 The technical Frappe app and repository remain **`fnb_menu`** for upgrade and import compatibility. RhoGuest is the product identity from v0.2.0 onward.
 
-The current F&B capability provides Food and Drinks menu books, themed responsive public menus, category navigation, ERPNext item/price integration, guest carts, prepaid self-ordering, Payment Request integration and a kitchen workflow. The v0.2.0 line expands the product toward additional hotel guest services such as Laundry, Swimming Pool, Gym, Spa, Transport, Housekeeping and Recreation.
+The current Food & Beverage capability provides Food and Drinks menu books, themed responsive public menus, category navigation, ERPNext item/price integration, guest carts, prepaid self-ordering, Payment Request integration and a kitchen workflow. The v0.2.0 line expands the product toward additional hotel guest services such as Laundry, Swimming Pool, Gym, Spa, Transport, Housekeeping and Recreation.
 
 ## Stable technical identity
 
 - Frappe app / GitHub repository: `fnb_menu`
 - Product title: `RhoGuest`
-- Frappe module: `FNB Menu`
-- Existing Settings DocType: `FNB Menu Settings`
+- Internal Frappe module: retained for technical compatibility; hotel-facing Desk identity is **RhoGuest**.
+- Existing Settings DocType: `RhoGuest Menu Settings`
 - Stable internal menu endpoint: `/fnb-menu`
 - Kitchen board: `/fnb-kitchen`
 - Publisher: Rhocom Technology Limited
@@ -23,7 +23,7 @@ Existing Python imports, DocType names and `/fnb-menu` are intentionally retaine
 
 RhoGuest allows each hotel to choose a hotel-facing menu URL without editing `hooks.py`.
 
-Open **FNB Menu Settings → RhoGuest Public Menu & Legacy QR Routing** and configure:
+Open **RhoGuest Menu Settings → RhoGuest Public Menu & Legacy QR Routing** and configure:
 
 - **Public Menu Route** — for example `/menu`, `/dine` or `/guest-menu`.
 - **Keep Previous Public Route as Alias** — preserves an old public route automatically when the primary route changes.
@@ -34,7 +34,7 @@ The internal `/fnb-menu` route always remains available. RhoGuest-managed aliase
 
 Protected Frappe paths such as `/app`, `/api`, `/assets`, `/files`, `/private`, `/login` and `/desk` cannot be claimed as RhoGuest QR routes.
 
-Route changes take effect after saving FNB Menu Settings and the website routing cache is cleared automatically; a Bench restart is not required merely to change a QR alias.
+Route changes take effect after saving RhoGuest Menu Settings and the website routing cache is cleared automatically; a Bench restart is not required merely to change a QR alias.
 
 ## v0.2.0 generic guest-service foundation
 
@@ -47,13 +47,13 @@ The application seeds ten standard hospitality categories: Food & Beverage, Laun
 
 Seeded categories are **disabled and unpublished**. Migration therefore does not expose new guest services automatically. A hotel enables only the services it actually provides.
 
-The generic masters are presentation/configuration records, not transaction documents. Existing F&B ordering and kitchen/KOT behavior remains unchanged. Laundry jobs, transport bookings, spa reservations and other specialized operational workflows will be added as separate transaction models that reference these masters.
+The generic masters are presentation/configuration records, not transaction documents. Existing Food & Beverage ordering and kitchen/KOT behavior remains unchanged. Laundry jobs, transport bookings, spa reservations and other specialized operational workflows will be added as separate transaction models that reference these masters.
 
 ## v0.2.0 Guest Services Hub
 
 The stable internal guest-services landing page is `/rhoguest`.
 
-The hub is **disabled by default**. When enabled in **FNB Menu Settings → RhoGuest Guest Services Hub**, it renders only service categories where both **Enabled** and **Show on Guest Portal** are checked.
+The hub is **disabled by default**. When enabled in **RhoGuest Menu Settings → RhoGuest Guest Services Hub**, it renders only service categories where both **Enabled** and **Show on Guest Portal** are checked.
 
 Phase 2B is intentionally read-only:
 
@@ -74,7 +74,7 @@ Charge-to-Room is recorded as **Pending Folio Posting**. RhoGuest supports a saf
 
 ### Laundry folio integration
 
-System Manager can configure a trusted dotted Python method in **FNB Menu Settings → RhoGuest Laundry Billing & Notifications**. RhoGuest supplies a stable payload with an idempotency key and marks the request Posted to Room only when the adapter returns `success=True` and a concrete external reference.
+System Manager can configure a trusted dotted Python method in **RhoGuest Menu Settings → RhoGuest Laundry Billing & Notifications**. RhoGuest supplies a stable payload with an idempotency key and marks the request Posted to Room only when the adapter returns `success=True` and a concrete external reference.
 
 Manual posting remains available to authorized billing managers and also requires a real external reference.
 
@@ -138,8 +138,8 @@ The Workspace provides direct access to:
 - **RhoGuest Spa Appointment** — Spa treatment appointment queue.
 - **RhoGuest Spa Resource** — therapists/treatment resources and weekly availability.
 - **RhoGuest Service Category** and **RhoGuest Service Item** — guest-service catalog configuration.
-- **FNB Self Order** and **FNB Menu Book** — Food & Beverage operations.
-- **FNB Menu Settings** — RhoGuest branding, routing, hub and F&B configuration.
+- **RhoGuest Self Order** and **RhoGuest Menu Book** — Food & Beverage operations.
+- **RhoGuest Menu Settings** — RhoGuest branding, routing, hub and Food & Beverage configuration.
 - **Guest Services Hub** and the configured public Food & Beverage menu.
 
 The Dashboard is available at Desk route `/app/rhoguest-dashboard`.

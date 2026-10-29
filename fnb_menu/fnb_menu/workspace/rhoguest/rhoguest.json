@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"rg-head-1\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>RhoGuest Operations</b></span>\",\"col\":12}},{\"id\":\"rg-sc-1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"RhoGuest Dashboard\",\"col\":3}},{\"id\":\"rg-sc-2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Laundry Requests\",\"col\":3}},{\"id\":\"rg-sc-facilities\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Facility Reservations\",\"col\":3}},{\"id\":\"rg-sc-spa\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Spa Appointments\",\"col\":3}},{\"id\":\"rg-sc-3\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Guest Services Hub\",\"col\":3}},{\"id\":\"rg-sc-4\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Public F&B Menu\",\"col\":3}},{\"id\":\"rg-space-1\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"rg-head-2\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Configuration & Masters</b></span>\",\"col\":12}},{\"id\":\"rg-card-1\",\"type\":\"card\",\"data\":{\"card_name\":\"Operations\",\"col\":4}},{\"id\":\"rg-card-2\",\"type\":\"card\",\"data\":{\"card_name\":\"Service Catalog\",\"col\":4}},{\"id\":\"rg-card-3\",\"type\":\"card\",\"data\":{\"card_name\":\"Configuration\",\"col\":4}}]",
+ "content": "[{\"id\":\"rg-head-1\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>RhoGuest Operations</b></span>\",\"col\":12}},{\"id\":\"rg-sc-1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"RhoGuest Dashboard\",\"col\":3}},{\"id\":\"rg-sc-2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Laundry Requests\",\"col\":3}},{\"id\":\"rg-sc-facilities\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Facility Reservations\",\"col\":3}},{\"id\":\"rg-sc-spa\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Spa Appointments\",\"col\":3}},{\"id\":\"rg-sc-3\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Guest Services Hub\",\"col\":3}},{\"id\":\"rg-sc-4\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Public Food & Beverage Menu\",\"col\":3}},{\"id\":\"rg-space-1\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"rg-head-2\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Configuration & Masters</b></span>\",\"col\":12}},{\"id\":\"rg-card-1\",\"type\":\"card\",\"data\":{\"card_name\":\"Operations\",\"col\":4}},{\"id\":\"rg-card-2\",\"type\":\"card\",\"data\":{\"card_name\":\"Service Catalog\",\"col\":4}},{\"id\":\"rg-card-3\",\"type\":\"card\",\"data\":{\"card_name\":\"Configuration\",\"col\":4}}]",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
@@ -56,9 +56,9 @@
    "dependencies": "",
    "hidden": 0,
    "is_query_report": 0,
-   "label": "F&B Self Orders",
+   "label": "Food & Beverage Orders",
    "link_count": 0,
-   "link_to": "FNB Self Order",
+   "link_to": "RhoGuest Self Order",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -99,7 +99,7 @@
    "is_query_report": 0,
    "label": "Menu Books",
    "link_count": 0,
-   "link_to": "FNB Menu Book",
+   "link_to": "RhoGuest Menu Book",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -110,7 +110,7 @@
    "is_query_report": 0,
    "label": "Menu Categories",
    "link_count": 0,
-   "link_to": "FNB Menu Category",
+   "link_to": "RhoGuest Menu Category",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -121,7 +121,7 @@
    "is_query_report": 0,
    "label": "Menu Entries",
    "link_count": 0,
-   "link_to": "FNB Menu Entry",
+   "link_to": "RhoGuest Menu Entry",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -149,9 +149,9 @@
    "dependencies": "",
    "hidden": 0,
    "is_query_report": 0,
-   "label": "RhoGuest Settings",
+   "label": "RhoGuest Menu Settings",
    "link_count": 0,
-   "link_to": "FNB Menu Settings",
+   "link_to": "RhoGuest Menu Settings",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -213,7 +213,7 @@
   },
   {
    "color": "Grey",
-   "label": "Public F&B Menu",
+   "label": "Public Food & Beverage Menu",
    "type": "URL",
    "url": "/fnb-menu"
   },
@@ -234,21 +234,21 @@
   {
    "color": "Grey",
    "doc_view": "List",
-   "label": "F&B Orders",
-   "link_to": "FNB Self Order",
+   "label": "Food & Beverage Orders",
+   "link_to": "RhoGuest Self Order",
    "type": "DocType"
   },
   {
    "color": "Grey",
    "doc_view": "List",
    "label": "Menu Books",
-   "link_to": "FNB Menu Book",
+   "link_to": "RhoGuest Menu Book",
    "type": "DocType"
   },
   {
    "color": "Grey",
-   "label": "RhoGuest Settings",
-   "link_to": "FNB Menu Settings",
+   "label": "RhoGuest Menu Settings",
+   "link_to": "RhoGuest Menu Settings",
    "type": "DocType"
   },
   {

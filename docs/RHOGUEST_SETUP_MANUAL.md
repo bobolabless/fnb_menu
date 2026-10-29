@@ -16,7 +16,7 @@ This manual explains how to install, upgrade, configure, validate and administer
 RhoGuest provides a guest-facing digital-services layer while preserving the technical package name `fnb_menu` for compatibility. The product currently includes:
 
 - Food & Beverage digital menus.
-- Prepaid F&B self ordering and kitchen release.
+- Prepaid Food & Beverage self ordering and kitchen release.
 - Configurable public menu routes and legacy QR aliases.
 - Generic guest-service categories and service items.
 - Public Guest Services Hub.
@@ -41,7 +41,7 @@ Before installation, confirm:
 - HTTPS is used on production guest-facing deployments.
 - Backups are available before upgrading an existing installation.
 
-For F&B self ordering, also prepare:
+For Food & Beverage self ordering, also prepare:
 
 - Default guest Customer.
 - Payment Gateway Account.
@@ -106,7 +106,7 @@ After every upgrade, verify:
 1. RhoGuest Workspace is visible.
 2. `/app/rhoguest-dashboard` loads.
 3. `/rhoguest` loads.
-4. The configured public F&B menu route redirects correctly.
+4. The configured public Food & Beverage menu route redirects correctly.
 5. `/fnb-menu` remains available.
 6. `/fnb-kitchen` remains available to authenticated staff.
 7. `/rhoguest-laundry` behaves according to Laundry publication state.
@@ -126,9 +126,9 @@ It is the principal staff navigation area and contains:
 - Spa Resources.
 - Service Categories.
 - Service Items.
-- F&B Self Orders.
-- F&B Menu Books.
-- FNB Menu Settings.
+- Food & Beverage Self Orders.
+- Food & Beverage Menu Books.
+- RhoGuest Menu Settings.
 - Guest Hub and public menu shortcuts.
 
 If the Workspace does not appear after migration:
@@ -153,8 +153,8 @@ The Dashboard reads live data server-side and displays:
 
 - Published guest services.
 - Enabled/guest-available Service Items.
-- Active F&B orders.
-- F&B orders awaiting payment.
+- Active Food & Beverage orders.
+- Food & Beverage orders awaiting payment.
 - Open Laundry Requests.
 - Laundry Requests awaiting pickup.
 - Laundry Requests in processing.
@@ -171,9 +171,9 @@ The Dashboard is an operational view only. It does not bypass DocType permission
 
 ---
 
-## 7. FNB Menu Settings
+## 7. RhoGuest Menu Settings
 
-Open **RhoGuest → FNB Menu Settings**.
+Open **RhoGuest → RhoGuest Menu Settings**.
 
 ### 7.1 Hotel identity
 
@@ -282,7 +282,7 @@ Do not publish Service Items until their category and operational workflow are r
 
 ### 9.1 Menu Books
 
-Create/publish **FNB Menu Book** records for Food and Drinks.
+Create/publish **RhoGuest Menu Book** records for Food and Drinks.
 
 Configure:
 
@@ -296,7 +296,7 @@ Configure:
 
 ### 9.2 Self ordering
 
-Before enabling self ordering in FNB Menu Settings, configure:
+Before enabling self ordering in RhoGuest Menu Settings, configure:
 
 - Company.
 - Default Selling Price List.
@@ -376,7 +376,7 @@ Pickup scheduling is allowed only for Submitted or Pickup Scheduled requests and
 
 ### 10.6 Folio Integration Modes
 
-Open **FNB Menu Settings → RhoGuest Laundry Billing & Notifications**.
+Open **RhoGuest Menu Settings → RhoGuest Laundry Billing & Notifications**.
 
 **Manual** is the safe default. RhoGuest never changes the request to Posted to Room until an authorized System Manager or Sales Manager records the real external folio/PMS reference.
 
@@ -807,7 +807,7 @@ Staff-only APIs reject Guest sessions.
 RhoGuest follows these rules:
 
 - Browser-supplied prices are not authoritative.
-- F&B order price/availability is re-resolved server-side.
+- Food & Beverage order price/availability is re-resolved server-side.
 - Laundry request price/availability is re-resolved server-side.
 - Invalid/unpublished Laundry items are rejected.
 - Laundry public status lookup requires the request name plus its secret public token.
@@ -869,9 +869,9 @@ Check:
 
 Check pricing configuration. ERPNext Item Price items require a valid active selling price.
 
-### F&B menu route not working
+### Food & Beverage menu route not working
 
-Check FNB Menu Settings routing section, then clear website cache.
+Check RhoGuest Menu Settings routing section, then clear website cache.
 
 ### Spa booking reports no resource available
 

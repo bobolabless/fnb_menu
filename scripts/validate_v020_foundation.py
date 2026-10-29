@@ -19,7 +19,7 @@ def field_map(doc):
 
 def main():
     settings = load_json(
-        "fnb_menu/fnb_menu/doctype/fnb_menu_settings/fnb_menu_settings.json"
+        "fnb_menu/fnb_menu/doctype/rhoguest_menu_settings/rhoguest_menu_settings.json"
     )
     aliases = load_json(
         "fnb_menu/fnb_menu/doctype/rhoguest_route_alias/rhoguest_route_alias.json"

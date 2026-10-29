@@ -19,7 +19,7 @@ def field_map(doc):
 
 def main():
     settings = load_json(
-        "fnb_menu/fnb_menu/doctype/fnb_menu_settings/fnb_menu_settings.json"
+        "fnb_menu/fnb_menu/doctype/rhoguest_menu_settings/rhoguest_menu_settings.json"
     )
     fields = field_map(settings)
 
@@ -39,7 +39,7 @@ def main():
     css = (ROOT / "fnb_menu/public/css/rhoguest.css").read_text()
     settings_js = (
         ROOT
-        / "fnb_menu/fnb_menu/doctype/fnb_menu_settings/fnb_menu_settings.js"
+        / "fnb_menu/fnb_menu/doctype/rhoguest_menu_settings/rhoguest_menu_settings.js"
     ).read_text()
 
     assert 'filters={' in service

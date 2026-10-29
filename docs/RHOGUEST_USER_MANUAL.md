@@ -42,9 +42,9 @@ The Workspace provides shortcuts to:
 - Spa Resources.
 - Service Categories.
 - Service Items.
-- F&B Orders.
+- Food & Beverage Orders.
 - Menu Books.
-- FNB Menu Settings.
+- RhoGuest Menu Settings.
 - Public Guest Hub.
 - Public Food & Beverage menu.
 
@@ -66,11 +66,11 @@ Number of service categories currently visible to guests.
 
 Number of enabled Service Items currently available to guests.
 
-### Active F&B Orders
+### Active Food & Beverage Orders
 
-Paid F&B orders currently in kitchen fulfilment.
+Paid Food & Beverage orders currently in kitchen fulfilment.
 
-### Awaiting F&B Payment
+### Awaiting Food & Beverage Payment
 
 Self-orders not yet payment-verified.
 
@@ -354,7 +354,7 @@ RhoGuest stores the settlement timestamp and user for audit purposes.
 
 ### Laundry Notifications
 
-The hotel may enable guest and staff email notifications in FNB Menu Settings.
+The hotel may enable guest and staff email notifications in RhoGuest Menu Settings.
 
 Assigned staff can also receive in-app Frappe alerts for Laundry lifecycle events.
 
@@ -588,9 +588,9 @@ Quote-only items can be displayed but should not be treated as a fixed-price tra
 
 ---
 
-## 13. FNB Menu Settings
+## 13. RhoGuest Menu Settings
 
-System Managers use FNB Menu Settings for:
+System Managers use RhoGuest Menu Settings for:
 
 - Hotel identity.
 - Theme/layout.
@@ -602,7 +602,7 @@ System Managers use FNB Menu Settings for:
 - Self ordering.
 - Payment Gateway.
 - Default Customer.
-- F&B service types.
+- Food & Beverage service types.
 - Stock/accounting defaults.
 
 Operational users should not alter routing/payment configuration unless authorized.
@@ -614,7 +614,7 @@ Operational users should not alter routing/payment configuration unless authoriz
 At start of shift:
 
 1. Open RhoGuest Dashboard.
-2. Review active F&B orders.
+2. Review active Food & Beverage orders.
 3. Review Open Laundry.
 4. Review Awaiting Pickup.
 5. Review Ready / Delivery.
@@ -638,7 +638,7 @@ End of shift:
 - Review unresolved Open Laundry.
 - Hand over pending pickup/delivery items.
 - Reconcile pending folio postings.
-- Confirm active F&B orders have been completed or handed over.
+- Confirm active Food & Beverage orders have been completed or handed over.
 
 ---
 
@@ -678,7 +678,7 @@ The server-authoritative price at submission is the accepted request estimate. R
 
 Follow the documented Laundry workflow sequence.
 
-### F&B order not on Kitchen board
+### Food & Beverage order not on Kitchen board
 
 Confirm payment is verified Paid and order status is eligible for kitchen release.
 
