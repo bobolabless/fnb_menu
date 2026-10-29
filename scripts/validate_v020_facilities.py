@@ -64,6 +64,9 @@ def main():
     public_js = (ROOT / "fnb_menu/public/js/rhoguest_facility.js").read_text()
     dashboard = (ROOT / "fnb_menu/api/dashboard.py").read_text()
     workspace = load_json("fnb_menu/fnb_menu/workspace/rhoguest/rhoguest.json")
+    setup = (ROOT / "docs/RHOGUEST_SETUP_MANUAL.md").read_text()
+    user = (ROOT / "docs/RHOGUEST_USER_MANUAL.md").read_text()
+    readme = (ROOT / "README.md").read_text()
 
     assert 'FACILITY_KEYS = {"swimming-pool", "gym-fitness"}' in service
     assert "for update" in service.lower()
@@ -122,6 +125,16 @@ def main():
     assert '"pool_today"' in dashboard
     assert '"gym_today"' in dashboard
     assert any(row["label"] == "Facility Reservations" for row in workspace["shortcuts"])
+    workspace_content = json.loads(workspace["content"])
+    assert any(
+        row.get("data", {}).get("shortcut_name") == "Facility Reservations"
+        for row in workspace_content
+    )
+
+    assert "Pool & Gym Setup" in setup
+    assert "Capacity protection" in setup
+    assert "Swimming Pool & Gym Reservations" in user
+    assert "v0.2.0 Pool & Gym Reservations" in readme
 
     print("RhoGuest v0.2.0 Pool/Gym facility reservations: PASS")
 
