@@ -98,12 +98,31 @@ def main():
     assert counts["RhoGuest Spa Appointment"] >= 4
 
     workspace = load("fnb_menu/fnb_menu/workspace/rhoguest/rhoguest.json")
+    settings_text = (
+        ROOT
+        / "fnb_menu/fnb_menu/doctype/rhoguest_menu_settings/"
+        "rhoguest_menu_settings.json"
+    ).read_text()
+    settings_js = (
+        ROOT
+        / "fnb_menu/fnb_menu/doctype/rhoguest_menu_settings/"
+        "rhoguest_menu_settings.js"
+    ).read_text()
+    dashboard_js = (
+        ROOT
+        / "fnb_menu/fnb_menu/page/rhoguest_dashboard/"
+        "rhoguest_dashboard.js"
+    ).read_text()
     workspace_text = json.dumps(workspace)
     assert "RhoGuest Menu Settings" in workspace_text
     assert "RhoGuest Menu Book" in workspace_text
     assert "RhoGuest Self Order" in workspace_text
     assert "FNB Menu Settings" not in workspace_text
     assert "FNB Self Order" not in workspace_text
+    assert "F&B" not in settings_text
+    assert "F&B" not in settings_js
+    assert "Active Food & Beverage" in dashboard_js
+    assert "Awaiting Food & Beverage Payment" in dashboard_js
 
     runtime_files = [
         ROOT / "fnb_menu/api/checkout.py",

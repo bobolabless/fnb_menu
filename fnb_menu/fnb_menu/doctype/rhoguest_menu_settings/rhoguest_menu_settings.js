@@ -49,8 +49,8 @@ frappe.ui.form.on("RhoGuest Menu Settings", {
 
     frm.dashboard.set_headline(
       frm.doc.self_ordering_enabled
-        ? '<span class="indicator-pill green">RhoGuest F&B self ordering ENABLED · verified payment required</span>'
-        : '<span class="indicator-pill gray">RhoGuest F&B self ordering DISABLED · digital menu only</span>'
+        ? '<span class="indicator-pill green">RhoGuest Food & Beverage self ordering ENABLED · verified payment required</span>'
+        : '<span class="indicator-pill gray">RhoGuest Food & Beverage self ordering DISABLED · digital menu only</span>'
     );
   },
 

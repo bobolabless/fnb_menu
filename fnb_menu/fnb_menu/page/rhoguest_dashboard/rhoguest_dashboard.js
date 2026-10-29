@@ -79,8 +79,8 @@ function render_dashboard(body, data) {
   const cards = [
     card(__("Published Services"), c.published_services, __("Visible on Guest Hub"), "List/RhoGuest Service Category"),
     card(__("Guest Service Items"), c.service_items, __("Enabled and guest-available"), "List/RhoGuest Service Item"),
-    card(__("Active F&B"), c.fnb_active, __("Kitchen fulfilment"), "List/RhoGuest Self Order"),
-    card(__("Awaiting F&B Payment"), c.fnb_pending_payment, __("Not yet payment-verified"), "List/RhoGuest Self Order"),
+    card(__("Active Food & Beverage"), c.fnb_active, __("Kitchen fulfilment"), "List/RhoGuest Self Order"),
+    card(__("Awaiting Food & Beverage Payment"), c.fnb_pending_payment, __("Not yet payment-verified"), "List/RhoGuest Self Order"),
     card(__("Open Laundry"), c.laundry_open, __("Not delivered/cancelled"), "List/RhoGuest Laundry Request"),
     card(__("Awaiting Pickup"), c.laundry_awaiting_pickup, __("Submitted or scheduled"), "List/RhoGuest Laundry Request"),
     card(__("Processing"), c.laundry_processing, __("Collected / processing"), "List/RhoGuest Laundry Request"),

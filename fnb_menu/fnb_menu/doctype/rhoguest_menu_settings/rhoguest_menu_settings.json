@@ -323,7 +323,7 @@
   },
   {
    "fieldname": "ordering_section",
-   "label": "RhoGuest F&B Self Ordering",
+   "label": "RhoGuest Food & Beverage Self Ordering",
    "fieldtype": "Section Break"
   },
   {
@@ -359,7 +359,7 @@
   },
   {
    "fieldname": "service_section",
-   "label": "F&B Service Types",
+   "label": "Food & Beverage Service Types",
    "fieldtype": "Section Break"
   },
   {
