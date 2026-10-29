@@ -353,7 +353,83 @@ Email notifications are supplementary. Staff should continue to use the RhoGuest
 
 ---
 
-## 9. Managing Service Categories
+## 9. Swimming Pool & Gym Reservations
+
+Guests use:
+
+- Swimming Pool: `/rhoguest-pool`
+- Gym & Fitness: `/rhoguest-gym`
+
+A guest:
+
+1. Selects a published reservable access option.
+2. Enters Guest Name.
+3. Enters Room Number if applicable.
+4. Provides phone or email.
+5. Selects Reservation Start.
+6. Enters Party Size.
+7. Adds an optional note.
+8. Submits the request.
+
+RhoGuest calculates duration, end time, capacity and price again on the server.
+
+### 9.1 Staff workflow
+
+Open **RhoGuest → Facility Reservations**.
+
+The status flow is:
+
+**Requested**
+- Confirm Reservation.
+- Reschedule.
+- Cancel Reservation.
+
+**Confirmed**
+- Check In.
+- Reschedule.
+- Mark No Show.
+- Cancel Reservation.
+
+**Checked In**
+- Complete Visit.
+
+**Completed**, **Cancelled**, and **No Show** are terminal.
+
+### 9.2 Capacity
+
+If the Service Item has a Capacity greater than zero, RhoGuest blocks a reservation when overlapping Requested, Confirmed or Checked In reservations would exceed that capacity.
+
+Party Size consumes capacity.
+
+Do not override a capacity rejection by manually changing reservation snapshot fields.
+
+### 9.3 Pricing
+
+Pool/Gym pricing can be:
+
+- Complimentary.
+- Paid at Hotel.
+
+The Service Item may price **Per Reservation** or **Per Person**.
+
+RhoGuest stores the authoritative server-resolved rate and estimated total in the Facility Reservation.
+
+### 9.4 Queue filters
+
+The Facility Reservation List provides:
+
+- Upcoming.
+- Awaiting Confirmation.
+- Checked In.
+- Pool.
+- Gym.
+- All Reservations.
+
+Staff can also filter by Facility, Status, Reservation Start, Room Number and Assigned To.
+
+---
+
+## 10. Managing Service Categories
 
 Open **RhoGuest Service Category**.
 
@@ -377,7 +453,7 @@ Do not change the Service Key of an existing category.
 
 ---
 
-## 10. Managing Service Items
+## 11. Managing Service Items
 
 Open **RhoGuest Service Item**.
 
@@ -404,7 +480,7 @@ Quote-only items can be displayed but should not be treated as a fixed-price tra
 
 ---
 
-## 11. FNB Menu Settings
+## 12. FNB Menu Settings
 
 System Managers use FNB Menu Settings for:
 
@@ -425,7 +501,7 @@ Operational users should not alter routing/payment configuration unless authoriz
 
 ---
 
-## 12. Daily Operating Checklist
+## 13. Daily Operating Checklist
 
 At start of shift:
 
@@ -435,8 +511,10 @@ At start of shift:
 4. Review Awaiting Pickup.
 5. Review Ready / Delivery.
 6. Review Pending Folio Posting.
-7. Confirm published services are actually available.
-8. Confirm no unavailable Laundry item remains guest-visible.
+7. Review Upcoming Pool/Gym reservations.
+8. Review guests currently Checked In to facilities.
+9. Confirm published services are actually available.
+10. Confirm no unavailable Laundry or Facility item remains guest-visible.
 
 During shift:
 
@@ -455,7 +533,7 @@ End of shift:
 
 ---
 
-## 13. Security and Privacy
+## 14. Security and Privacy
 
 Staff should:
 
@@ -469,7 +547,7 @@ RhoGuest intentionally does not trust browser-submitted prices.
 
 ---
 
-## 14. Common Issues
+## 15. Common Issues
 
 ### Guest cannot see a service
 
@@ -501,12 +579,10 @@ Contact System Manager to verify roles, run migrate/clear-cache if recently upgr
 
 ---
 
-## 15. Future Modules
+## 16. Future Modules
 
 The generic RhoGuest service framework is designed to support additional operational workflows including:
 
-- Swimming Pool.
-- Gym & Fitness.
 - Spa & Wellness.
 - Transport.
 - Housekeeping.
@@ -518,7 +594,7 @@ A category may exist before its transaction workflow is released. Staff must not
 
 ---
 
-## 16. Support
+## 17. Support
 
 RhoGuest is a RhoHMS add-on application developed by **Rhocom Technology Limited**.
 
