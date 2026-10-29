@@ -13,6 +13,9 @@ frappe.pages["rhoguest-dashboard"].on_page_load = function (wrapper) {
   page.add_inner_button(__("Facility Reservations"), () => {
     frappe.set_route("List", "RhoGuest Facility Reservation");
   });
+  page.add_inner_button(__("Spa Appointments"), () => {
+    frappe.set_route("List", "RhoGuest Spa Appointment");
+  });
   page.add_inner_button(__("Settings"), () => {
     frappe.set_route("Form", "FNB Menu Settings");
   });
@@ -88,6 +91,9 @@ function render_dashboard(body, data) {
     card(__("Pool Today"), c.pool_today, __("Active reservations today"), "List/RhoGuest Facility Reservation"),
     card(__("Gym Today"), c.gym_today, __("Active reservations today"), "List/RhoGuest Facility Reservation"),
     card(__("Checked In"), c.facility_checked_in, __("Pool/Gym guests currently checked in"), "List/RhoGuest Facility Reservation"),
+    card(__("Upcoming Spa"), c.spa_upcoming, __("Requested / confirmed appointments"), "List/RhoGuest Spa Appointment"),
+    card(__("Spa Today"), c.spa_today, __("Active appointments today"), "List/RhoGuest Spa Appointment"),
+    card(__("In Treatment"), c.spa_in_treatment, __("Treatments currently in progress"), "List/RhoGuest Spa Appointment"),
   ].join("");
 
   const serviceBadges = (data.published_services || []).length
@@ -112,6 +118,22 @@ function render_dashboard(body, data) {
         )
         .join("")
     : '<tr><td colspan="6" class="rgd-empty">' + __("No Facility Reservations yet") + "</td></tr>";
+
+  const spaRows = (data.recent_spa || []).length
+    ? data.recent_spa
+        .map(
+          (row) => [
+            '<tr data-spa-docname="' + escape_html(row.name) + '">',
+            "<td><strong>" + escape_html(row.name) + "</strong></td>",
+            "<td>" + escape_html(row.service_name) + '<small>' + escape_html(row.resource_name || "—") + "</small></td>",
+            "<td>" + escape_html(row.guest_name) + '<small>Room ' + escape_html(row.room_number || "—") + "</small></td>",
+            "<td>" + escape_html(row.appointment_start) + "</td>",
+            '<td><span class="rgd-status">' + escape_html(row.status) + "</span></td>",
+            "</tr>",
+          ].join("")
+        )
+        .join("")
+    : '<tr><td colspan="5" class="rgd-empty">' + __("No Spa Appointments yet") + "</td></tr>";
 
   const rows = (data.recent_laundry || []).length
     ? data.recent_laundry
@@ -162,6 +184,13 @@ function render_dashboard(body, data) {
     "<th>" + __("Reservation") + "</th><th>" + __("Facility") + "</th><th>" + __("Guest") + "</th><th>" + __("Start") + "</th><th>" + __("Party") + "</th><th>" + __("Status") + "</th>",
     "</tr></thead><tbody>" + facilityRows + "</tbody></table></div>",
     "</section>",
+    '<section class="rgd-panel">',
+    '<div class="rgd-panel-head"><div><small>' + __("SPA & WELLNESS") + "</small><h3>" + __("Recent Spa Appointments") + "</h3></div>",
+    '<a class="rgd-link" data-all-spa>' + __("View all") + " →</a></div>",
+    '<div class="table-responsive"><table class="table rgd-table"><thead><tr>',
+    "<th>" + __("Appointment") + "</th><th>" + __("Treatment / Resource") + "</th><th>" + __("Guest") + "</th><th>" + __("Start") + "</th><th>" + __("Status") + "</th>",
+    "</tr></thead><tbody>" + spaRows + "</tbody></table></div>",
+    "</section>",
     '<p class="rgd-generated">' + __("Updated") + ": " + escape_html(data.generated_at || "") + "</p>",
     "</div>",
   ].join(""));
@@ -185,6 +214,14 @@ function render_dashboard(body, data) {
 
   body.find("[data-all-facilities]").on("click", () => {
     frappe.set_route("List", "RhoGuest Facility Reservation");
+  });
+
+  body.find("[data-spa-docname]").on("click", function () {
+    frappe.set_route("Form", "RhoGuest Spa Appointment", $(this).attr("data-spa-docname"));
+  });
+
+  body.find("[data-all-spa]").on("click", () => {
+    frappe.set_route("List", "RhoGuest Spa Appointment");
   });
 
   body.find("[data-open-hub]").on("click", () => window.open("/rhoguest", "_blank"));

@@ -85,6 +85,37 @@ def get_dashboard_data():
         limit_page_length=10,
     )
 
+    spa_today = frappe.get_all(
+        "RhoGuest Spa Appointment",
+        filters=[
+            ["RhoGuest Spa Appointment", "appointment_start", ">=", today],
+            ["RhoGuest Spa Appointment", "appointment_start", "<", tomorrow],
+        ],
+        fields=["name", "status"],
+        limit_page_length=5000,
+    )
+    spa_today_count = sum(
+        1 for row in spa_today if row.status not in {"Cancelled", "No Show"}
+    )
+    spa_in_treatment = sum(
+        1 for row in spa_today if row.status == "In Treatment"
+    )
+
+    recent_spa = frappe.get_all(
+        "RhoGuest Spa Appointment",
+        fields=[
+            "name",
+            "service_name",
+            "resource_name",
+            "guest_name",
+            "room_number",
+            "appointment_start",
+            "status",
+        ],
+        order_by="modified desc",
+        limit_page_length=10,
+    )
+
     recent_laundry = frappe.get_all(
         "RhoGuest Laundry Request",
         fields=[
@@ -158,8 +189,15 @@ def get_dashboard_data():
             "pool_today": pool_today,
             "gym_today": gym_today,
             "facility_checked_in": checked_in_facilities,
+            "spa_upcoming": _count(
+                "RhoGuest Spa Appointment",
+                {"status": ["in", ["Requested", "Confirmed"]]},
+            ),
+            "spa_today": spa_today_count,
+            "spa_in_treatment": spa_in_treatment,
         },
         "published_services": published_services,
         "recent_laundry": recent_laundry,
         "recent_facilities": recent_facilities,
+        "recent_spa": recent_spa,
     }
