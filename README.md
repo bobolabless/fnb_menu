@@ -80,6 +80,30 @@ Manual posting remains available to authorized billing managers and also require
 
 Laundry guest/staff email notifications are opt-in; assigned staff in-app notifications are enabled by default.
 
+## v0.2.0 Pool & Gym Reservations
+
+RhoGuest now supports public and staff-managed **Swimming Pool** and **Gym & Fitness** reservations.
+
+Public routes:
+
+- `/rhoguest-pool`
+- `/rhoguest-gym`
+
+The shared **RhoGuest Facility Reservation** transaction model provides:
+
+- Requested → Confirmed → Checked In → Completed workflow.
+- Cancelled and No Show terminal states.
+- Server-authoritative duration, end time and pricing.
+- Pricing Basis: Per Reservation or Per Person.
+- Capacity-aware overlapping-slot protection.
+- Service Item row locking to prevent concurrent overbooking.
+- Staff rescheduling with capacity revalidation.
+- Public token-based status lookup.
+- Staff assignment and operational List View queues.
+- Dashboard KPIs and recent Facility Reservations.
+
+Paid facility reservations are recorded as **Pay at Hotel** in this release. Pool/Gym do not yet use the Laundry Charge-to-Room adapter.
+
 ## RhoGuest Desk Workspace & Dashboard
 
 RhoGuest includes a standard Frappe **Workspace** named **RhoGuest**. It is public to permitted Desk users and uses the `home` Workspace icon so RhoGuest appears as its own entry in the Frappe Desk sidebar/home navigation.
@@ -88,6 +112,7 @@ The Workspace provides direct access to:
 
 - **RhoGuest Dashboard** — operational KPIs and recent Laundry activity.
 - **RhoGuest Laundry Request** — operational Laundry queue.
+- **RhoGuest Facility Reservation** — Pool/Gym reservation and access queue.
 - **RhoGuest Service Category** and **RhoGuest Service Item** — guest-service catalog configuration.
 - **FNB Self Order** and **FNB Menu Book** — Food & Beverage operations.
 - **FNB Menu Settings** — RhoGuest branding, routing, hub and F&B configuration.
