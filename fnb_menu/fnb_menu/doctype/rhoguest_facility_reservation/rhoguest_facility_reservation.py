@@ -90,6 +90,6 @@ class RhoGuestFacilityReservation(Document):
             if str(before.get(fieldname) or "") != str(self.get(fieldname) or ""):
                 frappe.throw(
                     _("Field {0} is server-managed and cannot be edited directly.").format(
-                        frappe.bold(self.meta.get_label(fieldname) or fieldname)
+                        frappe.bold(fieldname)
                     )
                 )
