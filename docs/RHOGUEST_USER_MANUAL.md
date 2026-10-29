@@ -539,7 +539,113 @@ The RhoGuest Dashboard also shows Upcoming Spa, Spa Today, In Treatment and Rece
 
 ---
 
-## 11. Managing Service Categories
+## 11. Transport Bookings
+
+Guests use:
+
+`/rhoguest-transport`
+
+A guest:
+
+1. Selects a Transport service.
+2. Enters Guest Name.
+3. Enters Room Number if required.
+4. Provides phone or email.
+5. Enters Scheduled Pickup.
+6. Enters Pickup and Drop-off locations.
+7. Enters Passenger count.
+8. Enters Luggage count.
+9. Optionally enters Flight Number and Trip Note.
+10. Submits the request.
+
+RhoGuest resolves price, duration and estimated drop-off on the server.
+
+Vehicle and Driver are assigned by hotel staff.
+
+### 11.1 Staff assignment
+
+Open **RhoGuest → Transport Bookings**.
+
+For Requested or Confirmed bookings use:
+
+**Transport Actions → Assign / Change Vehicle & Driver**
+
+The server rejects:
+
+- Disabled vehicles.
+- Disabled drivers.
+- Expired driver licences.
+- Vehicles with insufficient passenger/luggage capacity.
+- Vehicle or driver schedule conflicts.
+
+### 11.2 Dispatch workflow
+
+**Requested**
+- Assign / Change Vehicle & Driver.
+- Reschedule.
+- Confirm Booking.
+- Cancel Booking.
+
+**Confirmed**
+- Assign / Change Vehicle & Driver.
+- Reschedule.
+- Dispatch Vehicle.
+- Mark No Show.
+- Cancel Booking.
+
+**Dispatched**
+- Arrived at Pickup.
+
+**Arrived at Pickup**
+- Start Trip.
+- Mark No Show.
+
+**In Transit**
+- Complete Trip.
+
+**Completed**, **Cancelled**, and **No Show** are terminal.
+
+### 11.3 Guest tracking
+
+The public Transport page can track a booking using:
+
+- Booking Reference.
+- Secret Access Token.
+
+The tracking result shows the current trip status and, after assignment, may show the vehicle and driver information needed by the guest.
+
+Do not send the secret access token to unrelated persons.
+
+### 11.4 Pricing
+
+Transport pricing can be:
+
+- Complimentary.
+- Pay at Hotel.
+
+A Transport Service Item may price:
+
+- Per Reservation.
+- Per Person.
+
+The browser cannot set the authoritative price or trip duration.
+
+### 11.5 Transport queues
+
+The Transport Booking List provides:
+
+- Upcoming.
+- Awaiting Assignment.
+- Dispatched.
+- Active Trips.
+- Completed.
+- All Bookings.
+
+The Dashboard shows Upcoming Transport, Awaiting Assignment, Transport Today, In Transit and Recent Transport Bookings.
+
+---
+
+## 12. Managing Service Categories
 
 Open **RhoGuest Service Category**.
 
@@ -563,7 +669,7 @@ Do not change the Service Key of an existing category.
 
 ---
 
-## 12. Managing Service Items
+## 13. Managing Service Items
 
 Open **RhoGuest Service Item**.
 
@@ -590,7 +696,7 @@ Quote-only items can be displayed but should not be treated as a fixed-price tra
 
 ---
 
-## 13. RhoGuest Menu Settings
+## 14. RhoGuest Menu Settings
 
 System Managers use RhoGuest Menu Settings for:
 
@@ -611,7 +717,7 @@ Operational users should not alter routing/payment configuration unless authoriz
 
 ---
 
-## 14. Daily Operating Checklist
+## 15. Daily Operating Checklist
 
 At start of shift:
 
@@ -624,8 +730,10 @@ At start of shift:
 7. Review Upcoming Pool/Gym reservations.
 8. Review guests currently Checked In to facilities.
 9. Review Upcoming Spa appointments and treatments In Treatment.
-10. Confirm published services are actually available.
-11. Confirm no unavailable Laundry, Facility or Spa treatment remains guest-visible.
+10. Review Upcoming Transport and Awaiting Assignment.
+11. Review Transport trips currently In Transit.
+12. Confirm published services are actually available.
+13. Confirm no unavailable Laundry, Facility, Spa or Transport service remains guest-visible.
 
 During shift:
 
@@ -644,7 +752,7 @@ End of shift:
 
 ---
 
-## 15. Security and Privacy
+## 16. Security and Privacy
 
 Staff should:
 
@@ -658,7 +766,7 @@ RhoGuest intentionally does not trust browser-submitted prices.
 
 ---
 
-## 16. Common Issues
+## 17. Common Issues
 
 ### Guest cannot see a service
 
@@ -688,17 +796,20 @@ Confirm payment is verified Paid and order status is eligible for kitchen releas
 
 Check the treatment is published/reservable and that at least one mapped enabled Spa Resource has weekly availability covering the requested time without an overlapping active appointment.
 
+### Transport booking cannot be confirmed
+
+Confirm a valid enabled Vehicle and Driver are assigned, the vehicle has enough capacity, the driver licence is valid, and neither resource has an overlapping active trip.
+
 ### RhoGuest menu not visible in Desk
 
 Contact System Manager to verify roles, run migrate/clear-cache if recently upgraded, then hard-refresh.
 
 ---
 
-## 17. Future Modules
+## 18. Future Modules
 
 The generic RhoGuest service framework is designed to support additional operational workflows including:
 
-- Transport.
 - Housekeeping.
 - Recreation.
 - Guest Requests.
@@ -708,7 +819,7 @@ A category may exist before its transaction workflow is released. Staff must not
 
 ---
 
-## 18. Support
+## 19. Support
 
 RhoGuest is a RhoHMS add-on application developed by **Rhocom Technology Limited**.
 
